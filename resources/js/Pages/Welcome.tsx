@@ -3,6 +3,7 @@ import { Box, OrbitControls, ScrollControls } from "@react-three/drei";
 import { PageProps } from '@/types';
 import { Canvas } from '@react-three/fiber';
 import { Overlay } from './Portfolio/Overlay';
+import { BG } from '@/Components/BG';
 
 export default function Welcome({ auth, laravelVersion, phpVersion }: PageProps<{ laravelVersion: string, phpVersion: string }>) {
     return (
@@ -13,8 +14,8 @@ export default function Welcome({ auth, laravelVersion, phpVersion }: PageProps<
                     <ambientLight intensity={1} />
                     <OrbitControls enableZoom={false} />
                     <ScrollControls pages={3} damping={0.25}>
-                        <Overlay />
-                        {/* <Office /> */}
+                        {/* <Overlay /> */}
+                        <BG />
                     </ScrollControls>
                 </>
             </Canvas>
