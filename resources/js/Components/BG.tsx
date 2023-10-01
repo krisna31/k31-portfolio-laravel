@@ -21,9 +21,6 @@ type GLTFResult = GLTF & {
     }
 }
 
-export const FLOOR_HEIGHT = 3;
-export const NB_FLOORS = 15;
-
 type ContextType = Record<string, React.ForwardRefExoticComponent<JSX.IntrinsicElements['mesh']>>
 
 export function BG(props: JSX.IntrinsicElements['group']) {
@@ -35,7 +32,7 @@ export function BG(props: JSX.IntrinsicElements['group']) {
 
     const scroll = useScroll();
 
-    useFrame(() => {
+    useFrame((state, delta) => {
         tl.current.seek(scroll.offset * tl.current.duration());
     });
 
@@ -47,7 +44,7 @@ export function BG(props: JSX.IntrinsicElements['group']) {
             ref.current.position,
             {
                 duration: 1.5,
-                y: -FLOOR_HEIGHT * (NB_FLOORS - 1),
+                y: -100,
             },
             0
         );
@@ -55,7 +52,7 @@ export function BG(props: JSX.IntrinsicElements['group']) {
         // bg rotation
         tl.current.to(
             bgRef.current.rotation,
-            { duration: 2, x: 0, y: Math.PI / 3, z: 0 },
+            { duration: 1, x: 0, y: Math.PI / 3, z: 0 },
             0
         )
 
