@@ -20,3 +20,6 @@
     filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#00FF87", endColorstr="#60EFFF", GradientType=1 ); */
 }
 
+::-webkit-scrollbar {
+    display: none;
+}
