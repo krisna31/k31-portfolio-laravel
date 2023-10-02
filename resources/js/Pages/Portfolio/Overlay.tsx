@@ -23,10 +23,12 @@ const Section = (props: any) => {
 
 type props = {
     isControlling: boolean,
-    setIsControlling: any,
+    setIsControlling: React.Dispatch<React.SetStateAction<boolean>>,
+    isZooming: boolean,
+    setIsZooming: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export const Overlay = ({ isControlling, setIsControlling }: props) => {
+export const Overlay = ({ isControlling, setIsControlling, isZooming, setIsZooming }: props) => {
     const scroll = useScroll();
     const [opacityFirstSection, setOpacityFirstSection] = useState(1);
     const [opacitySecondSection, setOpacitySecondSection] = useState(1);
@@ -44,17 +46,26 @@ export const Overlay = ({ isControlling, setIsControlling }: props) => {
         setOpacityLastSection(scroll.range(4 / FLOOR, 1 / FLOOR));
     });
 
-    console.log(isControlling)
-
     return (
         <Scroll html>
             <div className="w-screen">
 
-                <nav className="fixed top-0 right-0 bg-white/40 p-3 backdrop-blur-sm m-2 rounded me-5">
-                    <label className="relative inline-flex items-center mr-5 cursor-pointer">
-                        <input type="checkbox" className="sr-only peer" onChange={_ => setIsControlling((prev: any) => !prev)} checked={isControlling} />
+                <nav className="fixed top-0 right-0 backdrop-blur-sm rounded m-5 gap-3 flex flex-col">
+                    <label className="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" className="sr-only peer" onChange={_ => setIsControlling((prev: any) => {
+                            prev && setIsZooming(false);
+                            return !prev;
+                        })} checked={isControlling} />
                         <div className="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-teal-300 dark:peer-focus:ring-teal-800 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600"></div>
                         <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Control</span>
+                    </label>
+                    <label className="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" className="sr-only peer" onChange={_ => setIsZooming((prev: any) => {
+                            !prev && setIsControlling(true);
+                            return !prev;
+                        })} checked={isZooming} />
+                        <div className="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+                        <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Zoom</span>
                     </label>
                 </nav>
 
