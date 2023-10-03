@@ -3,8 +3,7 @@ import { Box, Environment, OrbitControls, ScrollControls, Sky, Sparkles, SpotLig
 import { PageProps } from '@/types';
 import { Canvas } from '@react-three/fiber';
 import { Overlay } from './Portfolio/Overlay';
-import { BG } from '@/Components/BG';
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense, useState } from 'react';
 import Loader from '@/Components/Loader';
 import MyBG from '@/Components/MyBG';
 
@@ -15,19 +14,13 @@ export default function Welcome({ auth, laravelVersion, phpVersion }: PageProps<
 
     return (
         <>
-            <Head title="Welcome" />
+            <Head title="Welcome">
+            </Head>
             <Canvas shadows camera={{ position: [0, 0, 8], zoom: 2 }} >
                 {isShowStats && <StatsGl />}
                 <Suspense fallback={<Loader />}>
                     <ambientLight intensity={1} />
                     <Stars radius={30} depth={50} count={1000} factor={4} saturation={1} fade speed={.3} />
-                    {/* <Sparkles
-                        color="orange"
-                        count={1000}
-                        noise={1}
-                        opacity={.3}
-                        speed={0.3}
-                    /> */}
                     {isControlling && (
                         <OrbitControls enableZoom={isZooming} autoRotate />
                     )}

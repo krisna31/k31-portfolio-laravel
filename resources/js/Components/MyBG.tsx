@@ -43,14 +43,22 @@ type ContextType = Record<string, React.ForwardRefExoticComponent<JSX.IntrinsicE
 export default function MyBG(props: JSX.IntrinsicElements['group']) {
     const { nodes, materials } = useGLTF('/assets/model/bg.glb') as GLTFResult
 
-    const ref: any = useRef();
+    const parentRef: any = useRef();
     const tl: React.MutableRefObject<gsap.core.Timeline> = useRef(gsap.timeline());
     const bgRef: any = useRef();
+    const k31: any = useRef();
+    const planetRef: any = useRef();
 
     const scroll = useScroll();
 
     useFrame((state, delta) => {
         tl.current.seek(scroll.offset * tl.current.duration());
+
+        k31.current.rotation.y += 0.001;
+        k31.current.rotation.x += 0.001;
+
+        planetRef.current.rotation.x += 0.001;
+        planetRef.current.rotation.y += 0.001;
     });
 
     useLayoutEffect(() => {
@@ -58,7 +66,7 @@ export default function MyBG(props: JSX.IntrinsicElements['group']) {
 
         // VERTICAL ANIMATION
         tl.current.to(
-            ref.current.position,
+            parentRef.current.position,
             {
                 duration: 1.5,
                 y: -35,
@@ -75,9 +83,13 @@ export default function MyBG(props: JSX.IntrinsicElements['group']) {
     }, []);
 
     return (
-        <group {...props} dispose={null} ref={ref}>
+        <group {...props} dispose={null} ref={parentRef}>
             <mesh ref={bgRef} geometry={nodes.Object_4.geometry} material={materials['.003']} scale={194.172} />
-            <group position={[-1.515, 6.428, 0.787]} rotation={[-Math.PI / 2, 0, 0]} scale={1.078}>
+            <group position={[-1.515, 6.428, 0.787]} rotation={[-Math.PI / 2, 0, 0]} scale={1.078} ref={planetRef} onClick={() => {
+                planetRef.current.scale.x += 1;
+                planetRef.current.scale.y += 1;
+                planetRef.current.scale.z += 1;
+            }}>
                 <mesh geometry={nodes.Object_2.geometry} material={materials.material} position={[-0.571, -8.532, 2.774]} />
             </group>
             <group position={[-2.195, 3.756, 0.069]} rotation={[-Math.PI / 2, 0, 0]} scale={0.009}>
@@ -118,7 +130,7 @@ export default function MyBG(props: JSX.IntrinsicElements['group']) {
                     <mesh geometry={nodes.Sphere_Material002_0002.geometry} material={materials['Material.004']} position={[-0.546, -4.702, 2.511]} />
                 </group>
             </group>
-            <mesh geometry={nodes.k31.geometry} material={materials.profile} position={[0, 1.2, 0]} rotation={[1.465, 0.013, 0.414]} />
+            <mesh geometry={nodes.k31.geometry} material={materials.profile} position={[0, 1.2, 0]} rotation={[1.465, 0.013, 0.414]} ref={k31} />
         </group>
     )
 }
