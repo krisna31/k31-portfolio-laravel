@@ -1,14 +1,43 @@
 import { Link, Head } from '@inertiajs/react';
 import { Box, Environment, OrbitControls, ScrollControls, Sky, Sparkles, SpotLight, Stars, StatsGl } from "@react-three/drei";
 import { PageProps } from '@/types';
-import { Canvas } from '@react-three/fiber';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Overlay } from './Portfolio/Overlay';
 import { Suspense, useEffect, useState } from 'react';
 import Loader from '@/Components/Loader';
 import { Bg } from '@/Components/Bg';
 
-export default function Welcome({ auth, laravelVersion, phpVersion }: PageProps<{ laravelVersion: string, phpVersion: string }>) {
-    const [isControlling, setIsControlling] = useState<boolean>(true);
+export interface PortfolioTypes {
+    id: number;
+    is_use: number;
+    title: string;
+    subtitle: string;
+    scroll_text: string;
+    bio_title: string;
+    bio_subtitle: string;
+    skill_title: string;
+    quote: string;
+    quote_author: string;
+    contact_links_title: string;
+    is_using_default_contact_links: number;
+    created_at: Date;
+    updated_at: Date;
+    skill_sets: ContactMeLink[];
+    contact_me_links: ContactMeLink[];
+}
+
+export interface ContactMeLink {
+    id: number;
+    portfolio_id: number;
+    title: string;
+    link?: string;
+    icon: string;
+    created_at: Date;
+    updated_at: Date;
+}
+
+export default function Welcome({ portfolio }: PageProps<{ portfolio: PortfolioTypes }>) {
+    const [isControlling, setIsControlling] = useState<boolean>(false);
     const [isShowStats, setIsShowStats] = useState<boolean>(false);
     const [isZooming, setIsZooming] = useState<boolean>(false);
 
@@ -54,7 +83,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }: PageProps<
                         <OrbitControls enableZoom={isZooming} autoRotate />
                     )}
                     <ScrollControls pages={5} damping={0.12}>
-                        <Overlay isControlling={isControlling} setIsControlling={setIsControlling} isZooming={isZooming} setIsZooming={setIsZooming} isShowStats={isShowStats} setIsShowStats={setIsShowStats} />
+                        <Overlay portfolio={portfolio} />
                         <Bg />
                         <Sky sunPosition={[100, 20, 100]} distance={99999999} />
                         {/* <Environment preset='dawn' /> */}

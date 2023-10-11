@@ -2,6 +2,8 @@ import { Scroll, useScroll } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useState } from "react";
 import DefaultContactLinks from "./DefaultContactLinks";
+import { PageProps } from "@/types";
+import { PortfolioTypes } from "../Welcome";
 
 const Section = (props: any) => {
     return (
@@ -22,16 +24,7 @@ const Section = (props: any) => {
     );
 };
 
-type props = {
-    isControlling: boolean,
-    setIsControlling: React.Dispatch<React.SetStateAction<boolean>>,
-    isZooming: boolean,
-    setIsZooming: React.Dispatch<React.SetStateAction<boolean>>
-    isShowStats: boolean,
-    setIsShowStats: React.Dispatch<React.SetStateAction<boolean>>
-}
-
-export const Overlay = ({ isControlling, setIsControlling, isZooming, setIsZooming, isShowStats, setIsShowStats }: props) => {
+export const Overlay = ({ portfolio }: { portfolio: PortfolioTypes }) => {
     const scroll = useScroll();
     const [opacityFirstSection, setOpacityFirstSection] = useState(1);
     const [opacitySecondSection, setOpacitySecondSection] = useState(1);
@@ -55,48 +48,69 @@ export const Overlay = ({ isControlling, setIsControlling, isZooming, setIsZoomi
 
                 <Section opacity={opacityFirstSection}>
                     <h1 className="font-semibold font-serif text-2xl">
-                        Hi, I'm Jelvin Krisna Putra
+                        {portfolio.title}
                     </h1>
-                    <p className="mt-3 text-yellow-400">Programmer | College Student</p>
-                    <p className="animate-bounce  mt-6">↓ Scroll Down</p>
+                    <div className="mt-3 text-yellow-400"
+                        dangerouslySetInnerHTML={{ __html: portfolio.subtitle }}
+                    />
+                    <p className="animate-bounce  mt-6">↓ {portfolio.scroll_text}</p>
                 </Section>
                 <Section right opacity={opacitySecondSection}>
                     <h1 className="font-semibold font-serif text-2xl mb-3">
-                        📜 Biography 📜
+                        {portfolio.bio_title}
                     </h1>
-                    <p className="text-yellow-400">
-                        I am Jelvin Krisna Putra, born in 2003 in Palembang. My fascination with coding and technology ignited at a young age, evolving into a lifelong passion.
-
-                        Here, you'll find a selection of projects crafted using my primary language, Javascript. Beyond the basics of HTML, CSS, and JavaScript, I've ventured into React, SQL, and more.</p>
-                    <p className="animate-bounce  mt-6">↓ Scroll Down</p>
+                    <div className="text-yellow-400"
+                        dangerouslySetInnerHTML={{ __html: portfolio.bio_subtitle }}
+                    />
+                    <p className="animate-bounce  mt-6">↓ {portfolio.scroll_text}</p>
                 </Section>
                 <Section opacity={opacityThirdSection}>
                     <h1 className="font-semibold font-serif text-2xl mb-3">
-                        Skillset 📚
+                        {portfolio.skill_title}
                     </h1>
                     <ul className="leading-9 text-yellow-300">
-                        <li>Laravel</li>
-                        <li>HapiJS</li>
-                        <li>NextJS</li>
-                        <li>ReactJS</li>
-                        <li>Tailwind</li>
+                        {
+                            portfolio.skill_sets.map((skill, index) => {
+                                return <li key={skill.id}>{skill.title}</li>
+                            })
+                        }
                     </ul>
-                    <p className="animate-bounce  mt-6">↓ Scroll Down</p>
+                    <p className="animate-bounce  mt-6">↓ {portfolio.scroll_text}</p>
                 </Section>
                 <Section right opacity={opacityFourthSection}>
                     <blockquote className="p-6 text-base font-bold lg:text-xl">
+                        <div
+                            dangerouslySetInnerHTML={{ __html: portfolio.quote }}
+                        />
                         <p>
-                            "Programming isn't about what you know; it's about what you can figure out.”
                             <br />
                             <br />
-                            -Chris Pine
+                            -{portfolio.quote_author}
                         </p>
                     </blockquote>
                 </Section>
                 <Section opacity={opacityLastSection}>
                     <blockquote className="p-6 text-base font-bold">
-                        <h2 className="text-2xl mb-3 lg:text-3xl">Social Media</h2>
-                        <DefaultContactLinks />
+                        <h2 className="text-2xl mb-3 lg:text-3xl">{portfolio.contact_links_title}</h2>
+                        {
+                            portfolio.is_using_default_contact_links ?
+                                (
+                                    <DefaultContactLinks />
+                                ) :
+                                (
+                                    <div className="flex flex-row justify-between">
+                                        {
+                                            portfolio.contact_me_links.map((contact_link, index) => {
+                                                return (
+                                                    <a href={contact_link.link} title={contact_link.title} className="text-gray-500 hover:text-gray-900 dark:hover:text-white" target="_blank" rel="noopener noreferrer" key={contact_link.id}>
+                                                        <img src={contact_link.icon} alt={contact_link.title} />
+                                                    </a>
+                                                )
+                                            })
+                                        }
+                                    </div>
+                                )
+                        }
                     </blockquote>
                 </Section>
             </div>

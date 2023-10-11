@@ -20,7 +20,7 @@ class PortfolioSeeder extends Seeder
             'bio_title' => '📜 Biography 📜',
             'bio_subtitle' => 'I am Jelvin Krisna Putra, born in 2003 in Palembang. My fascination with coding and technology ignited at a young age, evolving into a lifelong passion. Here, you\'ll find a selection of projects crafted using my primary language, Javascript. Beyond the basics of HTML, CSS, and JavaScript, I\'ve ventured into React, SQL, and more.',
             'skill_title' => 'Skillset 📚',
-            'quote' => 'Programming isn\'t about what you know; it\'s about what you can figure out.',
+            'quote' => '"Programming isn\'t about what you know; it\'s about what you can figure out."',
             'quote_author' => 'Chris Pine',
             'contact_links_title' => 'Contact Me',
             'is_using_default_contact_links' => true,
@@ -52,7 +52,7 @@ class PortfolioSeeder extends Seeder
         $portfolio->contactMeLinks()->createMany([
             [
                 'title' => 'Facebook',
-                'link' => 'https://www.facebook.com/',
+                'link' => 'https://www.facebook.com/profile.php?id=100006248929202',
                 'icon' => 'fab fa-facebook',
             ],
             [
