@@ -27,6 +27,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('manage')
             ->login()
+            ->favicon(asset('assets/pictures/logo.ico'))
             ->brandName('K31 Project')
             ->topNavigation()
             ->colors([

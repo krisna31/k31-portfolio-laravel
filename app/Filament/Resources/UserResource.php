@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ContactMeLinkResource\Pages;
-use App\Filament\Resources\ContactMeLinkResource\RelationManagers;
-use App\Models\ContactMeLink;
+use App\Filament\Resources\UserResource\Pages;
+use App\Filament\Resources\UserResource\RelationManagers;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,28 +13,28 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class ContactMeLinkResource extends Resource
+class UserResource extends Resource
 {
-    protected static ?string $model = ContactMeLink::class;
+    protected static ?string $model = User::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-bookmark-square';
+    protected static ?string $navigationIcon = 'heroicon-o-user-circle';
 
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('portfolio_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('title')
+                Forms\Components\TextInput::make('name')
                     ->required(),
-                Forms\Components\Textarea::make('link')
+                Forms\Components\Toggle::make('is_admin')
                     ->required(),
-                Forms\Components\FileUpload::make('icon')
-                    ->image()
-                    ->imageEditor()
+                Forms\Components\TextInput::make('email')
+                    ->email()
+                    ->required(),
+                Forms\Components\DateTimePicker::make('email_verified_at'),
+                Forms\Components\TextInput::make('password')
+                    ->password()
                     ->required(),
             ]);
     }
@@ -43,14 +43,15 @@ class ContactMeLinkResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('portfolio_id')
-                    ->numeric()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('title')
+                Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\ImageColumn::make('icon')
+                Tables\Columns\IconColumn::make('is_admin')
+                    ->boolean(),
+                Tables\Columns\TextColumn::make('email')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('email_verified_at')
+                    ->dateTime()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -77,7 +78,7 @@ class ContactMeLinkResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageContactMeLinks::route('/'),
+            'index' => Pages\ManageUsers::route('/'),
         ];
     }
 }
