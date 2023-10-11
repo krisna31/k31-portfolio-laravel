@@ -25,8 +25,10 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('admin')
-            ->path('admin')
+            ->path('manage')
             ->login()
+            ->brandName('K31 Project')
+            ->topNavigation()
             ->colors([
                 'primary' => Color::Amber,
             ])
