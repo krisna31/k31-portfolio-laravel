@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('portfolios', function (Blueprint $table) {
             $table->id();
+            $table->boolean('is_use');
             $table->string('title');
             $table->text('subtitle');
             $table->string('scroll_text');
             $table->string('bio_title');
             $table->text('bio_subtitle');
             $table->string('skill_title');
-            $table->text('skill_subtitle');
             $table->text('quote');
             $table->text('quote_author');
             $table->string('contact_links_title');

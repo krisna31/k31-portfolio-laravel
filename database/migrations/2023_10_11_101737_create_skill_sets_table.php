@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('contact_me_links', function (Blueprint $table) {
+        Schema::create('skill_sets', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('portfolio_id')->constrained('portfolios')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('title');
-            $table->text('link');
             $table->string('icon');
+            $table->foreignId('portfolio_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('contact_me_links');
+        Schema::dropIfExists('skill_sets');
     }
 };
