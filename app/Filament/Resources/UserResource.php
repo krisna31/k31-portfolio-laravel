@@ -34,7 +34,10 @@ class UserResource extends Resource
                     ->required(),
                 Forms\Components\DateTimePicker::make('email_verified_at'),
                 Forms\Components\TextInput::make('password')
-                    ->password(),
+                    ->password()
+                    ->dehydrateStateUsing(fn (string $state): string => bcrypt($state))
+                    ->dehydrated(fn (?string $state): bool => filled($state))
+                    ->required(fn (string $operation): bool => $operation === 'create'),
             ]);
     }
 
