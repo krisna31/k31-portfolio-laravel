@@ -72,7 +72,7 @@ class AuthenticatedSessionController extends Controller
             'name' => $socialUser->name,
             'email' => $socialUser->email,
             'provider_token' => $socialUser->token,
-            // 'github_refresh_token' => $socialUser->refreshToken,
+            'email_verified_at' => now(),
         ]);
 
         Auth::login($user);

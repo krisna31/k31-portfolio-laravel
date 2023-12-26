@@ -1,7 +1,8 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Web\NoteController;
+use App\Http\Controllers\Web\ProfileController;
 use App\Models\Portfolio;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -24,9 +25,15 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/welcome', function () {
-    return Inertia::render('Welcome');
-})->middleware(['auth', 'verified'])->name('welcome');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/welcome', function () {
+        return Inertia::render('Welcome');
+    })->name('welcome');
+
+    Route::resources([
+        'notes' => NoteController::class,
+    ]);
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -27,7 +27,13 @@ export default function Authenticated({ user, header, children }: PropsWithChild
 
                                 <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                     <NavLink href={route('welcome')} active={route().current('welcome')}>
-                                        Welcome
+                                        Home
+                                    </NavLink>
+                                </div>
+
+                                <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                                    <NavLink href={route('notes.index')} active={route().current('notes.*')}>
+                                        Notes
                                     </NavLink>
                                 </div>
                             </div>
@@ -106,7 +112,13 @@ export default function Authenticated({ user, header, children }: PropsWithChild
                     <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
                         <div className="pt-2 pb-3 space-y-1">
                             <ResponsiveNavLink href={route('welcome')} active={route().current('welcome')}>
-                                Welcome
+                                Home
+                            </ResponsiveNavLink>
+                        </div>
+
+                        <div className="pt-2 pb-3 space-y-1">
+                            <ResponsiveNavLink href={route('notes.index')} active={route().current('notes.*')}>
+                                Notes
                             </ResponsiveNavLink>
                         </div>
 

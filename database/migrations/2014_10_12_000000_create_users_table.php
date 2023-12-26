@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('provider')->nullable();
+            $table->string('provider')->default('Basic Email & Password');
             $table->string('provider_id')->nullable();
             $table->string('provider_token')->nullable();
             $table->boolean('is_admin')->default(false);
