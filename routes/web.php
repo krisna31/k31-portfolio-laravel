@@ -25,6 +25,10 @@ Route::get('/', function () {
     ]);
 });
 
+Route::get('/login', function () {
+    return redirect(route('filament.app.auth.login'));
+})->name('login');
+
 Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::group(['prefix' => 'breeze'], function () {

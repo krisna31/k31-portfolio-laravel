@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\App\Pages\HomePage;
+use App\Filament\App\Widgets\StatsOverview;
 use DutchCodingCompany\FilamentSocialite\FilamentSocialitePlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -56,7 +57,7 @@ class AppPanelProvider extends PanelProvider
                     ->setRegistrationEnabled(true)
                     // (optional) Change the associated model class.
                     ->setUserModelClass(\App\Models\User::class)
-                    ->setDashboardRouteName('filament.app.pages.app-user'),
+                    ->setDashboardRouteName('filament.app.pages.home-page'),
                     FilamentBackgroundsPlugin::make()
                         ->remember(900),
             ])
@@ -69,8 +70,9 @@ class AppPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/App/Widgets'), for: 'App\\Filament\\App\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+                    // Widgets\AccountWidget::class,
+                    // Widgets\FilamentInfoWidget::class,
+                StatsOverview::class,
             ])
             ->middleware([
                 EncryptCookies::class,
