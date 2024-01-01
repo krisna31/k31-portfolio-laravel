@@ -26,26 +26,30 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/welcome', function () {
-        return Inertia::render('Welcome');
-    })->name('welcome');
 
-    Route::resources([
-        'notes' => NoteController::class,
-    ]);
+    Route::group(['prefix' => 'breeze'], function () {
+        Route::get('/', function () {
+            return Inertia::render('Welcome');
+        })->name('welcome');
+
+        Route::resources([
+            'notes' => NoteController::class,
+        ]);
+    });
+
 });
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+// Route::middleware('auth')->group(function () {
+//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+// });
 
-Route::get('/auth/{provider}/redirect', [AuthenticatedSessionController::class, 'providerRedirect']);
+// Route::get('/auth/{provider}/redirect', [AuthenticatedSessionController::class, 'providerRedirect']);
 
-Route::get('/auth/{provider}/callback', [AuthenticatedSessionController::class, 'providerCallback']);
+// Route::get('/auth/{provider}/callback', [AuthenticatedSessionController::class, 'providerCallback']);
 
-require __DIR__.'/auth.php';
+// require __DIR__.'/auth.php';
 
 // Route::get('/login', function () {
 //     return redirect(route('filament.admin.auth.login'));
