@@ -3,10 +3,10 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\Note;
+
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class NotePolicy
+class UserPolicy
 {
     use HandlesAuthorization;
 
@@ -18,19 +18,18 @@ class NotePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_note');
+        return $user->can('view_any_user');
     }
 
     /**
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Note  $note
      * @return bool
      */
-    public function view(User $user, Note $note): bool
+    public function view(User $user): bool
     {
-        return $user->can('view_note');
+        return $user->can('view_user');
     }
 
     /**
@@ -41,31 +40,29 @@ class NotePolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_note');
+        return $user->can('create_user');
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Note  $note
      * @return bool
      */
-    public function update(User $user, Note $note): bool
+    public function update(User $user): bool
     {
-        return $user->can('update_note');
+        return $user->can('update_user');
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Note  $note
      * @return bool
      */
-    public function delete(User $user, Note $note): bool
+    public function delete(User $user): bool
     {
-        return $user->can('delete_note');
+        return $user->can('delete_user');
     }
 
     /**
@@ -76,19 +73,18 @@ class NotePolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_note');
+        return $user->can('delete_any_user');
     }
 
     /**
      * Determine whether the user can permanently delete.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Note  $note
      * @return bool
      */
-    public function forceDelete(User $user, Note $note): bool
+    public function forceDelete(User $user): bool
     {
-        return $user->can('force_delete_note');
+        return $user->can('force_delete_user');
     }
 
     /**
@@ -99,19 +95,18 @@ class NotePolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_note');
+        return $user->can('force_delete_any_user');
     }
 
     /**
      * Determine whether the user can restore.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Note  $note
      * @return bool
      */
-    public function restore(User $user, Note $note): bool
+    public function restore(User $user): bool
     {
-        return $user->can('restore_note');
+        return $user->can('restore_user');
     }
 
     /**
@@ -122,19 +117,18 @@ class NotePolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_note');
+        return $user->can('restore_any_user');
     }
 
     /**
-     * Determine whether the user can replicate.
+     * Determine whether the user can bulk restore.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Note  $note
      * @return bool
      */
-    public function replicate(User $user, Note $note): bool
+    public function replicate(User $user): bool
     {
-        return $user->can('replicate_note');
+        return $user->can('replicate_user');
     }
 
     /**
@@ -145,7 +139,6 @@ class NotePolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_note');
+        return $user->can('reorder_user');
     }
-
 }

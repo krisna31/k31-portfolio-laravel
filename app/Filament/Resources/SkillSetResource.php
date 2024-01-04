@@ -20,6 +20,8 @@ class SkillSetResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-chart-bar';
 
+    protected static ?string $navigationGroup = 'Portfolio';
+
     protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
@@ -80,5 +82,15 @@ class SkillSetResource extends Resource
         return [
             'index' => Pages\ManageSkillSets::route('/'),
         ];
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return static::getModel()::count() > 10 ? 'warning' : 'primary';
     }
 }

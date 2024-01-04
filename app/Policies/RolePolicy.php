@@ -3,10 +3,10 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\Note;
+use Spatie\Permission\Models\Role;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class NotePolicy
+class RolePolicy
 {
     use HandlesAuthorization;
 
@@ -18,19 +18,19 @@ class NotePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_note');
+        return $user->can('view_any_role');
     }
 
     /**
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Note  $note
+     * @param  \Spatie\Permission\Models\Role  $role
      * @return bool
      */
-    public function view(User $user, Note $note): bool
+    public function view(User $user, Role $role): bool
     {
-        return $user->can('view_note');
+        return $user->can('view_role');
     }
 
     /**
@@ -41,31 +41,31 @@ class NotePolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_note');
+        return $user->can('create_role');
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Note  $note
+     * @param  \Spatie\Permission\Models\Role  $role
      * @return bool
      */
-    public function update(User $user, Note $note): bool
+    public function update(User $user, Role $role): bool
     {
-        return $user->can('update_note');
+        return $user->can('update_role');
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Note  $note
+     * @param  \Spatie\Permission\Models\Role  $role
      * @return bool
      */
-    public function delete(User $user, Note $note): bool
+    public function delete(User $user, Role $role): bool
     {
-        return $user->can('delete_note');
+        return $user->can('delete_role');
     }
 
     /**
@@ -76,19 +76,19 @@ class NotePolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_note');
+        return $user->can('delete_any_role');
     }
 
     /**
      * Determine whether the user can permanently delete.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Note  $note
+     * @param  \Spatie\Permission\Models\Role  $role
      * @return bool
      */
-    public function forceDelete(User $user, Note $note): bool
+    public function forceDelete(User $user, Role $role): bool
     {
-        return $user->can('force_delete_note');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -99,19 +99,19 @@ class NotePolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_note');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**
      * Determine whether the user can restore.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Note  $note
+     * @param  \Spatie\Permission\Models\Role  $role
      * @return bool
      */
-    public function restore(User $user, Note $note): bool
+    public function restore(User $user, Role $role): bool
     {
-        return $user->can('restore_note');
+        return $user->can('{{ Restore }}');
     }
 
     /**
@@ -122,19 +122,19 @@ class NotePolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_note');
+        return $user->can('{{ RestoreAny }}');
     }
 
     /**
      * Determine whether the user can replicate.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Note  $note
+     * @param  \Spatie\Permission\Models\Role  $role
      * @return bool
      */
-    public function replicate(User $user, Note $note): bool
+    public function replicate(User $user, Role $role): bool
     {
-        return $user->can('replicate_note');
+        return $user->can('{{ Replicate }}');
     }
 
     /**
@@ -145,7 +145,7 @@ class NotePolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_note');
+        return $user->can('{{ Reorder }}');
     }
 
 }

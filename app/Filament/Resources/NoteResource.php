@@ -1,12 +1,10 @@
 <?php
 
-namespace App\Filament\App\Resources;
+namespace App\Filament\Resources;
 
 use App\Filament\App\Resources\NoteResource\Pages;
-use App\Filament\App\Resources\NoteResource\RelationManagers;
 use App\Filament\App\Resources\NoteResource\RelationManagers\TagsRelationManager;
 use App\Models\Note;
-use App\Models\Tag;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Form;

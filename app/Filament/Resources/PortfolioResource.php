@@ -19,6 +19,8 @@ class PortfolioResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-briefcase';
 
+    protected static ?string $navigationGroup = 'Portfolio';
+
     protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
@@ -96,5 +98,15 @@ class PortfolioResource extends Resource
         return [
             'index' => Pages\ManagePortfolios::route('/'),
         ];
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return static::getModel()::count() > 10 ? 'warning' : 'primary';
     }
 }

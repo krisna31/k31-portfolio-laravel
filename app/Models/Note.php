@@ -15,4 +15,14 @@ class Note extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function isOwner()
+    {
+        return $this->user_id === auth()->id();
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class, 'tag_note');
+    }
 }

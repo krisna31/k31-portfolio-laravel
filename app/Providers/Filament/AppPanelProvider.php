@@ -42,6 +42,7 @@ class AppPanelProvider extends PanelProvider
                 'success' => Color::Emerald,
                 'warning' => Color::Orange,
             ])
+            ->topNavigation()
             ->font('Poppins')
             ->plugins([
                 FilamentSocialitePlugin::make()

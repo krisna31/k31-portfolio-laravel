@@ -19,6 +19,8 @@ class ContactMeLinkResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-bookmark-square';
 
+    protected static ?string $navigationGroup = 'Portfolio';
+
     protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
@@ -79,5 +81,15 @@ class ContactMeLinkResource extends Resource
         return [
             'index' => Pages\ManageContactMeLinks::route('/'),
         ];
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return static::getModel()::count() > 10 ? 'warning' : 'primary';
     }
 }
