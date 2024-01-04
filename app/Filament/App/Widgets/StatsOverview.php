@@ -11,7 +11,7 @@ class StatsOverview extends BaseWidget
     protected function getStats(): array
     {
         return [
-            Stat::make('Total Notes Created', Note::count())
+            Stat::make('Total Notes Created', Note::where('user_id', auth()->user()->id)->count())
                 ->description('32k increase')
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->color('success'),
