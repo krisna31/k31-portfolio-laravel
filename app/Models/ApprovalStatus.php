@@ -8,4 +8,19 @@ use Illuminate\Database\Eloquent\Model;
 class ApprovalStatus extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'description',
+    ];
+
+    public function absentPermissions()
+    {
+        return $this->hasMany(AbsentPermission::class);
+    }
+
+    public function attendes()
+    {
+        return $this->hasMany(Attende::class);
+    }
 }

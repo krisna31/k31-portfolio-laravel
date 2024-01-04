@@ -8,4 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class AttendeType extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'slug',
+    ];
+
+    public function attendeCodes()
+    {
+        return $this->hasMany(AttendeCode::class);
+    }
 }

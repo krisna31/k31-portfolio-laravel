@@ -24,6 +24,11 @@ class Department extends Model
         return $this->hasMany(Position::class);
     }
 
+    public function users()
+    {
+        return $this->hasManyThrough(User::class, Position::class);
+    }
+
     public function getRouteKeyName()
     {
         return 'slug';
