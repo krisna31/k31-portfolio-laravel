@@ -59,6 +59,16 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Note::class);
     }
 
+    public function gender()
+    {
+        return $this->belongsTo(Gender::class);
+    }
+
+    public function position()
+    {
+        return $this->belongsTo(Position::class);
+    }
+
     public function isLogin()
     {
         return Auth::check();

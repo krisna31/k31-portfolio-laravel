@@ -27,6 +27,8 @@ class AppServiceProvider extends ServiceProvider
             'name' => $oauthUser->getName(),
             'email' => $oauthUser->getEmail(),
             'email_verified_at' => now(),
+            'avatar' => $oauthUser->getAvatar(),
+            'provider' => "Google",
         ]));
     }
 }

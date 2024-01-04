@@ -1,0 +1,66 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\ApprovalStatus;
+use App\Http\Requests\StoreApprovalStatusRequest;
+use App\Http\Requests\UpdateApprovalStatusRequest;
+
+class ApprovalStatusController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        //
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(StoreApprovalStatusRequest $request)
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(ApprovalStatus $approvalStatus)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(ApprovalStatus $approvalStatus)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(UpdateApprovalStatusRequest $request, ApprovalStatus $approvalStatus)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(ApprovalStatus $approvalStatus)
+    {
+        //
+    }
+}
