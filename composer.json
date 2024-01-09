@@ -24,6 +24,7 @@
         "laravel/socialite": "^5.11",
         "laravel/tinker": "^2.8",
         "owenvoke/blade-fontawesome": "^2.5",
+        "simplesoftwareio/simple-qrcode": "~4",
         "swisnl/filament-backgrounds": "^1.1",
         "tightenco/ziggy": "^1.0"
     },

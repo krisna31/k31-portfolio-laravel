@@ -6,6 +6,7 @@ use App\Filament\Resources\AttendeCodeResource\Pages;
 use App\Filament\Resources\AttendeCodeResource\RelationManagers;
 use App\Models\AttendeCode;
 use Carbon\Carbon;
+use Filament\Actions\StaticAction;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Form;
@@ -13,6 +14,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
+use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -62,12 +64,14 @@ class AttendeCodeResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('attende_type_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('attendeType.name')
+                    ->label('Attendence Type')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('code')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('description')
+                    ->html()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('start_date')
                     ->dateTime()
@@ -106,6 +110,16 @@ class AttendeCodeResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
+                Tables\Actions\Action::make('Show Qr Code')
+                    ->icon('heroicon-o-qr-code')
+                    ->modalContent(
+                        fn(AttendeCode $record): View => view(
+                            'filament.admin.attende-code-resources.qr-code',
+                            ['record' => $record],
+                        )
+                    )
+                    ->modalCancelAction(fn(StaticAction $action) => $action->label('Close'))
+                    ->modalSubmitAction(false)
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
