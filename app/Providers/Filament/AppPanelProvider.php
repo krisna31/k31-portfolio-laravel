@@ -33,7 +33,6 @@ class AppPanelProvider extends PanelProvider
             ->registration()
             ->passwordReset()
             ->emailVerification()
-            ->profile()
             ->colors([
                 'danger' => Color::Red,
                 'gray' => Color::Gray,

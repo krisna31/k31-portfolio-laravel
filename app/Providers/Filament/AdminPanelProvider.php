@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use Filament\Forms\Components\FileUpload;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -17,6 +18,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Jeffgreco13\FilamentBreezy\BreezyCore;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -28,13 +30,25 @@ class AdminPanelProvider extends PanelProvider
             ->path('manage')
             ->favicon(asset('assets/pictures/logo.ico'))
             ->brandName('K31 Project')
-            ->profile()
+            ->emailVerification()
             ->colors([
                 'primary' => Color::Amber,
             ])
             ->plugins([
                 \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
-                \Hasnayeen\Themes\ThemesPlugin::make()
+                \Hasnayeen\Themes\ThemesPlugin::make(),
+                BreezyCore::make()
+                    ->myProfile(
+                        shouldRegisterUserMenu: true, // Sets the 'account' link in the panel User Menu (default = true)
+                        shouldRegisterNavigation: true, // Adds a main navigation item for the My Profile page (default = false)
+                        navigationGroup: 'Settings', // Sets the navigation group for the My Profile page (default = null)
+                        hasAvatars: true, // Enables the avatar upload form component (default = false)
+                        slug: 'my-profile' // Sets the slug for the profile page (default = 'my-profile')
+                    )
+                    ->enableSanctumTokens(
+                        // permissions: ['my','custom','permissions'] // optional, customize the permissions (default = ["create", "view", "update", "delete"])
+                    )
+                    ->enableTwoFactorAuthentication(),
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')

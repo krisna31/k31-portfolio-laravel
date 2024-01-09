@@ -13,10 +13,13 @@ use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use BezhanSalleh\FilamentShield\Traits\HasPanelShield;
 use Illuminate\Support\Facades\Auth;
+use Jeffgreco13\FilamentBreezy\Traits\TwoFactorAuthenticatable;
+use Filament\Models\Contracts\HasAvatar;
+use Illuminate\Support\Facades\Storage;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail, HasAvatar
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles, HasPanelShield;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles, HasPanelShield, TwoFactorAuthenticatable;
 
     /**
      * The attributes that are mass assignable.
@@ -84,5 +87,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function isLogin()
     {
         return Auth::check();
+    }
+
+    public function getFilamentAvatarUrl(): ?string
+    {
+        return $this->avatar_url ? Storage::url($this->avatar_url) : null;
     }
 }
