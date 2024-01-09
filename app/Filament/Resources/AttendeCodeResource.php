@@ -18,6 +18,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use stdClass;
 
 class AttendeCodeResource extends Resource
 {
@@ -64,9 +65,20 @@ class AttendeCodeResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('No')->state(
+                    static function (Tables\Contracts\HasTable $livewire, stdClass $rowLoop): string {
+                        return (string) (
+                            $rowLoop->iteration +
+                            ($livewire->getTableRecordsPerPage() * (
+                                $livewire->getTablePage() - 1
+                            ))
+                        );
+                    }
+                ),
                 Tables\Columns\TextColumn::make('attendeType.name')
                     ->label('Attendence Type')
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('code')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
