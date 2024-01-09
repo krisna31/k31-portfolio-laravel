@@ -9,11 +9,13 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
+        "bezhansalleh/filament-panel-switch": "^1.0",
         "bezhansalleh/filament-shield": "^3.1",
         "blade-ui-kit/blade-icons": "*",
         "dutchcodingcompany/filament-socialite": "^1.0",
         "filament/filament": "^3.0-stable",
         "guzzlehttp/guzzle": "^7.2",
+        "hasnayeen/themes": "*",
         "inertiajs/inertia-laravel": "^0.6.3",
         "laravel/breeze": "^1.23",
         "laravel/framework": "^10.10",
