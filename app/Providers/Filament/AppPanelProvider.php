@@ -61,6 +61,7 @@ class AppPanelProvider extends PanelProvider
                     ->setDashboardRouteName('filament.app.pages.home-page'),
                     FilamentBackgroundsPlugin::make()
                         ->remember(900),
+                \Hasnayeen\Themes\ThemesPlugin::make()
             ])
             // ->spa()
             ->discoverResources(in: app_path('Filament/App/Resources'), for: 'App\\Filament\\App\\Resources')
@@ -85,6 +86,7 @@ class AppPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+                \Hasnayeen\Themes\Http\Middleware\SetTheme::class,
             ])
             ->authMiddleware([
                 Authenticate::class,

@@ -28,11 +28,13 @@ class AdminPanelProvider extends PanelProvider
             ->path('manage')
             ->favicon(asset('assets/pictures/logo.ico'))
             ->brandName('K31 Project')
+            ->profile()
             ->colors([
                 'primary' => Color::Amber,
             ])
             ->plugins([
-                \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make()
+                \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
+                \Hasnayeen\Themes\ThemesPlugin::make()
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
@@ -54,6 +56,7 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+                \Hasnayeen\Themes\Http\Middleware\SetTheme::class
             ])
             ->authMiddleware([
                 Authenticate::class,
