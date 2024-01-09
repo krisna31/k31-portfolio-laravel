@@ -108,8 +108,6 @@ class AttendeCodeResource extends Resource
                     }),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
                 Tables\Actions\Action::make('Show Qr Code')
                     ->icon('heroicon-o-qr-code')
                     ->modalContent(
@@ -119,7 +117,9 @@ class AttendeCodeResource extends Resource
                         )
                     )
                     ->modalCancelAction(fn(StaticAction $action) => $action->label('Close'))
-                    ->modalSubmitAction(false)
+                    ->modalSubmitAction(false),
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
