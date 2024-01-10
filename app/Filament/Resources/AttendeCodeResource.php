@@ -13,6 +13,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\Indicator;
 use Filament\Tables\Table;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
@@ -85,12 +86,39 @@ class AttendeCodeResource extends Resource
                 Tables\Columns\TextColumn::make('description')
                     ->html()
                     ->searchable(),
+                Tables\Columns\IconColumn::make('status')
+                    ->state(function (AttendeCode $record): string {
+                        $now = Carbon::now();
+                        $startDate = Carbon::parse($record->start_date);
+                        $endDate = Carbon::parse($record->end_date);
+
+                        return match (true) {
+                            $now->between($startDate, $endDate) => 'between_start_and_end',
+                            $endDate->lt($now) => 'before_start',
+                            $endDate->gt($now) => 'after_end',
+                            default => 'default',
+                        };
+                    })
+                    ->icon(fn(string $state): string => match ($state) {
+                        'before_start' => 'heroicon-o-x-circle',
+                        'between_start_and_end' => 'heroicon-o-check-circle',
+                        'after_end' => 'heroicon-o-clock',
+                        default => 'heroicon-o-no-symbol',
+                    })
+                    ->color(fn(string $state): string => match ($state) {
+                        'before_start' => 'gray',
+                        'between_start_and_end' => 'success',
+                        'after_end' => 'warning',
+                        default => 'gray',
+                    }),
                 Tables\Columns\TextColumn::make('start_date')
                     ->dateTime()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('end_date')
                     ->dateTime()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -101,7 +129,47 @@ class AttendeCodeResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
+                Filter::make('status')
+                    ->label('Status')
+                    ->form([
+                        Forms\Components\Select::make('status')
+                            ->options([
+                                'finished' => 'Finished',
+                                'active' => 'Active',
+                                'upcoming' => 'Upcoming',
+                            ])
+                            ->placeholder('Select a status')
+                            ->searchable()
+                            ->preload(),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        $now = Carbon::now()->toDateTimeString();
+                        return $query
+                            ->when(
+                                $data['status'] === 'finished',
+                                fn(Builder $query): Builder => $query->where('end_date', '<', $now),
+                            )
+                            ->when(
+                                $data['status'] === 'active',
+                                fn(Builder $query): Builder => $query->where(
+                                    fn(Builder $query): Builder => $query
+                                        ->where('start_date', '<=', $now)
+                                        ->where('end_date', '>=', $now),
+                                )
+                            )
+                            ->when(
+                                $data['status'] === 'upcoming',
+                                fn(Builder $query): Builder => $query->where('start_date', '>', Carbon::now()),
+                            );
+                    })
+                    ->indicateUsing(fn(array $data): ?string => match ($data['status'] ?? null) {
+                        'finished' => 'Absence is Finished',
+                        'active' => 'Absence is Active',
+                        'upcoming' => 'Absence is Upcoming',
+                        default => null,
+                    }),
                 Filter::make('created_at')
+                    ->label('Created At')
                     ->form([
                         DatePicker::make('created_from'),
                         DatePicker::make('created_until')
@@ -117,6 +185,21 @@ class AttendeCodeResource extends Resource
                                 $data['created_until'],
                                 fn(Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
                             );
+                    })
+                    ->indicateUsing(function (array $data): array {
+                        $indicators = [];
+
+                        if ($data['created_from'] ?? null) {
+                            $indicators[] = Indicator::make('Created from ' . Carbon::parse($data['created_from'])->toFormattedDateString())
+                                ->removeField('from');
+                        }
+
+                        if ($data['created_until'] ?? null) {
+                            $indicators[] = Indicator::make('Created until ' . Carbon::parse($data['created_until'])->toFormattedDateString())
+                                ->removeField('until');
+                        }
+
+                        return $indicators;
                     }),
             ])
             ->actions([
@@ -137,7 +220,24 @@ class AttendeCodeResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            // ->recordClasses(function (AttendeCode $record) {
+            //     $now = Carbon::now();
+            //     $startDate = Carbon::parse($record->start_date);
+            //     $endDate = Carbon::parse($record->end_date);
+
+            //     if ($now->lt($startDate)) {
+            //         return 'border-s-2 border-red-600 dark:border-red-300';
+            //     } elseif ($now->between($startDate, $endDate)) {
+            //         return 'border-s-2 border-green-600 dark:border-green-300';
+            //     } elseif ($now->gt($endDate)) {
+            //         return 'border-s-2 border-orange-600 dark:border-orange-300';
+            //     }
+
+            //     return null;
+            // });
+            ->striped();
+        ;
     }
 
     public static function getRelations(): array
