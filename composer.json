@@ -12,6 +12,7 @@
         "bezhansalleh/filament-panel-switch": "^1.0",
         "bezhansalleh/filament-shield": "^3.1",
         "blade-ui-kit/blade-icons": "*",
+        "coolsam/flatpickr": "^3.0",
         "dutchcodingcompany/filament-socialite": "^1.0",
         "filament/filament": "^3.0-stable",
         "guzzlehttp/guzzle": "^7.2",
@@ -29,6 +30,7 @@
         "tightenco/ziggy": "^1.0"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.9",
         "fakerphp/faker": "^1.9.1",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.18",
