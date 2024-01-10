@@ -6,10 +6,12 @@ use App\Filament\Resources\AttendeCodeResource\Pages;
 use App\Filament\Resources\AttendeCodeResource\RelationManagers;
 use App\Models\AttendeCode;
 use Carbon\Carbon;
+use Coolsam\FilamentFlatpickr\Forms\Components\Flatpickr;
 use Filament\Actions\StaticAction;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Filters\Filter;
@@ -47,18 +49,44 @@ class AttendeCodeResource extends Resource
                 Forms\Components\RichEditor::make('description')
                     ->maxLength(255)
                     ->columnSpanFull(),
+                Forms\Components\Toggle::make('bulk_create')
+                    ->label('Bulk Create?')
+                    ->columnSpanFull()
+                    ->live(),
+                Flatpickr::make('range_date')
+                    ->label('Date To Create The Absence')
+                    ->range()
+                    ->required()
+                    ->columnSpanFull()
+                    ->hidden(fn(Get $get): bool => !$get('bulk_create')),
+                Flatpickr::make('start_time')
+                    ->label('Start Time')
+                    ->time()
+                    ->multiple()
+                    ->required()
+                    ->hidden(fn(Get $get): bool => !$get('bulk_create')),
+                Flatpickr::make('end_time')
+                    ->label('Start Time')
+                    ->time()
+                    ->multiple()
+                    ->required()
+                    ->hidden(fn(Get $get): bool => !$get('bulk_create')),
                 Forms\Components\DateTimePicker::make('start_date')
+                    ->label('Start Date Time')
                     ->required()
                     ->seconds(false)
                     ->native(false)
                     ->weekStartsOnMonday()
-                    ->afterOrEqual('today'),
+                    ->afterOrEqual('today')
+                    ->hidden(fn(Get $get): bool => $get('bulk_create')),
                 Forms\Components\DateTimePicker::make('end_date')
+                    ->label('End Date Time')
                     ->required()
                     ->seconds(false)
                     ->native(false)
                     ->weekStartsOnMonday()
-                    ->after('start_date'),
+                    ->after('start_date')
+                    ->hidden(fn(Get $get): bool => $get('bulk_create')),
             ]);
     }
 
