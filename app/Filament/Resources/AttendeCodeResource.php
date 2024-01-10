@@ -59,24 +59,19 @@ class AttendeCodeResource extends Resource
                     ->required()
                     ->columnSpanFull()
                     ->hidden(fn(Get $get): bool => !$get('bulk_create')),
-                Flatpickr::make('start_time')
+                Forms\Components\TimePicker::make('start_time')
                     ->label('Start Time')
                     ->time()
-                    ->multiple()
                     ->required()
-                    ->use24hr(true)
                     ->hidden(fn(Get $get): bool => !$get('bulk_create')),
-                Flatpickr::make('end_time')
+                Forms\Components\TimePicker::make('end_time')
                     ->label('Start Time')
                     ->time()
-                    ->multiple()
                     ->required()
-                    ->use24hr(true)
                     ->hidden(fn(Get $get): bool => !$get('bulk_create')),
                 Forms\Components\DateTimePicker::make('start_date')
                     ->label('Start Date Time')
                     ->required()
-                    ->seconds(false)
                     ->native(false)
                     ->weekStartsOnMonday()
                     ->afterOrEqual('today')
@@ -84,7 +79,6 @@ class AttendeCodeResource extends Resource
                 Forms\Components\DateTimePicker::make('end_date')
                     ->label('End Date Time')
                     ->required()
-                    ->seconds(false)
                     ->native(false)
                     ->weekStartsOnMonday()
                     ->after('start_date')
@@ -96,16 +90,16 @@ class AttendeCodeResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('No')->state(
-                    static function (Tables\Contracts\HasTable $livewire, stdClass $rowLoop): string {
-                        return (string) (
-                            $rowLoop->iteration +
-                            ($livewire->getTableRecordsPerPage() * (
-                                $livewire->getTablePage() - 1
-                            ))
-                        );
-                    }
-                ),
+                // Tables\Columns\TextColumn::make('No')->state(
+                //     static function (Tables\Contracts\HasTable $livewire, stdClass $rowLoop): string {
+                //         return (string) (
+                //             $rowLoop->iteration +
+                //             ($livewire->getTableRecordsPerPage() * (
+                //                 $livewire->getTablePage() - 1
+                //             ))
+                //         );
+                //     }
+                // ),
                 Tables\Columns\TextColumn::make('attendeType.name')
                     ->label('Attendence Type')
                     ->sortable()
