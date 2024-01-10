@@ -139,8 +139,8 @@ class AttendeCodeResource extends Resource
                                 'upcoming' => 'Upcoming',
                             ])
                             ->placeholder('Select a status')
-                            ->searchable()
-                            ->preload(),
+                            ->preload()
+                            ->default('active'),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         $now = Carbon::now()->toDateTimeString();
@@ -203,7 +203,7 @@ class AttendeCodeResource extends Resource
                     }),
             ])
             ->actions([
-                Tables\Actions\Action::make('Show Qr Code')
+                Tables\Actions\Action::make('Qr Code')
                     ->icon('heroicon-o-qr-code')
                     ->modalContent(
                         fn(AttendeCode $record): View => view(
@@ -211,8 +211,10 @@ class AttendeCodeResource extends Resource
                             ['record' => $record],
                         )
                     )
+                    ->color('success')
                     ->modalCancelAction(fn(StaticAction $action) => $action->label('Close'))
-                    ->modalSubmitAction(false),
+                    ->modalSubmitAction(false)
+                    ->visible(fn(AttendeCode $record): bool => Carbon::now()->between(Carbon::parse($record->start_date), Carbon::parse($record->end_date))),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
@@ -236,7 +238,9 @@ class AttendeCodeResource extends Resource
 
             //     return null;
             // });
-            ->striped();
+            ->striped()
+            ->defaultSort('start_date', 'desc');
+        ;
         ;
     }
 
