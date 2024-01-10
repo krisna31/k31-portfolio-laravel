@@ -64,12 +64,14 @@ class AttendeCodeResource extends Resource
                     ->time()
                     ->multiple()
                     ->required()
+                    ->use24hr(true)
                     ->hidden(fn(Get $get): bool => !$get('bulk_create')),
                 Flatpickr::make('end_time')
                     ->label('Start Time')
                     ->time()
                     ->multiple()
                     ->required()
+                    ->use24hr(true)
                     ->hidden(fn(Get $get): bool => !$get('bulk_create')),
                 Forms\Components\DateTimePicker::make('start_date')
                     ->label('Start Date Time')
