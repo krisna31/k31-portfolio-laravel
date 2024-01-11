@@ -91,7 +91,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasAvatar
 
     public function isSuperAdmin()
     {
-        return $this->hasRole('super-admin');
+        return $this->roles->contains('name', 'super_admin');
     }
 
     public function getFilamentAvatarUrl(): ?string
