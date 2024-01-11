@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\GenderResource\Pages;
 use App\Filament\Resources\GenderResource\RelationManagers;
 use App\Models\Gender;
+use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Form;
@@ -12,6 +13,7 @@ use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\Indicator;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -58,6 +60,7 @@ class GenderResource extends Resource
             ])
             ->filters([
                 Filter::make('created_at')
+                    ->label('Created At')
                     ->form([
                         DatePicker::make('created_from'),
                         DatePicker::make('created_until')
@@ -73,7 +76,22 @@ class GenderResource extends Resource
                                 $data['created_until'],
                                 fn(Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
                             );
-                    }),
+                    })
+                    ->indicateUsing(function (array $data): array {
+                        $indicators = [];
+
+                        if ($data['created_from'] ?? null) {
+                            $indicators[] = Indicator::make('Created from ' . Carbon::parse($data['created_from'])->toFormattedDateString())
+                                ->removeField('from');
+                        }
+
+                        if ($data['created_until'] ?? null) {
+                            $indicators[] = Indicator::make('Created until ' . Carbon::parse($data['created_until'])->toFormattedDateString())
+                                ->removeField('until');
+                        }
+
+                        return $indicators;
+                    })
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
