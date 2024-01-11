@@ -138,8 +138,8 @@ class UserResource extends Resource
                     ->sortable()
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: false),
-                Tables\Columns\TextColumn::make('avatar_url')
-                    ->sortable()
+                Tables\Columns\ImageColumn::make('avatar_url')
+                    ->thumbnail()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

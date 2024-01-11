@@ -2,27 +2,23 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\DepartmentResource\Pages;
-use App\Filament\Resources\DepartmentResource\RelationManagers;
-use App\Models\Department;
+use App\Filament\Resources\AbsentPermissionResource\Pages;
+use App\Filament\Resources\AbsentPermissionResource\RelationManagers;
+use App\Models\AbsentPermission;
 use Carbon\Carbon;
 use Filament\Forms;
-use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Form;
-use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Filters\Filter;
-use Filament\Tables\Filters\Indicator;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class DepartmentResource extends Resource
+class AbsentPermissionResource extends Resource
 {
-    protected static ?string $model = Department::class;
+    protected static ?string $model = AbsentPermission::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-building-office';
+    protected static ?string $navigationIcon = 'heroicon-o-exclamation-circle';
 
     protected static ?string $navigationGroup = 'Employee Management';
 
@@ -30,16 +26,24 @@ class DepartmentResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
+                Forms\Components\TextInput::make('user_id')
+                    ->label('User')
+                    ->relationship('user', 'name')
+                    ->required(),
+                Forms\Components\TextInput::make('approval_status_id')
+                    ->label('Approval Status')
+                    ->relationship('approvalStatus', 'name')
                     ->required()
-                    ->maxLength(255)
-                    ->live(onBlur: true)
-                    ->afterStateUpdated(function (Set $set, $state) {
-                        $set('slug', str()->slug($state));
-                    }),
-                Forms\Components\TextInput::make('slug')
+                    ->numeric(),
+                Forms\Components\TextInput::make('reason')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('description')
+                    ->maxLength(255),
+                Forms\Components\DateTimePicker::make('start_date'),
+                Forms\Components\DateTimePicker::make('end_date'),
+                Forms\Components\FileUpload::make('photo')
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -47,10 +51,25 @@ class DepartmentResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                Tables\Columns\TextColumn::make('user_id')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('approval_status_id')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('reason')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('slug')
+                Tables\Columns\TextColumn::make('description')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('start_date')
+                    ->dateTime()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('end_date')
+                    ->dateTime()
+                    ->sortable(),
+                Tables\Columns\ImageColumn::make('photo')
+                    ->thumbnail()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -61,11 +80,11 @@ class DepartmentResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Filter::make('created_at')
+                Tables\Filters\Filter::make('created_at')
                     ->label('Created At')
                     ->form([
-                        DatePicker::make('created_from'),
-                        DatePicker::make('created_until')
+                        Forms\Components\DatePicker::make('created_from'),
+                        Forms\Components\DatePicker::make('created_until')
                             ->default(now()),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
@@ -83,21 +102,20 @@ class DepartmentResource extends Resource
                         $indicators = [];
 
                         if ($data['created_from'] ?? null) {
-                            $indicators[] = Indicator::make('Created from ' . Carbon::parse($data['created_from'])->toFormattedDateString())
+                            $indicators[] = Tables\Filters\Indicator::make('Created from ' . Carbon::parse($data['created_from'])->toFormattedDateString())
                                 ->removeField('from');
                         }
 
                         if ($data['created_until'] ?? null) {
-                            $indicators[] = Indicator::make('Created until ' . Carbon::parse($data['created_until'])->toFormattedDateString())
+                            $indicators[] = Tables\Filters\Indicator::make('Created until ' . Carbon::parse($data['created_until'])->toFormattedDateString())
                                 ->removeField('until');
                         }
 
                         return $indicators;
-                    })
+                    }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -116,9 +134,9 @@ class DepartmentResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListDepartments::route('/'),
-            'create' => Pages\CreateDepartment::route('/create'),
-            'edit' => Pages\EditDepartment::route('/{record}/edit'),
+            'index' => Pages\ListAbsentPermissions::route('/'),
+            'create' => Pages\CreateAbsentPermission::route('/create'),
+            'edit' => Pages\EditAbsentPermission::route('/{record}/edit'),
         ];
     }
 
