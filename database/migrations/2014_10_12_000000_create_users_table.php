@@ -18,12 +18,11 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
-            $table->string('avatar')->unique()->nullable();
             $table->string('nomor_induk_kependudukan')->unique()->nullable();
             $table->string('nomor_induk_pegawai')->unique()->nullable();
             $table->string('phone')->unique()->nullable();
             $table->enum('status', ['active', 'inactive'])->default('active');
-            $table->text('avatar_url')->nullable();
+            $table->text('avatar_url')->unique()->nullable();
             $table->foreignId('gender_id')->default(1)->references('id')->on('genders');
             $table->foreignId('position_id')->default(1)->references('id')->on('positions');
             $table->date('birth_date')->nullable();

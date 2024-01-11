@@ -33,11 +33,47 @@ class UserResource extends Resource
                     ->required(fn(string $operation): bool => $operation === 'create'),
                 Forms\Components\TextInput::make('name')
                     ->required(fn(string $operation): bool => $operation === 'create'),
-                Forms\Components\CheckboxList::make('roles')
+                Forms\Components\Select::make('roles')
                     ->relationship('roles', 'name')
                     ->searchable()
-                    ->columnSpanFull()
+                    ->multiple()
+                    ->preload()
                     ->required(fn(string $operation): bool => $operation === 'create'),
+                Forms\Components\Select::make('genders')
+                    ->relationship('gender', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->required(fn(string $operation): bool => $operation === 'create'),
+                Forms\Components\Select::make('positions')
+                    ->relationship('position', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->required(fn(string $operation): bool => $operation === 'create'),
+                Forms\Components\DateTimePicker::make('birth_date')
+                    ->required(fn(string $operation): bool => $operation === 'create'),
+                Forms\Components\TextInput::make('nomor_induk_kependudukan')
+                    ->required(fn(string $operation): bool => $operation === 'create'),
+                Forms\Components\TextInput::make('nomor_induk_pegawai')
+                    ->required(fn(string $operation): bool => $operation === 'create'),
+                Forms\Components\TextInput::make('phone')
+                    ->required(fn(string $operation): bool => $operation === 'create'),
+                Forms\Components\TextInput::make('status')
+                    ->required(fn(string $operation): bool => $operation === 'create'),
+                Forms\Components\FileUpload::make('avatar_url')
+                    ->image()
+                    ->imageEditor()
+                    ->imageEditorAspectRatios([
+                        null,
+                        '4:3',
+                        '1:1',
+                    ])
+                    ->imageEditorEmptyFillColor('#000000')
+                    ->avatar()
+                    ->imageEditor()
+                    ->circleCropper()
+                    ->openable()
+                    ->minSize(512)
+                    ->maxSize(1024),
                 Forms\Components\DateTimePicker::make('email_verified_at'),
                 Forms\Components\TextInput::make('password')
                     ->password()
@@ -59,9 +95,52 @@ class UserResource extends Resource
                     ->searchable()
                     ->badge()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('genders.name')
+                    ->searchable()
+                    ->badge()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('positions.name')
+                    ->searchable()
+                    ->badge()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('positions.departments.name')
+                    ->searchable()
+                    ->badge()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('birth_date')
+                    ->dateTime()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('theme')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('theme_color')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('email_verified_at')
                     ->dateTime()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('provider')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('nomor_induk_kependudukan')
+                    ->sortable()
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: false),
+                Tables\Columns\TextColumn::make('nomor_induk_pegawai')
+                    ->sortable()
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: false),
+                Tables\Columns\TextColumn::make('phone')
+                    ->sortable()
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: false),
+                Tables\Columns\TextColumn::make('status')
+                    ->sortable()
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: false),
+                Tables\Columns\TextColumn::make('avatar_url')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
