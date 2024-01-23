@@ -1,0 +1,14 @@
+#threejs {
+    width: 100vw;
+    height: 100vh;
+    background-color: #d9afd9;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background: radial-gradient(at center top, rgb(59, 130, 246), rgb(37, 99, 235));
+}
+
+::-webkit-scrollbar {
+    display: none;
+}

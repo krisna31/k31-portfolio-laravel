@@ -6,6 +6,7 @@ import { Suspense, useEffect, useState } from 'react';
 import Loader from '@/Components/Loader';
 import { Bg } from '@/Components/Bg';
 import { Overlay } from './Portfolio/Overlay';
+import '../../css/three.css'
 
 export interface PortfolioTypes {
     id: number;
@@ -47,7 +48,7 @@ export default function PortfolioThree({ portfolio }: PageProps<{ portfolio: Por
     }, [isControlling])
 
     return (
-        <section id='3d'>
+        <section id='threejs'>
             <Head title="Jelvin Krisna Putra">
                 <link rel="icon" type="image/svg+xml+ico" href="/assets/pictures/logo.png" />
             </Head>
