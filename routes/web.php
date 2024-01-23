@@ -20,7 +20,11 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Portfolio', [
+    return Inertia::render('Portfolio');
+});
+
+Route::get('/3d', function () {
+    return Inertia::render('PortfolioThree', [
         'portfolio' => Portfolio::with('skillSets', 'contactMeLinks')->where('is_use', 1)->first(),
     ]);
 });

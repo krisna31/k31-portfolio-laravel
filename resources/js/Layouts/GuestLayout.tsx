@@ -6,7 +6,7 @@ export default function Guest({ children }: PropsWithChildren) {
     return (
         <>
             <Head>
-                <link rel="icon" type="image/svg+xml+ico" href="/assets/pictures/logo.ico" />
+                <link rel="icon" type="image/svg+xml+ico" href="/assets/pictures/logo.png" />
             </Head>
             <div className="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 dark:bg-gray-900">
                 <div>

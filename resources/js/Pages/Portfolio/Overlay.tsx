@@ -3,7 +3,7 @@ import { useFrame } from "@react-three/fiber";
 import { useState } from "react";
 import DefaultContactLinks from "./DefaultContactLinks";
 import { PageProps } from "@/types";
-import { PortfolioTypes } from "../Portfolio";
+import { PortfolioTypes } from "../PortfolioThree";
 
 const Section = (props: any) => {
     return (

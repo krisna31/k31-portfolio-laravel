@@ -29,7 +29,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('manage')
-            ->favicon(asset('assets/pictures/logo.ico'))
+            ->favicon(asset('assets/pictures/logo.png'))
             ->brandName('K31 Project')
             ->emailVerification()
             ->colors([

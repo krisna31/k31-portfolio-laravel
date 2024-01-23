@@ -28,7 +28,7 @@ class AppPanelProvider extends PanelProvider
         return $panel
             ->id('app')
             ->path('app')
-            ->favicon(asset('assets/pictures/logo.ico'))
+            ->favicon(asset('assets/pictures/logo.png'))
             ->login()
             ->registration()
             ->passwordReset()

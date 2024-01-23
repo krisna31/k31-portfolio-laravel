@@ -10,6 +10,7 @@ export default {
         './resources/js/**/*.tsx',
         "./node_modules/flowbite/**/*.js",
         './app/Filament/**/*.php',
+        'node_modules/flowbite-react/lib/esm/**/*.js',
     ],
 
     theme: {
