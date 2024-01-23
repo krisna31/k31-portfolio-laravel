@@ -4,6 +4,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+    margin-bottom: 0px !important;
+}
+
 #3d {
     width: 100vw;
     height: 100vh;
@@ -21,4 +25,8 @@
 
 ::-webkit-scrollbar {
     display: none;
+}
+
+html {
+    scroll-behavior: smooth;
 }
