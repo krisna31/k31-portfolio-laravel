@@ -77,6 +77,9 @@ export default function Portfolio() {
                                 <Navbar.Link href="#certification" active={activeLink === 'Certifications'} onClick={() => setActiveLink('Certifications')}>
                                     Certifications
                                 </Navbar.Link>
+                                <Navbar.Link href="/app/login" active={activeLink === 'login'} onClick={() => setActiveLink('login')} className='font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-black to-pink-600'>
+                                    More Apps
+                                </Navbar.Link>
                             </Navbar.Collapse>
                         </Navbar>
                     </div>
@@ -179,6 +182,27 @@ export default function Portfolio() {
                                     Laporkelah-laravel is a Laravel-based repository designed for API development and backend functionality, including an admin panel powered by Laravel Breeze.
                                 </p>
                                 <Button href='https://github.com/krisna31/laporkelah-laravel'>
+                                    See More
+                                    <svg className="-mr-1 ml-2 h-4 w-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            fillRule="evenodd"
+                                            d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                                            clipRule="evenodd"
+                                        />
+                                    </svg>
+                                </Button>
+                            </Card>
+                            <Card
+                                className="max-w-sm"
+                                renderImage={() => <img className='rounded-lg' width={400} height={400} src="/assets/pictures/k31-watch.jpeg" alt="Flutter K31 Watch App use  themoviedb API" />}
+                            >
+                                <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                                    Flutter K31 Watch App use themoviedb API
+                                </h5>
+                                <p className="font-normal text-gray-700 dark:text-gray-400 line-clamp-3 hover:line-clamp-none md:line-clamp-6 xl:line-clamp-none">
+                                    This project involves creating a Flutter application that displays movies and TV series using domain-driven design combined with Bloc state management, utilizing TheMovieDB API. Feel free to ask for clarifications.
+                                </p>
+                                <Button href='https://github.com/krisna31/k31_watch_flutter'>
                                     See More
                                     <svg className="-mr-1 ml-2 h-4 w-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                         <path
