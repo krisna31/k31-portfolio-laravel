@@ -139,7 +139,7 @@ class UserResource extends Resource
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\ImageColumn::make('avatar_url')
-                    ->thumbnail()
+                    ->circular()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
