@@ -57,7 +57,11 @@ class UserResource extends Resource
                     ->required(fn(string $operation): bool => $operation === 'create'),
                 Forms\Components\TextInput::make('phone')
                     ->required(fn(string $operation): bool => $operation === 'create'),
-                Forms\Components\TextInput::make('status')
+                Forms\Components\Select::make('status')
+                    ->options([
+                        'active' => 'Active',
+                        'inactive' => 'Inactive',
+                    ])
                     ->required(fn(string $operation): bool => $operation === 'create'),
                 Forms\Components\FileUpload::make('avatar_url')
                     ->image()
