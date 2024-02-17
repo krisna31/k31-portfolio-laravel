@@ -15,12 +15,12 @@ class ApprovalStatusSeeder extends Seeder
     {
         $statuses = [
             [
-                'name' => 'Disetujui',
-                'description' => 'Pengajuan anda memenuhi syarat dan telah disetujui'
-            ],
-            [
                 'name' => 'Menunggu Persetujuan',
                 'description' => 'Pengajuan anda diterima dan menunggu persetujuan'
+            ],
+            [
+                'name' => 'Disetujui',
+                'description' => 'Pengajuan anda memenuhi syarat dan telah disetujui'
             ],
             [
                 'name' => 'Ditolak',

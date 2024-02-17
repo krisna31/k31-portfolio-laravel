@@ -11,10 +11,11 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('attende_codes', function (Blueprint $table) {
-            $table->id();
-            $table->string('code');
+            $table->uuid()->primary();
             $table->string('description')->nullable()->default(null);
             $table->foreignId('attende_type_id')->constrained('attende_types')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('user_id')->nullable()->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('default_approval_status_id')->constrained('approval_statuses')->cascadeOnDelete()->cascadeOnUpdate();
             $table->dateTime('start_date')->nullable()->default(null);
             $table->dateTime('end_date')->nullable()->default(null);
             $table->timestamps();

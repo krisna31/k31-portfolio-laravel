@@ -68,7 +68,7 @@ class AbsentPermissionResource extends Resource
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\ImageColumn::make('photo')
-                    ->thumbnail()
+                    ->circular()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

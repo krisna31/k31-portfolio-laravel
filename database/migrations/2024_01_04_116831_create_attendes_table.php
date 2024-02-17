@@ -13,8 +13,8 @@ return new class extends Migration {
         Schema::create('attendes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('attende_code_id')->references('id')->on('attende_codes')->default(1);
-            $table->foreignId('approval_status_id')->references('id')->on('approval_statuses')->default(1);
+            $table->foreignUuid('attende_code_id')->references('uuid')->on('attende_codes');
+            $table->foreignId('approval_status_id')->references('id')->on('approval_statuses');
             $table->datetime('attende_time')->nullable()->default(null);
             $table->text('address')->nullable()->default(null);
             $table->text('photo')->nullable()->default(null);

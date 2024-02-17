@@ -16,8 +16,9 @@ class AttendeTypeSeeder extends Seeder
         $types = [
             'Absen Pagi',
             'Absen Istrahat',
-            'Absen Siang',
-            'Absen Pulang'
+            'Absen Pulang',
+            'Absen Lembur',
+            'Absen Perjalanan Dinas',
         ];
 
         foreach ($types as $type) {

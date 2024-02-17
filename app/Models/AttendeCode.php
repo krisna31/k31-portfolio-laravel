@@ -9,6 +9,9 @@ class AttendeCode extends Model
 {
     use HasFactory;
 
+    public $keyType = 'string';
+    public $incrementing = false;
+
     protected $fillable = [
         'code',
         'description',
@@ -25,5 +28,14 @@ class AttendeCode extends Model
     public function attendeType()
     {
         return $this->belongsTo(AttendeType::class);
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->id = str()->uuid();
+        });
     }
 }
