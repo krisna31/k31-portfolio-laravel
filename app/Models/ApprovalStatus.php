@@ -23,4 +23,9 @@ class ApprovalStatus extends Model
     {
         return $this->hasMany(Attende::class);
     }
+
+    public function attendeCodes()
+    {
+        return $this->hasMany(AttendeCode::class);
+    }
 }

@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('attende_codes', function (Blueprint $table) {
-            $table->uuid()->primary();
+            $table->uuid('id')->primary();
             $table->string('description')->nullable()->default(null);
             $table->foreignId('attende_type_id')->constrained('attende_types')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('user_id')->nullable()->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();

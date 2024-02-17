@@ -19,7 +19,6 @@ class CreateAttendeCode extends CreateRecord
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         if (!$data['bulk_create']) {
-            $data['code'] = str()->random(32);
             return $data;
         }
 
@@ -33,7 +32,7 @@ class CreateAttendeCode extends CreateRecord
 
         foreach ($period as $date) {
             $fullData[] = [
-                'code' => str()->random(32),
+                'default_approval_status_id' => $data['default_approval_status_id'],
                 'attende_type_id' => $data['attende_type_id'],
                 'start_date' => $date->format('Y-m-d') . ' ' . $data['start_time'],
                 'end_date' => $date->format('Y-m-d') . ' ' . $data['end_time'],

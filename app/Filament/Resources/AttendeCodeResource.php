@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\AttendeCodeResource\Pages;
 use App\Filament\Resources\AttendeCodeResource\RelationManagers;
 use App\Models\AttendeCode;
+use App\Models\User;
 use Carbon\Carbon;
 use Coolsam\FilamentFlatpickr\Forms\Components\Flatpickr;
 use Filament\Actions\StaticAction;
@@ -43,9 +44,24 @@ class AttendeCodeResource extends Resource
                     ->searchable()
                     ->preload()
                     ->columnSpanFull(),
-                // Forms\Components\TextInput::make('code')
-                //     ->required()
-                //     ->maxLength(255),
+                Forms\Components\Select::make('user_id')
+                    ->label('For User:')
+                    ->relationship('user', 'name')
+                    ->default(0)
+                    ->placeholder('Select absent for:')
+                    ->searchable()
+                    ->preload()
+                    ->columnSpanFull()
+                    ->searchDebounce(500),
+                Forms\Components\Select::make('default_approval_status_id')
+                    ->label('Default Approval Status For This Absence')
+                    ->relationship('defaultApprovalStatus', 'name')
+                    ->required()
+                    ->placeholder('Select a default approval status')
+                    ->searchable()
+                    ->preload()
+                    ->default(1)
+                    ->columnSpanFull(),
                 Forms\Components\RichEditor::make('description')
                     ->maxLength(255)
                     ->columnSpanFull(),
@@ -75,6 +91,7 @@ class AttendeCodeResource extends Resource
                     ->native(false)
                     ->weekStartsOnMonday()
                     ->afterOrEqual('today')
+                    ->default(Carbon::now()->toDateTimeString())
                     ->hidden(fn(Get $get): bool => $get('bulk_create')),
                 Forms\Components\DateTimePicker::make('end_date')
                     ->label('End Date Time')

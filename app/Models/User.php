@@ -69,6 +69,11 @@ class User extends Authenticatable implements MustVerifyEmail, HasAvatar
         return $this->belongsTo(Gender::class);
     }
 
+    public function attendeCodes()
+    {
+        return $this->hasMany(AttendeCode::class);
+    }
+
     public function position()
     {
         return $this->belongsTo(Position::class);
