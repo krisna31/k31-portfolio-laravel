@@ -4,6 +4,7 @@ namespace App\Filament\App\Resources;
 
 use App\Filament\App\Resources\AttendeCodeResource\Pages;
 use App\Filament\App\Resources\AttendeCodeResource\RelationManagers;
+use App\Filament\App\Resources\AttendeCodeResource as AdminAttendeCodeResource;
 use App\Models\AttendeCode;
 use Carbon\Carbon;
 use Filament\Actions\StaticAction;
@@ -24,7 +25,9 @@ class AttendeCodeResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-qr-code';
 
-    // protected static ?string $navigationGroup = 'Employee Management';
+    protected static ?string $navigationGroup = 'Presence';
+
+    protected static ?string $navigationLabel = 'Absences';
 
     protected static ?int $navigationSort = 1;
 
@@ -34,41 +37,17 @@ class AttendeCodeResource extends Resource
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('attende_type_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('user_id')
-                    ->required()
-                    ->numeric()
-                    ->default(0),
-                Forms\Components\TextInput::make('default_approval_status_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('description')
-                    ->maxLength(255),
-                Forms\Components\DateTimePicker::make('start_date'),
-                Forms\Components\DateTimePicker::make('end_date'),
-            ]);
+        return AdminAttendeCodeResource::form($form);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                // Tables\Columns\TextColumn::make('user.name')
-                //     ->label('For User')
-                //     ->sortable()
-                //     ->searchable(),
                 Tables\Columns\TextColumn::make('attendeType.name')
                     ->label('Attendence Type')
                     ->sortable()
                     ->searchable(),
-                // Tables\Columns\TextColumn::make('defaultApprovalStatus.name')
-                //     ->label('Default Approval Status')
-                //     ->sortable()
-                //     ->searchable(),
                 Tables\Columns\TextColumn::make('description')
                     ->html()
                     ->searchable(),
@@ -80,7 +59,16 @@ class AttendeCodeResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
+                Tables\Columns\TextColumn::make('attendes.approvalStatus.name')
+                    ->label('Absence Status')
+                    ->default('Belum Melakukan Absen')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\IconColumn::make('status')
+                    ->label('Absence Open?')
+                    ->default('Belum Melakukan Absen')
+                    ->sortable()
+                    ->searchable()
                     ->state(function (AttendeCode $record): string {
                         $now = Carbon::now();
                         $startDate = Carbon::parse($record->start_date);
@@ -167,7 +155,7 @@ class AttendeCodeResource extends Resource
                     ->form([
                         DatePicker::make('created_from'),
                         DatePicker::make('created_until')
-                        // ->default(now())
+                            ->default(now())
                         ,
                     ])
                     ->query(function (Builder $query, array $data): Builder {
@@ -198,7 +186,20 @@ class AttendeCodeResource extends Resource
                     }),
             ])
             ->actions([
-                // Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('view-information')
+                    ->label('Detail')
+                    ->icon('heroicon-o-information-circle')
+                    ->color('primary')
+                    ->infolist([
+                        \Filament\Infolists\Components\TextEntry::make('start_date'),
+                        \Filament\Infolists\Components\TextEntry::make('end_date'),
+                        \Filament\Infolists\Components\TextEntry::make('description')
+                            ->html(),
+                        \Filament\Infolists\Components\TextEntry::make('attendeType.name'),
+                    ])
+                    ->modalAlignment(\Filament\Support\Enums\Alignment::Center)
+                    ->modalCancelAction(false)
+                    ->modalSubmitAction(false),
                 Tables\Actions\Action::make('absence')
                     ->label('Absence')
                     ->icon('heroicon-o-viewfinder-circle')
@@ -211,7 +212,6 @@ class AttendeCodeResource extends Resource
                     })
                     ->extraAttributes([
                         'id' => 'btn-absence',
-                        // 'onclick' => 'getLocation()',
                     ])
                     ->form([
                         Forms\Components\Select::make('attende_status_id')
@@ -264,11 +264,27 @@ class AttendeCodeResource extends Resource
                     })
                     ->color('danger')
                     ->modalCancelAction(fn(StaticAction $action) => $action->label('Close'))
-
                     ->modalSubmitAction(fn(StaticAction $action) =>
                         $action
                             ->label('Submit'))
-                    ->visible(fn(AttendeCode $record): bool => Carbon::now()->between(Carbon::parse($record->start_date), Carbon::parse($record->end_date))),
+                    ->visible(fn(AttendeCode $record): bool => Carbon::now()->between(Carbon::parse($record->start_date), Carbon::parse($record->end_date)) && !\App\Models\Attende::where('attende_code_id', $record->id)->where('user_id', auth()->id())->exists()),
+                Tables\Actions\Action::make('not-done-absence-info')
+                    ->label('Absence Info')
+                    ->icon('heroicon-o-information-circle')
+                    ->modalContent(view('filament.app.attende.info-modal'))
+                    ->modalSubmitAction(false)
+                    ->modalAlignment(\Filament\Support\Enums\Alignment::Center)
+                    ->modalCancelAction(false)
+                    ->visible(fn(AttendeCode $record): bool => !Carbon::now()->between(Carbon::parse($record->start_date), Carbon::parse($record->end_date))),
+                Tables\Actions\Action::make('success-absence-info')
+                    ->label('Absence Info')
+                    ->color('success')
+                    ->icon('heroicon-o-check-circle')
+                    ->modalContent(view('filament.app.attende.success-absence-info-modal'))
+                    ->modalSubmitAction(false)
+                    ->modalAlignment(\Filament\Support\Enums\Alignment::Center)
+                    ->modalCancelAction(false)
+                    ->visible(fn(AttendeCode $record): bool => \App\Models\Attende::where('attende_code_id', $record->id)->where('user_id', auth()->id())->exists()),
             ])
             ->bulkActions([
                 // Tables\Actions\BulkActionGroup::make([
@@ -291,8 +307,27 @@ class AttendeCodeResource extends Resource
     {
         return [
             'index' => Pages\ListAttendeCodes::route('/'),
+            // 'view' => Pages\ViewAttendeCode::route('/{record}'),
             // 'create' => Pages\CreateAttendeCode::route('/create'),
             // 'edit' => Pages\EditAttendeCode::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->where('user_id', auth()->id())
+            ->orWhere('user_id', 0)
+            ->withoutGlobalScope(SoftDeletingScope::class);
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::where('user_id', auth()->id())->orWhere('user_id', 0)->count();
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return static::getModel()::where('user_id', auth()->id())->orWhere('user_id', 0)->count() > 10 ? 'warning' : 'primary';
     }
 }
