@@ -10,6 +10,7 @@ use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Form;
 use Filament\Forms\Set;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Filters\Filter;
@@ -25,6 +26,8 @@ class DepartmentResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-building-office';
 
     protected static ?string $navigationGroup = 'Employee Management';
+
+    protected static ?int $navigationSort = 5;
 
     public static function form(Form $form): Form
     {
@@ -97,7 +100,13 @@ class DepartmentResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->successNotification(
+                        Notification::make()
+                            ->success()
+                            ->title('Department Deleted')
+                            ->body('The department was deleted successfully.'),
+                    ),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

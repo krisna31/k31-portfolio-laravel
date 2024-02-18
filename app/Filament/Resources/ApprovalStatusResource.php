@@ -22,6 +22,8 @@ class ApprovalStatusResource extends Resource
 
     protected static ?string $navigationGroup = 'Employee Management';
 
+    protected static ?int $navigationSort = 2;
+
     public static function form(Form $form): Form
     {
         return $form
@@ -88,6 +90,10 @@ class ApprovalStatusResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->successNotificationTitle('Approval Status Deleted'),
+                Tables\Actions\ReplicateAction::make()
+                    ->successNotificationTitle('Approval Status Replicated'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

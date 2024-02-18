@@ -14,11 +14,6 @@ class ApprovalStatus extends Model
         'description',
     ];
 
-    public function absentPermissions()
-    {
-        return $this->hasMany(AbsentPermission::class);
-    }
-
     public function attendes()
     {
         return $this->hasMany(Attende::class);

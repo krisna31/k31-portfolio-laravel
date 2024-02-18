@@ -24,6 +24,8 @@ class PositionResource extends Resource
 
     protected static ?string $navigationGroup = 'Employee Management';
 
+    protected static ?int $navigationSort = 7;
+
     public static function form(Form $form): Form
     {
         return $form
@@ -34,7 +36,15 @@ class PositionResource extends Resource
                     ->required()
                     ->placeholder('Select a department')
                     ->searchable()
-                    ->preload(),
+                    ->preload()
+                    ->createOptionForm(
+                        fn(Form $form)
+                        => DepartmentResource::form($form),
+                    )
+                    ->editOptionForm(
+                        fn(Form $form)
+                        => DepartmentResource::form($form),
+                    ),
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255)
@@ -48,7 +58,7 @@ class PositionResource extends Resource
                 Forms\Components\TextInput::make('salary')
                     ->required()
                     ->numeric()
-                    ->default(0),
+                    ->default(3_000_000),
             ]);
     }
 

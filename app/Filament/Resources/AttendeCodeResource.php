@@ -13,6 +13,7 @@ use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Filters\Filter;
@@ -32,6 +33,12 @@ class AttendeCodeResource extends Resource
 
     protected static ?string $navigationGroup = 'Employee Management';
 
+    protected static ?int $navigationSort = 1;
+
+    public ?string $tableSortColumn = 'start_date';
+
+    public ?string $tableSortDirection = 'asc';
+
     public static function form(Form $form): Form
     {
         return $form
@@ -43,7 +50,18 @@ class AttendeCodeResource extends Resource
                     ->placeholder('Select a attendence type')
                     ->searchable()
                     ->preload()
-                    ->columnSpanFull(),
+                    ->columnSpanFull()
+                    ->searchDebounce(300)
+                    ->loadingMessage('Loading attendence types...')
+                    ->noSearchResultsMessage('No attendence types found')
+                    ->createOptionForm(
+                        fn(Form $form)
+                        => AttendeTypeResource::form($form),
+                    )
+                    ->editOptionForm(
+                        fn(Form $form)
+                        => AttendeTypeResource::form($form),
+                    ),
                 Forms\Components\Select::make('user_id')
                     ->label('For User:')
                     ->relationship('user', 'name')
@@ -52,7 +70,15 @@ class AttendeCodeResource extends Resource
                     ->searchable()
                     ->preload()
                     ->columnSpanFull()
-                    ->searchDebounce(500),
+                    ->searchDebounce(500)
+                    ->createOptionForm(
+                        fn(Form $form)
+                        => UserResource::form($form),
+                    )
+                    ->editOptionForm(
+                        fn(Form $form)
+                        => UserResource::form($form),
+                    ),
                 Forms\Components\Select::make('default_approval_status_id')
                     ->label('Default Approval Status For This Absence')
                     ->relationship('defaultApprovalStatus', 'name')
@@ -61,7 +87,15 @@ class AttendeCodeResource extends Resource
                     ->searchable()
                     ->preload()
                     ->default(1)
-                    ->columnSpanFull(),
+                    ->columnSpanFull()
+                    ->createOptionForm(
+                        fn(Form $form)
+                        => ApprovalStatusResource::form($form),
+                    )
+                    ->editOptionForm(
+                        fn(Form $form)
+                        => ApprovalStatusResource::form($form),
+                    ),
                 Forms\Components\RichEditor::make('description')
                     ->maxLength(255)
                     ->columnSpanFull(),
@@ -90,7 +124,7 @@ class AttendeCodeResource extends Resource
                     ->required()
                     ->native(false)
                     ->weekStartsOnMonday()
-                    ->afterOrEqual('today')
+                    // ->afterOrEqual('today')
                     ->default(Carbon::now()->toDateTimeString())
                     ->hidden(fn(Get $get): bool => $get('bulk_create')),
                 Forms\Components\DateTimePicker::make('end_date')
@@ -107,26 +141,29 @@ class AttendeCodeResource extends Resource
     {
         return $table
             ->columns([
-                // Tables\Columns\TextColumn::make('No')->state(
-                //     static function (Tables\Contracts\HasTable $livewire, stdClass $rowLoop): string {
-                //         return (string) (
-                //             $rowLoop->iteration +
-                //             ($livewire->getTableRecordsPerPage() * (
-                //                 $livewire->getTablePage() - 1
-                //             ))
-                //         );
-                //     }
-                // ),
+                Tables\Columns\TextColumn::make('id')
+                    ->label('ID')
+                    ->searchable()
+                    ->sortable()
+                    ->copyable()
+                    ->copyMessage('ID copied')
+                    ->copyMessageDuration(1500)
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('attendeType.name')
                     ->label('Attendence Type')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('code')
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('description')
                     ->html()
                     ->searchable(),
+                Tables\Columns\TextColumn::make('start_date')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
+                Tables\Columns\TextColumn::make('end_date')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\IconColumn::make('status')
                     ->state(function (AttendeCode $record): string {
                         $now = Carbon::now();
@@ -152,14 +189,6 @@ class AttendeCodeResource extends Resource
                         'after_end' => 'warning',
                         default => 'gray',
                     }),
-                Tables\Columns\TextColumn::make('start_date')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('end_date')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -169,23 +198,37 @@ class AttendeCodeResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->persistSortInSession()
             ->filters([
                 Filter::make('status')
                     ->label('Status')
                     ->form([
                         Forms\Components\Select::make('status')
                             ->options([
+                                'all' => 'All',
                                 'finished' => 'Finished',
                                 'active' => 'Active',
                                 'upcoming' => 'Upcoming',
+                                'active_or_upcoming' => 'Active & Upcoming',
                             ])
                             ->placeholder('Select a status')
                             ->preload()
-                            ->default('active'),
+                            ->default('all'),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         $now = Carbon::now()->toDateTimeString();
                         return $query
+                            ->when(
+                                $data['status'] === 'all',
+                                fn(Builder $query): Builder => $query,
+                            )
+                            ->when(
+                                $data['status'] === 'active_or_upcoming',
+                                fn(Builder $query): Builder => $query->where(
+                                    fn(Builder $query): Builder =>
+                                    $query->where('end_date', '>=', $now)
+                                ),
+                            )
                             ->when(
                                 $data['status'] === 'finished',
                                 fn(Builder $query): Builder => $query->where('end_date', '<', $now),
@@ -200,13 +243,16 @@ class AttendeCodeResource extends Resource
                             )
                             ->when(
                                 $data['status'] === 'upcoming',
-                                fn(Builder $query): Builder => $query->where('start_date', '>', Carbon::now()),
+                                fn(Builder $query): Builder =>
+                                $query->where('start_date', '>', Carbon::now()),
                             );
                     })
                     ->indicateUsing(fn(array $data): ?string => match ($data['status'] ?? null) {
+                        'all' => 'All Absences',
                         'finished' => 'Absence is Finished',
                         'active' => 'Absence is Active',
                         'upcoming' => 'Absence is Upcoming',
+                        'active_or_upcoming' => 'Absence is Active or Upcoming',
                         default => null,
                     }),
                 Filter::make('created_at')
@@ -214,7 +260,8 @@ class AttendeCodeResource extends Resource
                     ->form([
                         DatePicker::make('created_from'),
                         DatePicker::make('created_until')
-                            ->default(now()),
+                        // ->default(now())
+                        ,
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return $query
@@ -257,7 +304,15 @@ class AttendeCodeResource extends Resource
                     ->modalSubmitAction(false)
                     ->visible(fn(AttendeCode $record): bool => Carbon::now()->between(Carbon::parse($record->start_date), Carbon::parse($record->end_date))),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->successNotification(
+                        Notification::make()
+                            ->success()
+                            ->title('Attende Code Deleted')
+                            ->body('The attende code was deleted successfully.'),
+                    ),
+                Tables\Actions\ReplicateAction::make()
+                    ->successNotificationTitle('Attende Code Replicated'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -309,5 +364,26 @@ class AttendeCodeResource extends Resource
     public static function getNavigationBadgeColor(): ?string
     {
         return static::getModel()::count() > 10 ? 'warning' : 'primary';
+    }
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['attendeType.name', 'description', 'start_date', 'end_date'];
+    }
+
+    public static function getGlobalSearchResultDetails(Model $record): array
+    {
+        return [
+            'name' => $record->attendeType->name,
+            'description' => $record->description,
+            'start_date' => $record->start_date,
+            'end_date' => $record->end_date,
+        ];
+    }
+
+    public static function getGlobalSearchEloquentQuery(): Builder
+    {
+        return parent::getGlobalSearchEloquentQuery()
+            ->with('attendeType');
     }
 }

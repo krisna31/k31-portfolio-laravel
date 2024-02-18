@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\AbsentPermissionResource\Pages;
-use App\Filament\Resources\AbsentPermissionResource\RelationManagers;
-use App\Models\AbsentPermission;
+use App\Filament\Resources\AttendeStatusResource\Pages;
+use App\Filament\Resources\AttendeStatusResource\RelationManagers;
+use App\Models\AttendeStatus;
 use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -14,36 +14,25 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class AbsentPermissionResource extends Resource
+class AttendeStatusResource extends Resource
 {
-    protected static ?string $model = AbsentPermission::class;
+    protected static ?string $model = AttendeStatus::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-exclamation-circle';
+    protected static ?string $navigationIcon = 'heroicon-o-information-circle';
 
     protected static ?string $navigationGroup = 'Employee Management';
+
+    protected static ?int $navigationSort = 8;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('user_id')
-                    ->label('User')
-                    ->relationship('user', 'name')
-                    ->required(),
-                Forms\Components\TextInput::make('approval_status_id')
-                    ->label('Approval Status')
-                    ->relationship('approvalStatus', 'name')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('reason')
+                Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('description')
                     ->maxLength(255),
-                Forms\Components\DateTimePicker::make('start_date'),
-                Forms\Components\DateTimePicker::make('end_date'),
-                Forms\Components\FileUpload::make('photo')
-                    ->columnSpanFull(),
             ]);
     }
 
@@ -51,25 +40,10 @@ class AbsentPermissionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('approval_status_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('reason')
+                Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('description')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('start_date')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('end_date')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\ImageColumn::make('photo')
-                    ->circular()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -116,6 +90,8 @@ class AbsentPermissionResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->successNotificationTitle('Attende Status Deleted'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -134,9 +110,9 @@ class AbsentPermissionResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListAbsentPermissions::route('/'),
-            'create' => Pages\CreateAbsentPermission::route('/create'),
-            'edit' => Pages\EditAbsentPermission::route('/{record}/edit'),
+            'index' => Pages\ListAttendeStatuses::route('/'),
+            // 'create' => Pages\CreateAttendeStatus::route('/create'),
+            // 'edit' => Pages\EditAttendeStatus::route('/{record}/edit'),
         ];
     }
 

@@ -8,6 +8,7 @@ use App\Models\AttendeType;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Set;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -22,17 +23,20 @@ class AttendeTypeResource extends Resource
 
     protected static ?string $navigationGroup = 'Employee Management';
 
+    protected static ?int $navigationSort = 4;
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->live()
-                    ->afterStateUpdated(fn(Set $set, ?string $state) => $set('slug', str()->slug($state)))
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->live(onBlur: true)
+                    ->debounce(250)
+                    ->afterStateUpdated(fn(Set $set, ?string $state) => $set('slug', str()->slug($state))),
                 Forms\Components\TextInput::make('slug')
-                    ->dehydrated()
+                    // ->dehydrated()
                     ->required()
                     ->maxLength(255),
             ]);
@@ -60,6 +64,13 @@ class AttendeTypeResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->successNotification(
+                        Notification::make()
+                            ->success()
+                            ->title('Attende Type Deleted')
+                            ->body('The attende type was deleted successfully.'),
+                    ),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

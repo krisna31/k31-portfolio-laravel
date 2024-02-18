@@ -20,7 +20,7 @@ class UserResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-user-circle';
 
-    protected static ?string $navigationGroup = 'Employee Management';
+    protected static ?string $navigationGroup = 'Access Control';
 
     protected static ?int $navigationSort = 1;
 
@@ -43,12 +43,28 @@ class UserResource extends Resource
                     ->relationship('gender', 'name')
                     ->searchable()
                     ->preload()
-                    ->required(fn(string $operation): bool => $operation === 'create'),
+                    ->required(fn(string $operation): bool => $operation === 'create')
+                    ->createOptionForm(
+                        fn(Form $form)
+                        => GenderResource::form($form),
+                    )
+                    ->editOptionForm(
+                        fn(Form $form)
+                        => GenderResource::form($form),
+                    ),
                 Forms\Components\Select::make('positions')
                     ->relationship('position', 'name')
                     ->searchable()
                     ->preload()
-                    ->required(fn(string $operation): bool => $operation === 'create'),
+                    ->required(fn(string $operation): bool => $operation === 'create')
+                    ->createOptionForm(
+                        fn(Form $form)
+                        => PositionResource::form($form),
+                    )
+                    ->editOptionForm(
+                        fn(Form $form)
+                        => PositionResource::form($form),
+                    ),
                 Forms\Components\DateTimePicker::make('birth_date')
                     ->required(fn(string $operation): bool => $operation === 'create'),
                 Forms\Components\TextInput::make('nomor_induk_kependudukan')
@@ -62,6 +78,12 @@ class UserResource extends Resource
                         'active' => 'Active',
                         'inactive' => 'Inactive',
                     ])
+                    ->required(fn(string $operation): bool => $operation === 'create'),
+                Forms\Components\DateTimePicker::make('email_verified_at'),
+                Forms\Components\TextInput::make('password')
+                    ->password()
+                    ->dehydrateStateUsing(fn(string $state): string => bcrypt($state))
+                    ->dehydrated(fn(?string $state): bool => filled($state))
                     ->required(fn(string $operation): bool => $operation === 'create'),
                 Forms\Components\FileUpload::make('avatar_url')
                     ->image()
@@ -78,12 +100,6 @@ class UserResource extends Resource
                     ->openable()
                     ->minSize(512)
                     ->maxSize(1024),
-                Forms\Components\DateTimePicker::make('email_verified_at'),
-                Forms\Components\TextInput::make('password')
-                    ->password()
-                    ->dehydrateStateUsing(fn (string $state): string => bcrypt($state))
-                    ->dehydrated(fn (?string $state): bool => filled($state))
-                    ->required(fn (string $operation): bool => $operation === 'create'),
             ]);
     }
 
@@ -171,7 +187,10 @@ class UserResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageUsers::route('/'),
+            // 'index' => Pages\ManageUsers::route('/'),
+            'index' => Pages\ListUser::route('/'),
+            'create' => Pages\CreateUser::route('/create'),
+            'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }
 

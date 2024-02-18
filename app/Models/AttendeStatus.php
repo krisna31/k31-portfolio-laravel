@@ -8,4 +8,27 @@ use Illuminate\Database\Eloquent\Model;
 class AttendeStatus extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'description',
+    ];
+
+    public function attendes()
+    {
+        return $this->hasMany(Attende::class);
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->created_at = now();
+        });
+
+        static::updating(function ($model) {
+            $model->updated_at = now();
+        });
+    }
 }

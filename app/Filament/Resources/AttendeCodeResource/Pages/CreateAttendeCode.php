@@ -25,13 +25,15 @@ class CreateAttendeCode extends CreateRecord
         $this->isCreateBulk = true;
 
         $start_date = new DateTime($data['range_date'][0]);
-        $end_date = new DateTime($data['range_date'][1]);
+        $end_date = (new DateTime($data['range_date'][1]))->setTime(0, 0, 1);
 
         $interval = DateInterval::createFromDateString('1 day');
         $period = new DatePeriod($start_date, $interval, $end_date);
 
         foreach ($period as $date) {
             $fullData[] = [
+                'id' => str()->uuid(),
+                'user_id' => $data['user_id'],
                 'default_approval_status_id' => $data['default_approval_status_id'],
                 'attende_type_id' => $data['attende_type_id'],
                 'start_date' => $date->format('Y-m-d') . ' ' . $data['start_time'],

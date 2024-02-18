@@ -22,31 +22,101 @@ class AttendeResource extends Resource
 
     protected static ?string $navigationGroup = 'Employee Management';
 
+    protected static ?int $navigationSort = 3;
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('user_id')
-                    ->label('User')
+                Forms\Components\Select::make('user_id')
+                    ->label('For User:')
                     ->relationship('user', 'name')
-                    ->required(),
-                Forms\Components\TextInput::make('attende_code_id')
+                    ->placeholder('Select absent for:')
+                    ->searchable()
+                    ->preload()
+                    ->columnSpanFull()
+                    ->searchDebounce(500)
+                    ->required()
+                    ->createOptionForm(
+                        fn(Form $form)
+                        => UserResource::form($form),
+                    )
+                    ->editOptionForm(
+                        fn(Form $form)
+                        => UserResource::form($form),
+                    ),
+                Forms\Components\Select::make('attende_code_id')
                     ->label('Attende Code')
-                    ->relationship('attende_code', 'name')
+                    ->relationship('attendeCode', 'id')
+                    ->placeholder('Absent for id:')
+                    ->searchable()
+                    ->preload()
+                    ->columnSpanFull()
+                    ->searchDebounce(500)
+                    // ->createOptionForm(
+                    //     fn(Form $form)
+                    //     => AttendeCodeResource::form($form),
+                    // )
+                    // ->editOptionForm(
+                    //     fn(Form $form)
+                    //     => AttendeCodeResource::form($form),
+                    // )
                     ->required(),
-                Forms\Components\TextInput::make('approval_status_id')
-                    ->label('Approval Status')
-                    ->relationship('approval_status', 'name')
-                    ->required(),
+                Forms\Components\Select::make('approval_status_id')
+                    ->label('Approval Status For This Absence')
+                    ->relationship('approvalStatus', 'name')
+                    ->required()
+                    ->placeholder('Select a approval status')
+                    ->searchable()
+                    ->preload()
+                    ->default(1)
+                    ->columnSpanFull()
+                    ->createOptionForm(
+                        fn(Form $form)
+                        => ApprovalStatusResource::form($form),
+                    )
+                    ->editOptionForm(
+                        fn(Form $form)
+                        => ApprovalStatusResource::form($form),
+                    ),
+                Forms\Components\Select::make('attende_status_id')
+                    ->label('Select Attende Status For This Absence')
+                    ->relationship('attendeStatus', 'name')
+                    ->required()
+                    ->placeholder('Select a default approval status')
+                    ->searchable()
+                    ->preload()
+                    ->default(1)
+                    ->columnSpanFull()
+                    ->createOptionForm(
+                        fn(Form $form)
+                        => AttendeStatusResource::form($form),
+                    )
+                    ->editOptionForm(
+                        fn(Form $form)
+                        => AttendeStatusResource::form($form),
+                    ),
                 Forms\Components\DateTimePicker::make('attende_time')
-                    ->required(),
+                    ->label('Attende Time')
+                    ->required()
+                    ->columnSpanFull(),
                 Forms\Components\Textarea::make('address')
+                    ->label('Address')
                     ->columnSpanFull(),
                 Forms\Components\FileUpload::make('photo')
+                    ->label('Photo')
+                    ->required()
+                    ->multiple()
+                    ->imageEditor()
+                    ->directory('attende-photos')
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('latitude')
+                    ->label('Latitude')
+                    // ->required()
                     ->numeric(),
                 Forms\Components\TextInput::make('longitude')
+                    ->label('Longitude')
+                    // ->required()
                     ->numeric(),
             ]);
     }
@@ -60,12 +130,17 @@ class AttendeResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
-                Tables\Columns\TextColumn::make('attendeCode.name')
-                    ->label('Attende Code')
+                Tables\Columns\TextColumn::make('attendeCode.id')
+                    ->label('Attende Id')
                     ->searchable()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
-                Tables\Columns\TextColumn::make('attendanceStatus.name')
+                Tables\Columns\TextColumn::make('approvalStatus.name')
+                    ->label('Approval Status')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
+                Tables\Columns\TextColumn::make('attendeStatus.name')
                     ->label('Attendance Status')
                     ->searchable()
                     ->sortable()
@@ -74,10 +149,24 @@ class AttendeResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
+                Tables\Columns\ImageColumn::make('photo')
+                    ->label('Photo')
+                    ->searchable()
+                    ->sortable()
+                    ->visibility('private')
+                    ->stacked()
+                    ->wrap()
+                    ->limit(5)
+                    ->limitedRemainingText()
+                    ->square()
+                    ->extraImgAttributes(fn(Attende $record): array => [
+                        'alt' => "{$record->name} image",
+                    ])
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('address')
                     ->searchable()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: false),
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('latitude')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -129,6 +218,7 @@ class AttendeResource extends Resource
                     }),
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
@@ -151,6 +241,7 @@ class AttendeResource extends Resource
         return [
             'index' => Pages\ListAttendes::route('/'),
             'create' => Pages\CreateAttende::route('/create'),
+            'view' => Pages\ViewAttende::route('/{record}'),
             'edit' => Pages\EditAttende::route('/{record}/edit'),
         ];
     }

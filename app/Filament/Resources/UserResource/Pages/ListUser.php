@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\AbsentPermissionResource\Pages;
+namespace App\Filament\Resources\UserResource\Pages;
 
-use App\Filament\Resources\AbsentPermissionResource;
+use App\Filament\Resources\UserResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
-class ListAbsentPermissions extends ListRecords
+class ListUser extends ListRecords
 {
-    protected static string $resource = AbsentPermissionResource::class;
+    protected static string $resource = UserResource::class;
 
     protected function getHeaderActions(): array
     {

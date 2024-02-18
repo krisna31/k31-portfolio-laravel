@@ -14,15 +14,10 @@ class AttendeStatusSeeder extends Seeder
     public function run(): void
     {
         $data = [
-            'Tepat Waktu',
-            'Terlambat',
-            'Tidak Hadir',
-            'Izin',
+            'Hadir',
+            'Izin Sakit',
             'Cuti Tahunan',
-            'Cuti Alasan Penting',
             'Cuti Bersalin',
-            'Cuti Sakit',
-            'Cuti Diluar Tanggungan'
         ];
 
         foreach ($data as $status) {

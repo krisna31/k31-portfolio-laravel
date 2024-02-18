@@ -12,12 +12,17 @@ class Attende extends Model
     protected $fillable = [
         'user_id',
         'attende_code_id',
+        'approval_status_id',
         'attende_status_id',
         'attende_time',
         'address',
+        'photo',
         'latitude',
         'longitude',
-        'photo',
+    ];
+
+    protected $casts = [
+        'photo' => 'array',
     ];
 
     public function user()
@@ -30,8 +35,26 @@ class Attende extends Model
         return $this->belongsTo(AttendeCode::class);
     }
 
+    public function approvalStatus()
+    {
+        return $this->belongsTo(ApprovalStatus::class);
+    }
+
     public function attendeStatus()
     {
         return $this->belongsTo(AttendeStatus::class);
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->created_at = now();
+        });
+
+        static::updating(function ($model) {
+            $model->updated_at = now();
+        });
     }
 }

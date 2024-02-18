@@ -15,19 +15,23 @@ class PositionSeeder extends Seeder
         $positions = [
             [
                 'name' => 'Staff',
-                'slug' => 'staff'
+                'slug' => 'staff',
+                'salary' => 3_000_000
             ],
             [
                 'name' => 'Supervisor',
-                'slug' => 'supervisor'
+                'slug' => 'supervisor',
+                'salary' => 3_500_000
             ],
             [
                 'name' => 'Manager',
-                'slug' => 'manager'
+                'slug' => 'manager',
+                'salary' => 3_800_000
             ],
             [
                 'name' => 'Director',
-                'slug' => 'director'
+                'slug' => 'director',
+                'salary' => 4_500_000
             ],
         ];
 

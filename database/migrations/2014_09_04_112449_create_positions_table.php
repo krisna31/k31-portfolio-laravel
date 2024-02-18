@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->string('slug')->unique()->index();
             $table->foreignId('department_id')->references('id')->on('departments')->default(1);
             $table->unsignedDouble('salary')->default(0);
+            $table->unsignedDouble('daily_business_travel_allowance')->default(0);
             $table->timestamps();
         });
     }
