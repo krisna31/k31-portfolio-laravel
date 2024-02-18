@@ -149,8 +149,16 @@ class AttendeCodeResource extends Resource
                     ->copyMessage('ID copied')
                     ->copyMessageDuration(1500)
                     ->toggleable(isToggledHiddenByDefault: false),
+                Tables\Columns\TextColumn::make('user.name')
+                    ->label('For User')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('attendeType.name')
                     ->label('Attendence Type')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('defaultApprovalStatus.name')
+                    ->label('Default Approval Status')
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('description')
