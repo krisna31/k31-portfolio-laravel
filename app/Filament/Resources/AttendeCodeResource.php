@@ -336,8 +336,6 @@ class AttendeCodeResource extends Resource
             // });
             ->striped()
             ->defaultSort('start_date', 'desc');
-        ;
-        ;
     }
 
     public static function getRelations(): array
