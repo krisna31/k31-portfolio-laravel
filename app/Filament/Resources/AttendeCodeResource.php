@@ -198,7 +198,6 @@ class AttendeCodeResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->persistSortInSession()
             ->filters([
                 Filter::make('status')
                     ->label('Status')
@@ -335,7 +334,8 @@ class AttendeCodeResource extends Resource
             //     return null;
             // });
             ->striped()
-            ->defaultSort('start_date', 'desc');
+            ->defaultSort('start_date', 'asc')
+            ->persistSortInSession();
     }
 
     public static function getRelations(): array
