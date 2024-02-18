@@ -5,6 +5,7 @@ namespace App\Filament\App\Resources;
 use App\Filament\App\Resources\NoteResource\RelationManagers\TagsRelationManager;
 use App\Filament\App\Resources\TagResource\Pages;
 use App\Filament\App\Resources\TagResource\RelationManagers;
+use App\Filament\Resources\TagResource as AdminTagResource;
 use App\Models\Tag;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -26,52 +27,54 @@ class TagResource extends Resource
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255)
-                    ->live(onBlur: true)
-                    ->afterStateUpdated(function (Set $set, $state) {
-                        $set('slug', str()->slug($state));
-                    }),
-                Forms\Components\TextInput::make('slug')
-                    ->required()
-                    ->maxLength(255),
-            ]);
+        return AdminTagResource::form($form);
+        // return $form
+        //     ->schema([
+        //         Forms\Components\TextInput::make('name')
+        //             ->required()
+        //             ->maxLength(255)
+        //             ->live(onBlur: true)
+        //             ->afterStateUpdated(function (Set $set, $state) {
+        //                 $set('slug', str()->slug($state));
+        //             }),
+        //         Forms\Components\TextInput::make('slug')
+        //             ->required()
+        //             ->maxLength(255),
+        //     ]);
     }
 
     public static function table(Table $table): Table
     {
-        return $table
-            ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('slug')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->sortable(),
-            ])
-            ->filters([
+        return AdminTagResource::table($table);
+        // return $table
+        //     ->columns([
+        //         Tables\Columns\TextColumn::make('name')
+        //             ->searchable()
+        //             ->sortable(),
+        //         Tables\Columns\TextColumn::make('slug')
+        //             ->searchable()
+        //             ->sortable(),
+        //         Tables\Columns\TextColumn::make('created_at')
+        //             ->searchable()
+        //             ->toggleable(isToggledHiddenByDefault: true)
+        //             ->sortable(),
+        //         Tables\Columns\TextColumn::make('updated_at')
+        //             ->searchable()
+        //             ->toggleable(isToggledHiddenByDefault: true)
+        //             ->sortable(),
+        //     ])
+        //     ->filters([
 
-            ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+        //     ])
+        //     ->actions([
+        //         Tables\Actions\EditAction::make(),
+        //         Tables\Actions\DeleteAction::make(),
+        //     ])
+        //     ->bulkActions([
+        //         Tables\Actions\BulkActionGroup::make([
+        //             Tables\Actions\DeleteBulkAction::make(),
+        //         ]),
+        //     ]);
     }
 
     public static function getRelations(): array

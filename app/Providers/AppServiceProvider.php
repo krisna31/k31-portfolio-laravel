@@ -4,8 +4,10 @@ namespace App\Providers;
 
 use DutchCodingCompany\FilamentSocialite\Facades\FilamentSocialite as FilamentSocialiteFacade;
 use DutchCodingCompany\FilamentSocialite\FilamentSocialite;
+use Filament\Support\Facades\FilamentAsset;
 use Laravel\Socialite\Contracts\User as SocialiteUserContract;
 use BezhanSalleh\PanelSwitch\PanelSwitch;
+use Filament\Support\Assets\Js;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -53,5 +55,12 @@ class AppServiceProvider extends ServiceProvider
                 ->simple();
             ;
         });
+
+
+        FilamentAsset::register([
+            Js::make('custom-lat-long-attende-js', __DIR__ . '/../../resources/js/get-location.js')
+            // ->loadedOnRequest()
+            ,
+        ]);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Filament\App\Resources;
 use App\Filament\App\Resources\NoteResource\Pages;
 use App\Filament\App\Resources\NoteResource\RelationManagers;
 use App\Filament\App\Resources\NoteResource\RelationManagers\TagsRelationManager;
+use App\Filament\Resources\NoteResource as AdminNoteResource;
 use App\Models\Note;
 use App\Models\Tag;
 use Filament\Forms;
@@ -28,80 +29,82 @@ class NoteResource extends Resource
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('title')
-                    ->autofocus()
-                    ->required()
-                    ->columnSpanFull()
-                    ->placeholder(__('Title')),
-                Forms\Components\RichEditor::make('body')
-                    ->autofocus()
-                    ->label(__('Content'))
-                    ->columnSpanFull()
-                    ->required()
-                    ->placeholder(__('Content')),
-            ]);
+        return AdminNoteResource::form($form);
+        // return $form
+        //     ->schema([
+        //         Forms\Components\TextInput::make('title')
+        //             ->autofocus()
+        //             ->required()
+        //             ->columnSpanFull()
+        //             ->placeholder(__('Title')),
+        //         Forms\Components\RichEditor::make('body')
+        //             ->autofocus()
+        //             ->label(__('Content'))
+        //             ->columnSpanFull()
+        //             ->required()
+        //             ->placeholder(__('Content')),
+        //     ]);
     }
 
     public static function table(Table $table): Table
     {
-        return $table
-            ->columns([
-                Tables\Columns\TextColumn::make('title')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('body')
-                    ->label(__('Content'))
-                    ->searchable()
-                    ->html()
-                    ->listWithLineBreaks()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('tags.name')
-                    ->searchable()
-                    ->badge()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->sortable(),
-            ])
-            ->filters([
-                Filter::make('created_at')
-                    ->form([
-                        DatePicker::make('created_from'),
-                        DatePicker::make('created_until')
-                            ->default(now()),
-                    ])
-                    ->query(function (Builder $query, array $data): Builder {
-                        return $query
-                            ->when(
-                                $data['created_from'],
-                                fn(Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
-                            )
-                            ->when(
-                                $data['created_until'],
-                                fn(Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
-                            );
-                    }),
-                SelectFilter::make('tags')
-                    ->multiple()
-                    ->relationship('tags', 'name')
-                    ->preload(),
-            ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+        return AdminNoteResource::table($table);
+        // return $table
+        //     ->columns([
+        //         Tables\Columns\TextColumn::make('title')
+        //             ->searchable()
+        //             ->sortable(),
+        //         Tables\Columns\TextColumn::make('body')
+        //             ->label(__('Content'))
+        //             ->searchable()
+        //             ->html()
+        //             ->listWithLineBreaks()
+        //             ->sortable(),
+        //         Tables\Columns\TextColumn::make('tags.name')
+        //             ->searchable()
+        //             ->badge()
+        //             ->sortable(),
+        //         Tables\Columns\TextColumn::make('created_at')
+        //             ->searchable()
+        //             ->toggleable(isToggledHiddenByDefault: true)
+        //             ->sortable(),
+        //         Tables\Columns\TextColumn::make('updated_at')
+        //             ->searchable()
+        //             ->toggleable(isToggledHiddenByDefault: true)
+        //             ->sortable(),
+        //     ])
+        //     ->filters([
+        //         Filter::make('created_at')
+        //             ->form([
+        //                 DatePicker::make('created_from'),
+        //                 DatePicker::make('created_until')
+        //                     ->default(now()),
+        //             ])
+        //             ->query(function (Builder $query, array $data): Builder {
+        //                 return $query
+        //                     ->when(
+        //                         $data['created_from'],
+        //                         fn(Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
+        //                     )
+        //                     ->when(
+        //                         $data['created_until'],
+        //                         fn(Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
+        //                     );
+        //             }),
+        //         SelectFilter::make('tags')
+        //             ->multiple()
+        //             ->relationship('tags', 'name')
+        //             ->preload(),
+        //     ])
+        //     ->actions([
+        //         Tables\Actions\EditAction::make(),
+        //         Tables\Actions\DeleteAction::make(),
+        //     ])
+        //     ->bulkActions([
+        //         Tables\Actions\BulkActionGroup::make([
+        //             Tables\Actions\DeleteBulkAction::make(),
+        //         ]),
+        //     ]);
     }
 
     public static function getRelations(): array
