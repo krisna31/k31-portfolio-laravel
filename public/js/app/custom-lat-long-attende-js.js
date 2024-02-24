@@ -18,7 +18,7 @@ function getLocation() {
                 // if (lat.value !== '' && long.value !== '') return
             }
 
-            setTimeout(getLocation, 2000);
+            setTimeout(getLocation, 500);
         });
     } else {
         lat.value = "Geolocation is not supported by this browser.";

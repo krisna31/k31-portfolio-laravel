@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -38,14 +41,21 @@ class AuthController extends Controller
         ]);
     }
 
-    public function getCurrentUser() {
+    public function getCurrentUser(Request $request)
+    {
         return $request->user();
     }
 
     public function logout()
     {
-        Auth::user()->tokens()->delete();
+        /** @var \App\Models\User */
+        $user = auth()->user();
+        // return response()->json([
+        //     'user' => $user,
+        // ]);
+        $user->tokens()->delete();
         return response()->json([
+            'success' => true,
             'message' => 'logout success'
         ]);
     }
