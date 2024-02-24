@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AbsenController;
 use App\Http\Controllers\Api\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -24,4 +25,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function() {
     Route::get('/user', [AuthController::class, 'getCurrentUser']);
     Route::delete('/logout', [AuthController::class, 'logout']);
+
+    Route::get('/absen', [AbsenController::class, 'index']);
+    Route::post('/absen', [AbsenController::class, 'store']);
 });

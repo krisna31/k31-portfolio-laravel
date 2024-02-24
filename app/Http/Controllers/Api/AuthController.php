@@ -26,7 +26,7 @@ class AuthController extends Controller
             //     'email' => ['The provided credentials are incorrect.'],
             // ]);
             return response()->json([
-                'success' => false,
+                'error' => true,
                 'message' => 'Kredensial yang diberikan salah',
             ]);
         }
@@ -34,10 +34,14 @@ class AuthController extends Controller
         $token = $user->createToken($request->device_name)->plainTextToken;
 
         return response()->json([
-            'success' => true,
+            'error' => false,
             'message' => 'User Berhasil Login',
-            'token' => $token,
-            'tokenType' => 'Bearer'
+            'loginResult' => [
+                'userId' => strval($user->id),
+                'token' => $token,
+                'name' => $user->name,
+            ],
+            // 'tokenType' => 'Bearer'
         ]);
     }
 
@@ -50,12 +54,9 @@ class AuthController extends Controller
     {
         /** @var \App\Models\User */
         $user = auth()->user();
-        // return response()->json([
-        //     'user' => $user,
-        // ]);
         $user->tokens()->delete();
         return response()->json([
-            'success' => true,
+            'error' => false,
             'message' => 'logout success'
         ]);
     }
