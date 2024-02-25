@@ -96,8 +96,7 @@ class AttendeCodeResource extends Resource
                         fn(Form $form)
                         => ApprovalStatusResource::form($form),
                     ),
-                Forms\Components\RichEditor::make('description')
-                    ->maxLength(255)
+                Forms\Components\TextInput::make('description')
                     ->columnSpanFull(),
                 Forms\Components\Toggle::make('bulk_create')
                     ->label('Bulk Create?')

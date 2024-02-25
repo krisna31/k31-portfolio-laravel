@@ -107,7 +107,7 @@ class AbsenController extends Controller
         return response()->json([
             'error' => false,
             'message' => 'Absensi berhasil',
-        ]);
+        ], 201);
     }
 
     public function getAbsenHistory()
