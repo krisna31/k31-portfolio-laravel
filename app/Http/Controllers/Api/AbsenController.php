@@ -21,9 +21,10 @@ class AbsenController extends Controller
             (start_date < now() AND end_date > now()) as is_open,
             (SELECT COUNT(*) >= 1 FROM attendes WHERE attendes.attende_code_id = attende_codes.id AND attendes.user_id = ' . auth()->user()->id . ') as is_attended'
                 )
-                ->when($request->has('over'), function ($query) {
+                ->when($request->over === 'yes', function ($query) {
                     $query->where('end_date', '<', now());
-                }, function ($query) {
+                })
+                ->when($request->over === 'no', function ($query) {
                     $query->where('end_date', '>', now());
                 })
                 ->where(function ($query) {

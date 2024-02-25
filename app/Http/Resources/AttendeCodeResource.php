@@ -25,6 +25,8 @@ class AttendeCodeResource extends JsonResource
             'id' => $this->id,
             // 'user_id' => $this->user_id,
             // 'default_approval_status_id' => $this->default_approval_status_id,
+            'is_open' => $this->is_open,
+            'is_attended' => $this->is_attended,
             'description' => $this->description,
             // 'attende_type_id' => $this->attende_type_id,
             'start_date' => $this->start_date,
