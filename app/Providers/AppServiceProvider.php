@@ -5,6 +5,7 @@ namespace App\Providers;
 use DutchCodingCompany\FilamentSocialite\Facades\FilamentSocialite as FilamentSocialiteFacade;
 use DutchCodingCompany\FilamentSocialite\FilamentSocialite;
 use Filament\Support\Facades\FilamentAsset;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Laravel\Socialite\Contracts\User as SocialiteUserContract;
 use BezhanSalleh\PanelSwitch\PanelSwitch;
 use Filament\Support\Assets\Js;
@@ -62,5 +63,7 @@ class AppServiceProvider extends ServiceProvider
             // ->loadedOnRequest()
             ,
         ]);
+
+        // JsonResource::withoutWrapping();
     }
 }

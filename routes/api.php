@@ -28,4 +28,5 @@ Route::middleware('auth:sanctum')->group(function() {
 
     Route::get('/absen', [AbsenController::class, 'index']);
     Route::post('/absen', [AbsenController::class, 'store']);
+    Route::get('/riwayat/absen', [AbsenController::class, 'getAbsenHistory']);
 });

@@ -3,26 +3,48 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\AttendeCodeResource;
+use App\Http\Resources\AttendeResource;
 use App\Models\Attende;
 use App\Models\AttendeCode;
 use Illuminate\Http\Request;
 
 class AbsenController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $absensi = AttendeCode::query()
-            ->where(function ($query) {
-                $query->where('user_id', auth()->user()->id)
-                    ->orWhere('user_id', 0);
-            })
-            ->get();
+        try {
+            // add one more column check that if absensi is open or not based on start_date and end_date
+            $absensi = AttendeCode::with(['attendeType', 'user', 'defaultApprovalStatus'])
+                ->selectRaw(
+                    '*,
+            (start_date < now() AND end_date > now()) as is_open,
+            (SELECT COUNT(*) >= 1 FROM attendes WHERE attendes.attende_code_id = attende_codes.id AND attendes.user_id = ' . auth()->user()->id . ') as is_attended'
+                )
+                ->when($request->has('over'), function ($query) {
+                    $query->where('end_date', '<', now());
+                }, function ($query) {
+                    $query->where('end_date', '>', now());
+                })
+                ->where(function ($query) {
+                    $query->where('user_id', auth()->user()->id)
+                        ->orWhere('user_id', 0);
+                })
+                ->orderBy('is_open', 'desc')
+                ->get();
+            // ->paginate(10);
 
-        return response()->json([
-            'error' => false,
-            'message' => 'data absensi berhasil ditemukan',
-            'listAbsensi' => $absensi,
-        ]);
+            return AttendeCodeResource::collection($absensi)
+                ->additional([
+                    'error' => false,
+                    'message' => 'data absensi berhasil ditemukan',
+                ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'error' => true,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
     }
 
     public function store(Request $request)
@@ -85,5 +107,26 @@ class AbsenController extends Controller
             'error' => false,
             'message' => 'Absensi berhasil',
         ]);
+    }
+
+    public function getAbsenHistory()
+    {
+        try {
+            $absensi = Attende::with(['user', 'attendeCode', 'approvalStatus', 'attendeStatus'])
+                ->where('user_id', auth()->user()->id)
+                ->orderBy('attende_time', 'desc')
+                ->get();
+
+            return AttendeResource::collection($absensi)
+                ->additional([
+                    'error' => false,
+                    'message' => 'data riwayat absensi berhasil ditemukan',
+                ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'error' => true,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
     }
 }
