@@ -98,4 +98,9 @@ class User extends Authenticatable implements MustVerifyEmail, HasAvatar
     {
         return $this->avatar_url ? Storage::url($this->avatar_url) : null;
     }
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->roles->contains('name', 'user');
+    }
 }
