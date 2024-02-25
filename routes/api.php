@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AbsenController;
+use App\Http\Controllers\Api\AttendeStatusController;
 use App\Http\Controllers\Api\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -29,4 +30,6 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('/absen', [AbsenController::class, 'index']);
     Route::post('/absen', [AbsenController::class, 'store']);
     Route::get('/riwayat/absen', [AbsenController::class, 'getAbsenHistory']);
+
+    Route::get('/attende-status', [AttendeStatusController::class, 'index']);
 });

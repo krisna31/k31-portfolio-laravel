@@ -28,7 +28,7 @@ class AuthController extends Controller
             return response()->json([
                 'error' => true,
                 'message' => 'Kredensial yang diberikan salah',
-            ]);
+            ], 400);
         }
 
         $token = $user->createToken($request->device_name)->plainTextToken;
