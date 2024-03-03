@@ -17,7 +17,7 @@ use Jeffgreco13\FilamentBreezy\Traits\TwoFactorAuthenticatable;
 use Filament\Models\Contracts\HasAvatar;
 use Illuminate\Support\Facades\Storage;
 
-class User extends Authenticatable implements MustVerifyEmail, HasAvatar
+class User extends Authenticatable implements MustVerifyEmail, HasAvatar, FilamentUser
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles, HasPanelShield, TwoFactorAuthenticatable;
 
@@ -99,8 +99,8 @@ class User extends Authenticatable implements MustVerifyEmail, HasAvatar
         return $this->avatar_url ? Storage::url($this->avatar_url) : null;
     }
 
-    // public function canAccessPanel(Panel $panel): bool
-    // {
-    //     return true;
-    // }
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->roles->contains('name', 'user');
+    }
 }
