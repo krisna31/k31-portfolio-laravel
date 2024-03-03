@@ -15,6 +15,7 @@
         "coolsam/flatpickr": "^3.0",
         "dutchcodingcompany/filament-socialite": "^1.0",
         "filament/filament": "^3.0-stable",
+        "flowframe/laravel-trend": "^0.1.5",
         "guzzlehttp/guzzle": "^7.2",
         "hasnayeen/themes": "^3.0",
         "inertiajs/inertia-laravel": "^0.6.3",

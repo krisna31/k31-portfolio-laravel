@@ -194,6 +194,16 @@ class AttendeCodeResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
+                Tables\Columns\TextColumn::make('radius')
+                    ->label('Geofence Radius')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('latitude')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('longitude')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\IconColumn::make('status')
                     ->state(function (AttendeCode $record): string {
                         $now = Carbon::now();
