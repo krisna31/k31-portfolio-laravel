@@ -15,6 +15,9 @@ return new class extends Migration {
             $table->string('description')->nullable()->default(null);
             $table->foreignId('attende_type_id')->constrained('attende_types')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('user_id')->default(0)->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->decimal('latitude', 10, 7)->nullable();
+            $table->decimal('longitude', 10, 7)->nullable();
+            $table->unsignedInteger('radius')->nullable();
             $table->foreignId('default_approval_status_id')->constrained('approval_statuses')->cascadeOnDelete()->cascadeOnUpdate();
             $table->dateTime('start_date')->nullable()->default(null);
             $table->dateTime('end_date')->nullable()->default(null);

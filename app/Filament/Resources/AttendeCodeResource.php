@@ -13,6 +13,7 @@ use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -97,11 +98,14 @@ class AttendeCodeResource extends Resource
                         => ApprovalStatusResource::form($form),
                     ),
                 Forms\Components\TextInput::make('description')
+                    ->label('Deskripsi')
+                    ->required()
                     ->columnSpanFull(),
                 Forms\Components\Toggle::make('bulk_create')
                     ->label('Bulk Create?')
                     ->columnSpanFull()
-                    ->live(),
+                    ->live()
+                    ->hidden(fn(string $operation): bool => $operation === 'edit'),
                 Flatpickr::make('range_date')
                     ->label('Date To Create The Absence')
                     ->range()
@@ -133,6 +137,25 @@ class AttendeCodeResource extends Resource
                     ->weekStartsOnMonday()
                     ->after('start_date')
                     ->hidden(fn(Get $get): bool => $get('bulk_create')),
+                Forms\Components\TextInput::make('radius')
+                    ->label('Geofence Radius (in meters)')
+                    ->type('number')
+                    ->rules(['numeric', 'min:0', 'max:100000'])
+                    ->requiredWith('latitude,longitude')
+                    ->step(1)
+                    ->columnSpanFull(),
+                Forms\Components\TextInput::make('latitude')
+                    ->label('Geofence Latitude')
+                    ->type('number')
+                    ->rules(['numeric', 'min:-90', 'max:90'])
+                    ->requiredWith('radius,longitude')
+                    ->step(0.000001),
+                Forms\Components\TextInput::make('longitude')
+                    ->label('Geofence Longitude')
+                    ->type('number')
+                    ->rules(['numeric', 'min:-180', 'max:180'])
+                    ->requiredWith('radius,latitude')
+                    ->step(0.000001),
             ]);
     }
 

@@ -21,6 +21,9 @@ class AttendeCode extends Model
         'attende_type_id',
         'start_date',
         'end_date',
+        'latitude',
+        'longitude',
+        'radius',
         'created_at',
         'updated_at'
     ];
