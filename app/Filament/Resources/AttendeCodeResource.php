@@ -170,7 +170,7 @@ class AttendeCodeResource extends Resource
                     ->copyable()
                     ->copyMessage('ID copied')
                     ->copyMessageDuration(1500)
-                    ->toggleable(isToggledHiddenByDefault: false),
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('user.name')
                     ->label('For User')
                     ->sortable()
@@ -330,33 +330,42 @@ class AttendeCodeResource extends Resource
                     }),
             ])
             ->actions([
-                Tables\Actions\Action::make('Qr Code')
-                    ->icon('heroicon-o-qr-code')
-                    ->modalContent(
-                        fn(AttendeCode $record): View => view(
-                            'filament.admin.attende-code-resources.qr-code',
-                            ['record' => $record],
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\Action::make('Qr Code')
+                        ->icon('heroicon-o-qr-code')
+                        ->modalContent(
+                            fn(AttendeCode $record): View => view(
+                                'filament.admin.attende-code-resources.qr-code',
+                                ['record' => $record],
+                            )
                         )
-                    )
-                    ->color('success')
-                    ->modalCancelAction(fn(StaticAction $action) => $action->label('Close'))
-                    ->modalSubmitAction(false)
-                    ->visible(fn(AttendeCode $record): bool => Carbon::now()->between(Carbon::parse($record->start_date), Carbon::parse($record->end_date))),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make()
-                    ->successNotification(
-                        Notification::make()
-                            ->success()
-                            ->title('Attende Code Deleted')
-                            ->body('The attende code was deleted successfully.'),
-                    ),
-                Tables\Actions\ReplicateAction::make()
-                    ->successNotificationTitle('Attende Code Replicated'),
+                        ->color('success')
+                        ->modalCancelAction(fn(StaticAction $action) => $action->label('Close'))
+                        ->modalSubmitAction(false)
+                        ->visible(fn(AttendeCode $record): bool => Carbon::now()->between(Carbon::parse($record->start_date), Carbon::parse($record->end_date))),
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make()
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title('Attende Code Deleted')
+                                ->body('The attende code was deleted successfully.'),
+                        ),
+                    Tables\Actions\ReplicateAction::make()
+                        ->successNotificationTitle('Attende Code Replicated'),
+                ])
+                    ->link()
+                    ->label('Actions'),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                // Tables\Actions\BulkActionGroup::make([
+                Tables\Actions\DeleteBulkAction::make(),
+                \AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction::make('Export Terpilih')
+                // ]),
+            ])
+            ->headerActions([
+                \AlperenErsoy\FilamentExport\Actions\FilamentExportHeaderAction::make('Export Semua')
+                    ->color('info'),
             ])
             // ->recordClasses(function (AttendeCode $record) {
             //     $now = Carbon::now();
