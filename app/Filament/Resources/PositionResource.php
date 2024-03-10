@@ -92,7 +92,7 @@ class PositionResource extends Resource
                 Tables\Columns\TextColumn::make('slug')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('salary')
-                    ->numeric()
+                    ->money('IDR')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('positionType.name')
                     ->label('Tipe Jabatan')

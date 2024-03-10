@@ -101,4 +101,14 @@ class PositionTypeResource extends Resource
             'index' => Pages\ManagePositionTypes::route('/'),
         ];
     }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return static::getModel()::count() > 10 ? 'warning' : 'primary';
+    }
 }
