@@ -10,6 +10,7 @@
     "require": {
         "php": "^8.1",
         "alperenersoy/filament-export": "^3.0.3-beta",
+        "bezhansalleh/filament-exceptions": "^2.1",
         "bezhansalleh/filament-panel-switch": "^1.0",
         "bezhansalleh/filament-shield": "^3.1",
         "blade-ui-kit/blade-icons": "*",
@@ -27,9 +28,11 @@
         "laravel/socialite": "^5.11",
         "laravel/tinker": "^2.8",
         "owenvoke/blade-fontawesome": "^2.5",
+        "rickdbcn/filament-email": "^1.0",
         "simplesoftwareio/simple-qrcode": "~4",
         "swisnl/filament-backgrounds": "^1.1",
-        "tightenco/ziggy": "^1.0"
+        "tightenco/ziggy": "^1.0",
+        "z3d0x/filament-logger": "^0.6.3"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.9",

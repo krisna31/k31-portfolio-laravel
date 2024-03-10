@@ -51,6 +51,8 @@ class AdminPanelProvider extends PanelProvider
                         // permissions: ['my','custom','permissions'] // optional, customize the permissions (default = ["create", "view", "update", "delete"])
                     )
                     ->enableTwoFactorAuthentication(),
+                \BezhanSalleh\FilamentExceptions\FilamentExceptionsPlugin::make(),
+                new \RickDBCN\FilamentEmail\FilamentEmail(),
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
@@ -84,6 +86,9 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
                 OnlySuperAdmin::class,
+            ])
+            ->resources([
+                config('filament-logger.activity_resource')
             ]);
     }
 }
