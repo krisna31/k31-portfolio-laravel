@@ -27,6 +27,7 @@ class GenderResource extends Resource
     protected static ?string $navigationGroup = 'Employee Management';
 
     protected static ?int $navigationSort = 6;
+    protected static ?string $navigationLabel = 'Jenis Kelamin';
 
     public static function form(Form $form): Form
     {

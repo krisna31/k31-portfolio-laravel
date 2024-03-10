@@ -26,6 +26,8 @@ class PositionResource extends Resource
 
     protected static ?int $navigationSort = 7;
 
+    protected static ?string $navigationLabel = 'Jabatan';
+
     public static function form(Form $form): Form
     {
         return $form
@@ -44,6 +46,21 @@ class PositionResource extends Resource
                     ->editOptionForm(
                         fn(Form $form)
                         => DepartmentResource::form($form),
+                    ),
+                Forms\Components\Select::make('position_type_id')
+                    ->label('Tipe Jabatan')
+                    ->relationship('positionType', 'name')
+                    ->required()
+                    ->placeholder('Select a position type')
+                    ->searchable()
+                    ->preload()
+                    ->createOptionForm(
+                        fn(Form $form)
+                        => PositionTypeResource::form($form),
+                    )
+                    ->editOptionForm(
+                        fn(Form $form)
+                        => PositionTypeResource::form($form),
                     ),
                 Forms\Components\TextInput::make('name')
                     ->required()
@@ -77,6 +94,10 @@ class PositionResource extends Resource
                 Tables\Columns\TextColumn::make('salary')
                     ->numeric()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('positionType.name')
+                    ->label('Tipe Jabatan')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

@@ -2,33 +2,30 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\DepartmentResource\Pages;
-use App\Filament\Resources\DepartmentResource\RelationManagers;
-use App\Models\Department;
-use Carbon\Carbon;
+use App\Filament\Resources\PositionTypeResource\Pages;
+use App\Filament\Resources\PositionTypeResource\RelationManagers;
+use App\Models\PositionType;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Form;
-use Filament\Forms\Set;
-use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Filters\Filter;
-use Filament\Tables\Filters\Indicator;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class DepartmentResource extends Resource
+class PositionTypeResource extends Resource
 {
-    protected static ?string $model = Department::class;
+    protected static ?string $model = PositionType::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-building-office';
 
     protected static ?string $navigationGroup = 'Employee Management';
 
-    protected static ?int $navigationSort = 5;
-    protected static ?string $navigationLabel = 'Departemen';
+    protected static ?int $navigationSort = 9;
+
+    protected static ?string $navigationLabel = 'Tipe Jabatan';
 
     public static function form(Form $form): Form
     {
@@ -36,13 +33,8 @@ class DepartmentResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
-                    ->maxLength(255)
-                    ->live(onBlur: true)
-                    ->afterStateUpdated(function (Set $set, $state) {
-                        $set('slug', str()->slug($state));
-                    }),
-                Forms\Components\TextInput::make('slug')
-                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('description')
                     ->maxLength(255),
             ]);
     }
@@ -53,7 +45,7 @@ class DepartmentResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('slug')
+                Tables\Columns\TextColumn::make('description')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -66,7 +58,6 @@ class DepartmentResource extends Resource
             ])
             ->filters([
                 Filter::make('created_at')
-                    ->label('Created At')
                     ->form([
                         DatePicker::make('created_from'),
                         DatePicker::make('created_until')
@@ -82,33 +73,12 @@ class DepartmentResource extends Resource
                                 $data['created_until'],
                                 fn(Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
                             );
-                    })
-                    ->indicateUsing(function (array $data): array {
-                        $indicators = [];
-
-                        if ($data['created_from'] ?? null) {
-                            $indicators[] = Indicator::make('Created from ' . Carbon::parse($data['created_from'])->toFormattedDateString())
-                                ->removeField('from');
-                        }
-
-                        if ($data['created_until'] ?? null) {
-                            $indicators[] = Indicator::make('Created until ' . Carbon::parse($data['created_until'])->toFormattedDateString())
-                                ->removeField('until');
-                        }
-
-                        return $indicators;
-                    })
+                    }),
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make()
-                        ->successNotification(
-                            Notification::make()
-                                ->success()
-                                ->title('Department Deleted')
-                                ->body('The department was deleted successfully.'),
-                        ),
+                    Tables\Actions\DeleteAction::make(),
                 ])
                     ->link()
                     ->label('Actions'),
@@ -125,29 +95,10 @@ class DepartmentResource extends Resource
             ]);
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListDepartments::route('/'),
-            'create' => Pages\CreateDepartment::route('/create'),
-            'edit' => Pages\EditDepartment::route('/{record}/edit'),
+            'index' => Pages\ManagePositionTypes::route('/'),
         ];
-    }
-
-    public static function getNavigationBadge(): ?string
-    {
-        return static::getModel()::count();
-    }
-
-    public static function getNavigationBadgeColor(): ?string
-    {
-        return static::getModel()::count() > 10 ? 'warning' : 'primary';
     }
 }

@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
             'email' => 'alluserpreserved@k31.com',
             'gender_id' => 1,
             'position_id' => Position::all()->random()->id,
-            'password' => bcrypt('password'),
+            'password' => bcrypt(str()->uuid()),
         ]);
 
         User::factory()->create([

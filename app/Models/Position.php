@@ -19,6 +19,7 @@ class Position extends Model
         'slug',
         'department_id',
         'salary',
+        'position_type_id',
     ];
 
     public function department()
@@ -29,6 +30,11 @@ class Position extends Model
     public function users()
     {
         return $this->hasMany(User::class);
+    }
+
+    public function positionType()
+    {
+        return $this->belongsTo(PositionType::class);
     }
 
     public function getRouteKeyName()

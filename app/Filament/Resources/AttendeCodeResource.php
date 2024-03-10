@@ -35,6 +35,7 @@ class AttendeCodeResource extends Resource
     protected static ?string $navigationGroup = 'Employee Management';
 
     protected static ?int $navigationSort = 1;
+    protected static ?string $navigationLabel = 'List Kode Absensi';
 
     public ?string $tableSortColumn = 'start_date';
 
