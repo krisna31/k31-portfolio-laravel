@@ -52,6 +52,7 @@ class AbsenController extends Controller
     {
         $request->validate([
             'code' => 'required|exists:attende_codes,id',
+            'address' => 'required|string',
             'latitude' => 'required',
             'longitude' => 'required',
             'photo' => 'required|image',
@@ -97,6 +98,7 @@ class AbsenController extends Controller
             'approval_status_id' => $absensi->default_approval_status_id,
             'attende_status_id' => $request->attende_status,
             'attende_time' => now(),
+            'address' => $request->address,
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
             'photo' => [
