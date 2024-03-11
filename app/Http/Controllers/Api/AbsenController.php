@@ -8,6 +8,7 @@ use App\Http\Resources\AttendeResource;
 use App\Models\Attende;
 use App\Models\AttendeCode;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AbsenController extends Controller
 {
@@ -18,8 +19,9 @@ class AbsenController extends Controller
             $absensi = AttendeCode::with(['attendeType', 'user', 'defaultApprovalStatus'])
                 ->selectRaw(
                     '*,
-            (start_date < now() AND end_date > now()) as is_open,
-            (SELECT COUNT(*) >= 1 FROM attendes WHERE attendes.attende_code_id = attende_codes.id AND attendes.user_id = ' . auth()->user()->id . ') as is_attended'
+                    (start_date < now() AND end_date > now()) as is_open,
+                    (SELECT COUNT(*) >= 1 FROM attendes WHERE attendes.attende_code_id = attende_codes.id AND attendes.user_id = ?) as is_attended',
+                    [auth()->user()->id]
                 )
                 ->when($request->over === 'yes', function ($query) {
                     $query->where('end_date', '<', now());
@@ -39,6 +41,10 @@ class AbsenController extends Controller
                 ->additional([
                     'error' => false,
                     'message' => 'data absensi berhasil ditemukan',
+                    'extra' => [
+                        'now carbon' => now(),
+                        'now db' => DB::select('select now()'),
+                    ]
                 ]);
         } catch (\Throwable $th) {
             return response()->json([
