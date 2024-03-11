@@ -19,15 +19,15 @@ class AbsenController extends Controller
             $absensi = AttendeCode::with(['attendeType', 'user', 'defaultApprovalStatus'])
                 ->selectRaw(
                     '*,
-                    (start_date < now() AND end_date > now()) as is_open,
+                    (start_date < ? AND end_date > ?) as is_open,
                     (SELECT COUNT(*) >= 1 FROM attendes WHERE attendes.attende_code_id = attende_codes.id AND attendes.user_id = ?) as is_attended',
-                    [auth()->user()->id]
+                    [now()->addHours(7), now()->addHours(7), auth()->user()->id]
                 )
                 ->when($request->over === 'yes', function ($query) {
-                    $query->where('end_date', '<', now());
+                    $query->where('end_date', '<', now()->addHours(7));
                 })
                 ->when($request->over === 'no', function ($query) {
-                    $query->where('end_date', '>', now());
+                    $query->where('end_date', '>', now()->addHours(7));
                 })
                 ->where(function ($query) {
                     $query->where('user_id', auth()->user()->id)
@@ -41,10 +41,6 @@ class AbsenController extends Controller
                 ->additional([
                     'error' => false,
                     'message' => 'data absensi berhasil ditemukan',
-                    'extra' => [
-                        'now carbon' => now(),
-                        'now db' => DB::select('select now()'),
-                    ]
                 ]);
         } catch (\Throwable $th) {
             return response()->json([
@@ -81,7 +77,7 @@ class AbsenController extends Controller
             ->where('id', $request->code)
             ->first();
 
-        if ($absensi->start_date > now() || $absensi->end_date < now()) {
+        if ($absensi->start_date > now()->addHours(7) || $absensi->end_date < now()->addHours(7)) {
             return response()->json([
                 'error' => true,
                 'message' => 'Absensi belum dimulai atau sudah berakhir silahkan kontak admin jika anda merasa ini adalah kesalahan',
@@ -103,7 +99,7 @@ class AbsenController extends Controller
             'attende_code_id' => $request->code,
             'approval_status_id' => $absensi->default_approval_status_id,
             'attende_status_id' => $request->attende_status,
-            'attende_time' => now(),
+            'attende_time' => now()->addHours(7),
             'address' => $request->address,
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
