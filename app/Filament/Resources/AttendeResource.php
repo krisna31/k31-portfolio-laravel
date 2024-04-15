@@ -217,6 +217,18 @@ class AttendeResource extends Resource
 
                         return $indicators;
                     }),
+                // filter by user
+                Tables\Filters\SelectFilter::make('user_id')
+                    ->label('User')
+                    ->relationship('user', 'name')
+                    ->options(
+                        fn(): array => \App\Models\User::pluck('name', 'id')->toArray(),
+                    )
+                    ->preload()
+                    ->searchable()
+                    ->placeholder('All Users')
+                    ->columnSpan(4)
+                    ->multiple(),
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
@@ -231,10 +243,22 @@ class AttendeResource extends Resource
                 // Tables\Actions\BulkActionGroup::make([
                 Tables\Actions\DeleteBulkAction::make(),
                 \AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction::make('Export Terpilih')
+                    // ->withHiddenColumns()
+                    ->formatStates([
+                        'photo' => function (?\Illuminate\Database\Eloquent\Model $record) {
+                            return count($record->photo) . ' photos';
+                        },
+                    ]),
                 // ]),
             ])
             ->headerActions([
                 \AlperenErsoy\FilamentExport\Actions\FilamentExportHeaderAction::make('Export Semua')
+                    // ->withHiddenColumns()
+                    ->formatStates([
+                        'photo' => function (?\Illuminate\Database\Eloquent\Model $record) {
+                            return count($record->photo) . ' photos';
+                        },
+                    ])
                     ->color('info'),
             ]);
     }

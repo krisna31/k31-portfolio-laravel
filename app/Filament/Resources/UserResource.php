@@ -325,7 +325,6 @@ class UserResource extends Resource
                                     ->icon('heroicon-o-envelope-open')
                                     ->send();
                             } catch (\Exception $e) {
-                                dd($e);
                                 // If the mail could not be sent, send a failure notification
                                 \Filament\Notifications\Notification::make()
                                     ->title('Pengiriman Slip Gaji Gagal')

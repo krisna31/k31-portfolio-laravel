@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'default_format' => 'xlsx',
+    'default_format' => 'pdf',
     'time_format' => 'd M Y - H:i:s',
     'default_page_orientation' => 'landscape',
     'disable_additional_columns' => false,
