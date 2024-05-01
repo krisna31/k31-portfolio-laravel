@@ -231,7 +231,7 @@ class AttendeResource extends Resource
                     ->multiple(),
             ])
             ->actions([
-                Tables\Actions\Action::make('Verifikasi Presensi')
+                Tables\Actions\Action::make('Verifikasi')
                     ->form([
                         Forms\Components\Select::make('approval_status_id')
                             ->label('Approval Status For This Absence')
