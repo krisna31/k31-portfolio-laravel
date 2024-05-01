@@ -231,6 +231,30 @@ class AttendeResource extends Resource
                     ->multiple(),
             ])
             ->actions([
+                Tables\Actions\Action::make('Verifikasi Presensi')
+                    ->form([
+                        Forms\Components\Select::make('approval_status_id')
+                            ->label('Approval Status For This Absence')
+                            ->relationship('approvalStatus', 'name')
+                            ->required()
+                            ->placeholder('Select a approval status')
+                            ->searchable()
+                            ->preload()
+                        // ->default(2) // default to approved disetujui
+                    ])
+                    ->fillForm(fn(Attende $record): array => [
+                        'approval_status_id' => $record->approval_status_id,
+                    ])
+                    ->slideOver()
+                    ->modalWidth(\Filament\Support\Enums\MaxWidth::Medium)
+                    ->action(function (array $data, Attende $record): void {
+                        $record->update([
+                            'approval_status_id' => $data['approval_status_id'],
+                        ]);
+                    })
+                    ->modalSubmitActionLabel('Ya, Verifikasi')
+                    ->color('success')
+                    ->icon('heroicon-o-check-circle'),
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),
