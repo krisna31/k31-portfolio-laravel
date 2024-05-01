@@ -23,7 +23,7 @@ class AttendeResource extends Resource
     protected static ?string $navigationGroup = 'Employee Management';
 
     protected static ?int $navigationSort = 3;
-    protected static ?string $navigationLabel = 'Absensi';
+    protected static ?string $navigationLabel = 'Presensi';
 
     public static function form(Form $form): Form
     {
