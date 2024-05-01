@@ -142,21 +142,29 @@ class AttendeCodeResource extends Resource
                     ->label('Geofence Radius (in meters)')
                     ->type('number')
                     ->rules(['numeric', 'min:0', 'max:100000'])
-                    ->requiredWith('latitude,longitude')
+                    ->requiredWith('location')
                     ->step(1)
                     ->columnSpanFull(),
-                Forms\Components\TextInput::make('latitude')
-                    ->label('Geofence Latitude')
-                    ->type('number')
-                    ->rules(['numeric', 'min:-90', 'max:90'])
-                    ->requiredWith('radius,longitude')
-                    ->step(0.000001),
-                Forms\Components\TextInput::make('longitude')
-                    ->label('Geofence Longitude')
-                    ->type('number')
-                    ->rules(['numeric', 'min:-180', 'max:180'])
-                    ->requiredWith('radius,latitude')
-                    ->step(0.000001),
+                Forms\Components\Select::make('location')
+                    ->label('Location')
+                    ->options([
+                        '-2.944841#104.756658' => 'Tempat Kerja',
+                    ])
+                    ->requiredWith('radius')
+                    ->native(false)
+                    ->columnSpanFull(),
+                // Forms\Components\TextInput::make('latitude')
+                //     ->label('Geofence Latitude')
+                //     ->type('number')
+                //     ->rules(['numeric', 'min:-90', 'max:90'])
+                //     ->requiredWith('radius,longitude')
+                //     ->step(0.000001),
+                // Forms\Components\TextInput::make('longitude')
+                //     ->label('Geofence Longitude')
+                //     ->type('number')
+                //     ->rules(['numeric', 'min:-180', 'max:180'])
+                //     ->requiredWith('radius,latitude')
+                //     ->step(0.000001),
             ]);
     }
 
