@@ -29,6 +29,8 @@ class DepartmentResource extends Resource
 
     protected static ?int $navigationSort = 5;
     protected static ?string $navigationLabel = 'Departemen';
+    protected static ?string $modelLabel = 'Departemen';
+    protected static ?string $pluralModelLabel = 'Departemen';
 
     public static function form(Form $form): Form
     {

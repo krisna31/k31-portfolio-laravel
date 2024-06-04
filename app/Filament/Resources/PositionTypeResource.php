@@ -26,6 +26,8 @@ class PositionTypeResource extends Resource
     protected static ?int $navigationSort = 9;
 
     protected static ?string $navigationLabel = 'Tipe Jabatan';
+    protected static ?string $modelLabel = 'Tipe Jabatan';
+    protected static ?string $pluralModelLabel = 'Tipe Jabatan';
 
     public static function form(Form $form): Form
     {

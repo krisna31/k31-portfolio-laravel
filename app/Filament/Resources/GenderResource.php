@@ -28,6 +28,8 @@ class GenderResource extends Resource
 
     protected static ?int $navigationSort = 6;
     protected static ?string $navigationLabel = 'Jenis Kelamin';
+    protected static ?string $modelLabel = 'Jenis Kelamin';
+    protected static ?string $pluralModelLabel = 'Jenis Kelamin';
 
     public static function form(Form $form): Form
     {

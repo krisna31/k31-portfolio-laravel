@@ -25,6 +25,8 @@ class AttendeTypeResource extends Resource
 
     protected static ?int $navigationSort = 4;
     protected static ?string $navigationLabel = 'Tipe Kehadiran';
+    protected static ?string $modelLabel = 'Tipe Kehadiran';
+    protected static ?string $pluralModelLabel = 'Tipe Kehadiran';
 
     public static function form(Form $form): Form
     {

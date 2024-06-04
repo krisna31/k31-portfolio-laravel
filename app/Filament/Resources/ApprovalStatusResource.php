@@ -23,6 +23,8 @@ class ApprovalStatusResource extends Resource
     protected static ?string $navigationGroup = 'Employee Management';
 
     protected static ?int $navigationSort = 2;
+    protected static ?string $modelLabel = 'Status Persetujuan';
+    protected static ?string $pluralModelLabel = 'Status Persetujuan';
     protected static ?string $navigationLabel = 'Status Persetujuan';
 
     public static function form(Form $form): Form

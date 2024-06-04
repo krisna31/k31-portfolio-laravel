@@ -17,11 +17,10 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class AttendeResource extends Resource
 {
     protected static ?string $model = Attende::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-chart-bar-square';
-
     protected static ?string $navigationGroup = 'Employee Management';
-
+    protected static ?string $modelLabel = 'Presensi';
+    protected static ?string $pluralModelLabel = 'Presensi';
     protected static ?int $navigationSort = 3;
     protected static ?string $navigationLabel = 'Presensi';
 

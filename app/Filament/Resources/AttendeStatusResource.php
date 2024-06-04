@@ -24,6 +24,8 @@ class AttendeStatusResource extends Resource
 
     protected static ?int $navigationSort = 8;
     protected static ?string $navigationLabel = 'Status Kehadiran';
+    protected static ?string $modelLabel = 'Status Kehadiran';
+    protected static ?string $pluralModelLabel = 'Status Kehadiran';
 
     public static function form(Form $form): Form
     {
