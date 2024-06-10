@@ -130,11 +130,15 @@ class AttendeResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
+                Tables\Columns\TextColumn::make('attende_time')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('attendeCode.id')
                     ->label('Attende Id')
                     ->searchable()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: false),
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('approvalStatus.name')
                     ->label('Approval Status')
                     ->searchable()
@@ -143,10 +147,6 @@ class AttendeResource extends Resource
                 Tables\Columns\TextColumn::make('attendeStatus.name')
                     ->label('Attendance Status')
                     ->searchable()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: false),
-                Tables\Columns\TextColumn::make('attende_time')
-                    ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\ImageColumn::make('photo')
