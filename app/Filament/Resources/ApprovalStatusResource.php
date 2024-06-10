@@ -14,8 +14,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class ApprovalStatusResource extends Resource
-{
+class ApprovalStatusResource extends Resource {
     protected static ?string $model = ApprovalStatus::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-question-mark-circle';
@@ -27,8 +26,7 @@ class ApprovalStatusResource extends Resource
     protected static ?string $pluralModelLabel = 'Status Persetujuan';
     protected static ?string $navigationLabel = 'Status Persetujuan';
 
-    public static function form(Form $form): Form
-    {
+    public static function form(Form $form): Form {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
@@ -39,8 +37,7 @@ class ApprovalStatusResource extends Resource
             ]);
     }
 
-    public static function table(Table $table): Table
-    {
+    public static function table(Table $table): Table {
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
@@ -68,11 +65,11 @@ class ApprovalStatusResource extends Resource
                         return $query
                             ->when(
                                 $data['created_from'],
-                                fn(Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
+                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
                             )
                             ->when(
                                 $data['created_until'],
-                                fn(Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
+                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
                             );
                     })
                     ->indicateUsing(function (array $data): array {
@@ -90,7 +87,7 @@ class ApprovalStatusResource extends Resource
 
                         return $indicators;
                     }),
-                    Tables\Filters\TrashedFilter::make(),
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
@@ -117,35 +114,30 @@ class ApprovalStatusResource extends Resource
             ]);
     }
 
-    public static function getRelations(): array
-    {
+    public static function getRelations(): array {
         return [
             //
         ];
     }
 
-    public static function getPages(): array
-    {
+    public static function getPages(): array {
         return [
             'index' => Pages\ListApprovalStatuses::route('/'),
         ];
     }
 
-    public static function getNavigationBadge(): ?string
-    {
+    public static function getNavigationBadge(): ?string {
         return static::getModel()::count();
     }
 
-    public static function getNavigationBadgeColor(): ?string
-    {
+    public static function getNavigationBadgeColor(): ?string {
         return static::getModel()::count() > 10 ? 'warning' : 'primary';
     }
 
-    public static function getEloquentQuery(): Builder
-{
-    return parent::getEloquentQuery()
-        ->withoutGlobalScopes([
-            \Illuminate\Database\Eloquent\SoftDeletingScope::class,
-        ]);
-}
+    public static function getEloquentQuery(): Builder {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
+    }
 }
