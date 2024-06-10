@@ -130,11 +130,6 @@ class NoteResource extends Resource
         ];
     }
 
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()->where('user_id', auth()->id());
-    }
-
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::where('user_id', auth()->id())->count();
@@ -147,6 +142,7 @@ class NoteResource extends Resource
 
     public static function getEloquentQuery(): Builder {
         return parent::getEloquentQuery()
+            ->where('user_id', auth()->id())
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);
