@@ -82,7 +82,7 @@ class PortfolioResource extends Resource
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
-                Filter::make('created_at')
+                Tables\Filters\Filter::make('created_at')
                     ->form([
                         DatePicker::make('created_from'),
                         DatePicker::make('created_until')
