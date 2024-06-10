@@ -48,15 +48,15 @@ class UserResource extends Resource
                     ->relationship('gender', 'name')
                     ->searchable()
                     ->preload()
-                    ->required(fn(string $operation): bool => $operation === 'create')
-                    ->createOptionForm(
-                        fn(Form $form)
-                        => GenderResource::form($form),
-                    )
-                    ->editOptionForm(
-                        fn(Form $form)
-                        => GenderResource::form($form),
-                    ),
+                    ->required(fn(string $operation): bool => $operation === 'create'),
+                    // ->createOptionForm(
+                    //     fn(Form $form)
+                    //     => GenderResource::form($form),
+                    // )
+                    // ->editOptionForm(
+                    //     fn(Form $form)
+                    //     => GenderResource::form($form),
+                    // ),
                 Forms\Components\Select::make('positions')
                     ->relationship('position', 'name')
                     ->searchable()
