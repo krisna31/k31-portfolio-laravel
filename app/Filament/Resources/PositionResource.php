@@ -74,7 +74,8 @@ class PositionResource extends Resource
                     }),
                 Forms\Components\TextInput::make('slug')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->hidden(),
                 Forms\Components\TextInput::make('salary')
                     ->required()
                     ->numeric()

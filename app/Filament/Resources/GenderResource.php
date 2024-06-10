@@ -43,7 +43,8 @@ class GenderResource extends Resource
                     ->afterStateUpdated(function (Set $set, $state) {
                         $set('slug', str()->slug($state));
                     }),
-                Forms\Components\TextInput::make('slug')->maxLength(255),
+                Forms\Components\TextInput::make('slug')->maxLength(255)
+                    ->hidden(),
             ]);
     }
 

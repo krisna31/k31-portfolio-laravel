@@ -14,11 +14,10 @@ class AttendeTypeSeeder extends Seeder
     public function run(): void
     {
         $types = [
-            'Absen Pagi',
-            'Absen Istrahat',
-            'Absen Pulang',
-            'Absen Lembur',
-            'Absen Perjalanan Dinas',
+            'Shift Pagi',
+            'Shift Sore',
+            'Shift Lembur',
+            'Perjalanan Dinas',
         ];
 
         foreach ($types as $type) {

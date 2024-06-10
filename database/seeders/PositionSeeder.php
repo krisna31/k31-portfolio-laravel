@@ -5,38 +5,77 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class PositionSeeder extends Seeder
-{
+class PositionSeeder extends Seeder {
     /**
      * Run the database seeds.
      */
-    public function run(): void
-    {
+    public function run(): void {
+        /**
+         * Direktur
+            Komisaris
+            Ahli K3 Konstruksi
+            Tenaga Ahli Jalan
+            Tenaga Ahli Irigasi
+            Pelaksana Lapangan
+            General Superintedent
+            Quality dan Quantity
+            Administrasi
+         */
         $positions = [
             [
-                'name' => 'Staff',
-                'slug' => 'staff',
-                'salary' => 3_000_000,
-                'position_type_id' => 2,
+                'name' => 'Direktur',
+                'slug' => 'direktur',
+                'salary' => 6_000_000,
+                'position_type_id' => 1,
             ],
             [
-                'name' => 'Supervisor',
-                'slug' => 'supervisor',
+                'name' => 'Komisaris',
+                'slug' => 'komisaris',
+                'salary' => 4_000_000,
+                'position_type_id' => 1,
+            ],
+            [
+                'name' => 'Ahli K3 Konstruksi',
+                'slug' => 'ahli-k3-konstruksi',
                 'salary' => 3_500_000,
                 'position_type_id' => 1,
             ],
             [
-                'name' => 'Manager',
-                'slug' => 'manager',
-                'salary' => 3_800_000,
+                'name' => 'Tenaga Ahli Jalan',
+                'slug' => 'tenaga-ahli-jalan',
+                'salary' => 3_500_000,
                 'position_type_id' => 1,
             ],
             [
-                'name' => 'Director',
-                'slug' => 'director',
-                'salary' => 4_500_000,
+                'name' => 'Tenaga Ahli Irigasi',
+                'slug' => 'tenaga-ahli-irigasi',
+                'salary' => 3_500_000,
                 'position_type_id' => 1,
             ],
+            [
+                'name' => 'Pelaksana Lapangan',
+                'slug' => 'pelaksana-lapangan',
+                'salary' => 3_000_000,
+                'position_type_id' => 2,
+            ],
+            [
+                'name' => 'General Superintedent',
+                'slug' => 'general-superintedent',
+                'salary' => 3_000_000,
+                'position_type_id' => 2,
+            ],
+            [
+                'name' => 'Quality dan Quantity',
+                'slug' => 'quality-dan-quantity',
+                'salary' => 3_000_000,
+                'position_type_id' => 2,
+            ],
+            [
+                'name' => 'Administrasi',
+                'slug' => 'administrasi',
+                'salary' => 3_000_000,
+                'position_type_id' => 1,
+            ]
         ];
 
         foreach ($positions as $position) {

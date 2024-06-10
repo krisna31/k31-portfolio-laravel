@@ -13,16 +13,8 @@ class DepartmentSeeder extends Seeder
     public function run(): void
     {
         $departments = [
-            'Human Resource',
-            'Finance',
-            'Marketing',
-            'Information Technology',
-            'Sales',
-            'Production',
-            'Research and Development',
-            'Customer Service',
-            'Legal',
-            'Quality Assurance',
+            'Operasional',
+            'Administrasi',
         ];
 
         foreach ($departments as $department) {

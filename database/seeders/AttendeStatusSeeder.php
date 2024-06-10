@@ -13,11 +13,19 @@ class AttendeStatusSeeder extends Seeder
      */
     public function run(): void
     {
+        // * https://www.gramedia.com/literasi/pengertian-cuti-jenis-jenis-hingga-undang-undang-cuti/#Undang-Undang_Terkait_Cuti_Karyawan
+        // * https://peraturan.bpk.go.id/Details/43013
         $data = [
             'Hadir',
-            'Izin Sakit',
+            'Cuti Sakit',
             'Cuti Tahunan',
-            'Cuti Bersalin',
+            'Cuti Besar',
+            'Cuti Hari Raya',
+            'Cuti Bersama',
+            'Cuti Haid',
+            'Cuti Hamil Dan Melahirkan',
+            'Cuti Dengan Alasan Penting',
+            'Cuti Menikah',
         ];
 
         foreach ($data as $status) {
