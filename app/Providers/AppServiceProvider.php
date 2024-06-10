@@ -38,10 +38,11 @@ class AppServiceProvider extends ServiceProvider
         PanelSwitch::configureUsing(function (PanelSwitch $panelSwitch) {
             $panelSwitch
                 ->modalHeading('Available Panels')
-                ->visible(fn(): bool => auth()->user()->hasRole([
-                    'super_admin',
-                    'admin',
-                ]))
+                // ->visible(fn(): bool => auth()->user()->hasRole([
+                //     'super_admin',
+                //     'admin',
+                // ]))
+                ->visible(fn(): bool => false)
                 ->modalWidth('md')
                 // ->slideOver()
                 ->icons([
