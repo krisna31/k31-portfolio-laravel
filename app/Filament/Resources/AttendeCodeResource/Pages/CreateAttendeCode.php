@@ -45,9 +45,9 @@ class CreateAttendeCode extends CreateRecord
                 'start_date' => $date->format('Y-m-d') . ' ' . $data['start_time'],
                 'end_date' => $date->format('Y-m-d') . ' ' . $data['end_time'],
                 'description' => $data['description'],
-                'latitude' => $data['latitude'],
-                'longitude' => $data['longitude'],
-                'radius' => $data['radius'],
+                'latitude' => $data['latitude'] ?? null,
+                'longitude' => $data['longitude'] ?? null,
+                'radius' => $data['radius'] ?? null,
                 'created_at' => now(),
             ];
         }
