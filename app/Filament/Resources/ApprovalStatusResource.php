@@ -90,6 +90,7 @@ class ApprovalStatusResource extends Resource
 
                         return $indicators;
                     }),
+                    Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
@@ -98,6 +99,7 @@ class ApprovalStatusResource extends Resource
                         ->successNotificationTitle('Approval Status Deleted'),
                     Tables\Actions\ReplicateAction::make()
                         ->successNotificationTitle('Approval Status Replicated'),
+                    Tables\Actions\RestoreAction::make(),
                 ])
                     ->link()
                     ->label('Actions'),
@@ -105,7 +107,8 @@ class ApprovalStatusResource extends Resource
             ->bulkActions([
                 // Tables\Actions\BulkActionGroup::make([
                 Tables\Actions\DeleteBulkAction::make(),
-                \AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction::make('Export Terpilih')
+                \AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction::make('Export Terpilih'),
+                Tables\Actions\RestoreBulkAction::make(),
                 // ]),
             ])
             ->headerActions([
@@ -137,4 +140,12 @@ class ApprovalStatusResource extends Resource
     {
         return static::getModel()::count() > 10 ? 'warning' : 'primary';
     }
+
+    public static function getEloquentQuery(): Builder
+{
+    return parent::getEloquentQuery()
+        ->withoutGlobalScopes([
+            \Illuminate\Database\Eloquent\SoftDeletingScope::class,
+        ]);
+}
 }

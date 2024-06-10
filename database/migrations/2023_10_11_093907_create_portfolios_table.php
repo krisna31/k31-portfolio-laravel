@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('contact_links_title');
             $table->boolean('is_using_default_contact_links');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

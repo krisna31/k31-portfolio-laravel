@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->unsignedDouble('salary')->default(0);
             $table->unsignedDouble('daily_business_travel_allowance')->default(0);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

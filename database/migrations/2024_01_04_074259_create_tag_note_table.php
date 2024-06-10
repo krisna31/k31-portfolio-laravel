@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->foreignId('tag_id')->constrained()->cascadeOnDelete();
             $table->foreignId('note_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->primary(['tag_id', 'note_id']);
         });

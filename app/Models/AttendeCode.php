@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class AttendeCode extends Model
 {
-    use HasFactory;
+    use HasFactory, \Illuminate\Database\Eloquent\SoftDeletes;
 
     protected $casts = ['id' => 'string'];
     protected $keyType = 'string';

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Gender extends Model
 {
-    use HasFactory;
+    use HasFactory, \Illuminate\Database\Eloquent\SoftDeletes;
 
     /**
      * The attributes that are mass assignable.

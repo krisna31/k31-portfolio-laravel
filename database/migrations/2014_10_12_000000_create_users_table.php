@@ -28,6 +28,7 @@ return new class extends Migration
             $table->date('birth_date')->nullable();
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

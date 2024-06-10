@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('icon');
             $table->foreignId('portfolio_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
