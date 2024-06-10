@@ -183,7 +183,6 @@ class AttendeResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
                 Tables\Filters\Filter::make('created_at')
                     ->label('Created At')
                     ->form([
@@ -229,6 +228,7 @@ class AttendeResource extends Resource
                     ->placeholder('All Users')
                     ->columnSpan(4)
                     ->multiple(),
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\Action::make('Verifikasi')
