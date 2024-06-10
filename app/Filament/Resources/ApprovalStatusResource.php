@@ -54,6 +54,7 @@ class ApprovalStatusResource extends Resource {
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
+                Tables\Filters\TrashedFilter::make(),
                 Tables\Filters\Filter::make('created_at')
                     ->label('Created At')
                     ->form([
@@ -87,7 +88,6 @@ class ApprovalStatusResource extends Resource {
 
                         return $indicators;
                     }),
-                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([

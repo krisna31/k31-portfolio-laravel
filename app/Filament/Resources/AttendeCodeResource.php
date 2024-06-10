@@ -250,6 +250,7 @@ class AttendeCodeResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
+                Tables\Filters\TrashedFilter::make(),
                 Filter::make('status')
                     ->label('Status')
                     ->form([
@@ -364,6 +365,7 @@ class AttendeCodeResource extends Resource
                         ),
                     Tables\Actions\ReplicateAction::make()
                         ->successNotificationTitle('Attende Code Replicated'),
+                    Tables\Actions\RestoreAction::make(),
                 ])
                     ->link()
                     ->label('Actions'),
@@ -371,7 +373,8 @@ class AttendeCodeResource extends Resource
             ->bulkActions([
                 // Tables\Actions\BulkActionGroup::make([
                 Tables\Actions\DeleteBulkAction::make(),
-                \AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction::make('Export Terpilih')
+                \AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction::make('Export Terpilih'),
+                Tables\Actions\RestoreBulkAction::make(),
                 // ]),
             ])
             ->headerActions([
@@ -443,5 +446,12 @@ class AttendeCodeResource extends Resource
     {
         return parent::getGlobalSearchEloquentQuery()
             ->with('attendeType');
+    }
+
+    public static function getEloquentQuery(): Builder {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 }

@@ -65,6 +65,7 @@ class GenderResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
+                Tables\Filters\TrashedFilter::make(),
                 Filter::make('created_at')
                     ->label('Created At')
                     ->form([
@@ -103,6 +104,7 @@ class GenderResource extends Resource
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\RestoreAction::make(),
                 ])
                     ->link()
                     ->label('Actions'),
@@ -110,7 +112,8 @@ class GenderResource extends Resource
             ->bulkActions([
                 // Tables\Actions\BulkActionGroup::make([
                 Tables\Actions\DeleteBulkAction::make(),
-                \AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction::make('Export Terpilih')
+                \AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction::make('Export Terpilih'),
+                Tables\Actions\RestoreBulkAction::make(),
                 // ]),
             ])
             ->headerActions([
@@ -143,5 +146,12 @@ class GenderResource extends Resource
     public static function getNavigationBadgeColor(): ?string
     {
         return static::getModel()::count() > 10 ? 'warning' : 'primary';
+    }
+
+    public static function getEloquentQuery(): Builder {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 }

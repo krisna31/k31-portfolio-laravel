@@ -183,6 +183,7 @@ class AttendeResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
+                Tables\Filters\TrashedFilter::make(),
                 Tables\Filters\Filter::make('created_at')
                     ->label('Created At')
                     ->form([
@@ -261,6 +262,7 @@ class AttendeResource extends Resource
                 ])
                     ->link()
                     ->label('Actions'),
+                Tables\Actions\RestoreAction::make(),
             ])
             ->bulkActions([
                 // Tables\Actions\BulkActionGroup::make([
@@ -272,6 +274,7 @@ class AttendeResource extends Resource
                             return count($record->photo) . ' Foto';
                         },
                     ]),
+                Tables\Actions\RestoreBulkAction::make(),
                 // ]),
             ])
             ->headerActions([
@@ -311,5 +314,12 @@ class AttendeResource extends Resource
     public static function getNavigationBadgeColor(): ?string
     {
         return static::getModel()::count() > 10 ? 'warning' : 'primary';
+    }
+
+    public static function getEloquentQuery(): Builder {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 }

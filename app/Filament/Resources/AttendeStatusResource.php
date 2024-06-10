@@ -57,6 +57,7 @@ class AttendeStatusResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
+                Tables\Filters\TrashedFilter::make(),
                 Tables\Filters\Filter::make('created_at')
                     ->label('Created At')
                     ->form([
@@ -96,6 +97,7 @@ class AttendeStatusResource extends Resource
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make()
                         ->successNotificationTitle('Attende Status Deleted'),
+                    Tables\Actions\RestoreAction::make(),
                 ])
                     ->link()
                     ->label('Actions'),
@@ -103,7 +105,8 @@ class AttendeStatusResource extends Resource
             ->bulkActions([
                 // Tables\Actions\BulkActionGroup::make([
                 Tables\Actions\DeleteBulkAction::make(),
-                \AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction::make('Export Terpilih')
+                \AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction::make('Export Terpilih'),
+                Tables\Actions\RestoreBulkAction::make(),
                 // ]),
             ])
             ->headerActions([
@@ -136,5 +139,12 @@ class AttendeStatusResource extends Resource
     public static function getNavigationBadgeColor(): ?string
     {
         return static::getModel()::count() > 10 ? 'warning' : 'primary';
+    }
+
+    public static function getEloquentQuery(): Builder {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 }
