@@ -48,6 +48,7 @@ class ListAttendes extends ListRecords {
             'Ditolak' => \Filament\Resources\Components\Tab::make('Ditolak')
                 ->modifyQueryUsing(function ($query) {
                     return $query->where('approval_status_id', '3');
+                }),
         ];
     }
 }
