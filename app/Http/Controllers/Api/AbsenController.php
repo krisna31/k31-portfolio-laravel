@@ -81,7 +81,9 @@ class AbsenController extends Controller
             ->where('id', $request->code)
             ->first();
 
-        if ($absensi->start_date > now()->addHours($addHour) || $absensi->end_date < now()->addHours($addHour)) {
+        // return response()->json(['start_date' => $absensi->start_date, 'end_date' => $absensi->end_date, 'now' => now()->addHours($addHour), 'now()->addHours($addHour) >= $absensi->start_date' => now()->addHours($addHour) >= $absensi->start_date, 'now()->addHours($addHour) <= $absensi->end_date' => now()->addHours($addHour) <= $absensi->end_date]);
+
+        if (now()->addHours($addHour) >= $absensi->start_date && now()->addHours($addHour) <= $absensi->end_date) {
             return response()->json([
                 'error' => true,
                 'message' => 'Absensi belum dimulai atau sudah berakhir silahkan kontak admin jika anda merasa ini adalah kesalahan',
