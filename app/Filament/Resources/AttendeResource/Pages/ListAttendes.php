@@ -43,8 +43,7 @@ class ListAttendes extends ListRecords
                 ->modifyQueryUsing(function ($query) {
                     return $query->whereHas('attendeCode', function ($q) {
                         $q->where('start_date', '<=', now())
-                            ->where('end_date', '>=', now())
-                            ->where('attende_time', '>=', now());
+                            ->where('end_date', '>=', now());
                     });
                 }),
             'Minggu Ini' => \Filament\Resources\Components\Tab::make('Minggu Ini')
@@ -58,8 +57,7 @@ class ListAttendes extends ListRecords
                 ->modifyQueryUsing(function ($query) {
                     return $query->whereHas('attendeCode', function ($q) {
                         $q->whereBetween('start_date', [now()->startOfWeek(), now()->endOfWeek()])
-                            ->orWhereBetween('end_date', [now()->startOfWeek(), now()->endOfWeek()])
-                            ->orWhereBetween('attende_time', [now()->startOfWeek(), now()->endOfWeek()]);
+                            ->orWhereBetween('end_date', [now()->startOfWeek(), now()->endOfWeek()]);
                     });
                 }),
             'Bulan Ini' => \Filament\Resources\Components\Tab::make('Bulan Ini')
@@ -73,8 +71,7 @@ class ListAttendes extends ListRecords
                 ->modifyQueryUsing(function ($query) {
                     return $query->whereHas('attendeCode', function ($q) {
                         $q->whereBetween('start_date', [now()->startOfMonth(), now()->endOfMonth()])
-                            ->orWhereBetween('end_date', [now()->startOfMonth(), now()->endOfMonth()])
-                            ->orWhereBetween('attende_time', [now()->startOfMonth(), now()->endOfMonth()]);
+                            ->orWhereBetween('end_date', [now()->startOfMonth(), now()->endOfMonth()]);
                     });
                 }),
             'Menunggu Persetujuan' => \Filament\Resources\Components\Tab::make('Menunggu Persetujuan')
