@@ -15,19 +15,20 @@ class AbsenController extends Controller
     public function index(Request $request)
     {
         try {
+            $addHour = env('APP_ENV') === 'local' ? 0 : 7;
             // add one more column check that if absensi is open or not based on start_date and end_date
             $absensi = AttendeCode::with(['attendeType', 'user', 'defaultApprovalStatus'])
                 ->selectRaw(
                     '*,
                     (start_date < ? AND end_date > ?) as is_open,
                     (SELECT COUNT(*) >= 1 FROM attendes WHERE attendes.attende_code_id = attende_codes.id AND attendes.user_id = ?) as is_attended',
-                    [now()->addHours(7), now()->addHours(7), auth()->user()->id]
+                    [now()->addHours($addHour), now()->addHours($addHour), auth()->user()->id]
                 )
-                ->when($request->over === 'yes', function ($query) {
-                    $query->where('end_date', '<', now()->addHours(7));
+                ->when($request->over === 'yes', function ($query) use ($addHour) {
+                    $query->where('end_date', '<', now()->addHours($addHour));
                 })
-                ->when($request->over === 'no', function ($query) {
-                    $query->where('end_date', '>', now()->addHours(7));
+                ->when($request->over === 'no', function ($query) use ($addHour) {
+                    $query->where('end_date', '>', now()->addHours($addHour));
                 })
                 ->where(function ($query) {
                     $query->where('user_id', auth()->user()->id)
@@ -55,15 +56,18 @@ class AbsenController extends Controller
         $request->validate([
             'code' => 'required|exists:attende_codes,id',
             'address' => 'required|string',
-            'latitude' => 'required',
-            'longitude' => 'required',
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
             'photo' => 'required|image',
             'attende_status' => 'required|exists:attende_statuses,id',
         ]);
 
+        $addHour = env('APP_ENV') === 'local' ? 0 : 7;
+
         $existAbsensi = Attende::query()
             ->where('attende_code_id', $request->code)
             ->where('user_id', auth()->user()->id)
+            ->whereNotNull(['attende_time', 'approval_status_id', 'attende_status_id'])
             ->first();
 
         if ($existAbsensi) {
@@ -77,7 +81,7 @@ class AbsenController extends Controller
             ->where('id', $request->code)
             ->first();
 
-        if ($absensi->start_date > now()->addHours(7) || $absensi->end_date < now()->addHours(7)) {
+        if ($absensi->start_date > now()->addHours($addHour) || $absensi->end_date < now()->addHours($addHour)) {
             return response()->json([
                 'error' => true,
                 'message' => 'Absensi belum dimulai atau sudah berakhir silahkan kontak admin jika anda merasa ini adalah kesalahan',
@@ -94,19 +98,23 @@ class AbsenController extends Controller
         $photo = $request->file('photo');
         $photo->storeAs('public/attende-photos', $photo->hashName());
 
-        $absensi->attendes()->create([
-            'user_id' => auth()->user()->id,
-            'attende_code_id' => $request->code,
-            'approval_status_id' => $absensi->default_approval_status_id,
-            'attende_status_id' => $request->attende_status,
-            'attende_time' => now()->addHours(7),
-            'address' => $request->address,
-            'latitude' => $request->latitude,
-            'longitude' => $request->longitude,
-            'photo' => [
-                'attende-photos/' . $photo->hashName(),
-            ],
-        ]);
+        Attende::query()
+            ->updateOrCreate([
+                'attende_code_id' => $request->code,
+                'user_id' => auth()->user()->id,
+            ], [
+                'user_id' => auth()->user()->id,
+                'attende_code_id' => $request->code,
+                'approval_status_id' => $absensi->default_approval_status_id,
+                'attende_status_id' => $request->attende_status,
+                'attende_time' => now()->addHours($addHour),
+                'address' => $request->address,
+                'latitude' => $request->latitude,
+                'longitude' => $request->longitude,
+                'photo' => [
+                    'attende-photos/' . $photo->hashName(),
+                ],
+            ]);
 
         return response()->json([
             'error' => false,
