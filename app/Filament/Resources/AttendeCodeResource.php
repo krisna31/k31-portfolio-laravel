@@ -185,18 +185,22 @@ class AttendeCodeResource extends Resource
                 Tables\Columns\TextColumn::make('user.name')
                     ->label('For User')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('attendeType.name')
                     ->label('Attendence Type')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('defaultApprovalStatus.name')
                     ->label('Default Approval Status')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('description')
                     ->html()
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('start_date')
                     ->dateTime()
                     ->sortable()
@@ -208,13 +212,16 @@ class AttendeCodeResource extends Resource
                 Tables\Columns\TextColumn::make('radius')
                     ->label('Geofence Radius')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('latitude')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('longitude')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\IconColumn::make('status')
                     ->state(function (AttendeCode $record): string {
                         $now = Carbon::now();
@@ -239,7 +246,8 @@ class AttendeCodeResource extends Resource
                         'between_start_and_end' => 'success',
                         'after_end' => 'warning',
                         default => 'gray',
-                    }),
+                    })
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

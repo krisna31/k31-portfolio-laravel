@@ -49,17 +49,20 @@ class NoteResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('title')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('body')
                     ->label(__('Content'))
                     ->searchable()
                     ->html()
                     ->listWithLineBreaks()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('tags.name')
                     ->searchable()
                     ->badge()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('created_at')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true)

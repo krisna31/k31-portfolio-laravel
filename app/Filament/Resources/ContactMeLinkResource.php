@@ -30,15 +30,19 @@ class ContactMeLinkResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('portfolio_id')
                     ->required()
-                    ->numeric(),
+                    ->numeric()
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Forms\Components\TextInput::make('title')
-                    ->required(),
+                    ->required()
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Forms\Components\Textarea::make('link')
-                    ->required(),
+                    ->required()
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Forms\Components\FileUpload::make('icon')
                     ->image()
                     ->imageEditor()
-                    ->required(),
+                    ->required()
+                    ->toggleable(isToggledHiddenByDefault: false),
             ]);
     }
 

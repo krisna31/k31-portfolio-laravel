@@ -47,10 +47,12 @@ class AttendeCodeResource extends Resource
                 Tables\Columns\TextColumn::make('attendeType.name')
                     ->label('Attendence Type')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('description')
                     ->html()
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('start_date')
                     ->dateTime()
                     ->sortable()
@@ -63,7 +65,8 @@ class AttendeCodeResource extends Resource
                     ->label('Absence Status')
                     ->default('Belum Melakukan Absen')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\IconColumn::make('status')
                     ->label('Absence Open?')
                     ->default('Belum Melakukan Absen')
