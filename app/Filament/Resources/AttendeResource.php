@@ -131,8 +131,14 @@ class AttendeResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('attende_time')
-                    ->dateTime()
+                    // ->dateTime()
                     ->sortable()
+                    ->default('empty')
+                    ->formatStateUsing(fn(string $state): string => $state != 'empty' ? Carbon::parse($state)->format('d-m-Y H:i:s') . " (" . Carbon::parse($state)->diffForHumans() . ")" : 'Belum Presensi')
+                    ->color(fn(string $state): string => match ($state) {
+                        'empty' => 'danger',
+                        default => '',
+                    })
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('attendeCode.id')
                     ->label('Attende Id')
@@ -142,11 +148,21 @@ class AttendeResource extends Resource
                 Tables\Columns\TextColumn::make('approvalStatus.name')
                     ->label('Approval Status')
                     ->searchable()
+                    ->default('Belum Presensi')
+                    ->color(fn(string $state): string => match ($state) {
+                        'Belum Presensi' => 'danger',
+                        default => '',
+                    })
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('attendeStatus.name')
                     ->label('Attendance Status')
                     ->searchable()
+                    ->default('Belum Presensi')
+                    ->color(fn(string $state): string => match ($state) {
+                        'Belum Presensi' => 'danger',
+                        default => '',
+                    })
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\ImageColumn::make('photo')
@@ -183,6 +199,31 @@ class AttendeResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
+                Tables\Filters\TernaryFilter::make('exist_attende')
+                    ->label('Status Presensi')
+                    ->placeholder('Semua')
+                    ->trueLabel('Sudah Melakukan Presensi')
+                    ->falseLabel('Belum Melakukan Presensi')
+                    ->queries(
+                        true: fn(Builder $query) => $query->whereNotNull(['attende_time', 'approval_status_id', 'attende_status_id']),
+                        false: fn(Builder $query) => $query->whereNull(['attende_time', 'approval_status_id', 'attende_status_id']),
+                        blank: fn(Builder $query) => $query,
+                    )
+                    ->columnSpanFull(),
+                Tables\Filters\TrashedFilter::make()
+                    ->columnSpanFull(),
+                // filter by user
+                Tables\Filters\SelectFilter::make('user_id')
+                    ->label('User')
+                    ->relationship('user', 'name')
+                    ->options(
+                        fn(): array => \App\Models\User::pluck('name', 'id')->toArray(),
+                    )
+                    ->preload()
+                    ->searchable()
+                    ->placeholder('All Users')
+                    ->columnSpanFull()
+                    ->multiple(),
                 Tables\Filters\Filter::make('created_at')
                     ->label('Created At')
                     ->form([
@@ -215,22 +256,21 @@ class AttendeResource extends Resource
                         }
 
                         return $indicators;
-                    }),
-                // filter by user
-                Tables\Filters\SelectFilter::make('user_id')
-                    ->label('User')
-                    ->relationship('user', 'name')
-                    ->options(
-                        fn(): array => \App\Models\User::pluck('name', 'id')->toArray(),
-                    )
-                    ->preload()
-                    ->searchable()
-                    ->placeholder('All Users')
-                    ->columnSpan(4)
-                    ->multiple(),
-                Tables\Filters\TrashedFilter::make(),
+                    })
+                    ->columnSpanFull(),
             ])
             ->actions([
+                Tables\Actions\Action::make('Informasi')
+                    ->modalContent(
+                        fn(Attende $record): \Illuminate\Contracts\View\View => view(
+                            'filament.admin.attende.info',
+                            ['record' => $record],
+                        )
+                    )
+                    ->hidden(fn(Attende $record): bool => $record->approval_status_id == 1 || $record->approval_status_id == null)
+                    ->icon('heroicon-o-information-circle')
+                    ->color('info')
+                    ->label('Info'),
                 Tables\Actions\Action::make('Verifikasi')
                     ->form([
                         Forms\Components\Select::make('approval_status_id')
@@ -242,6 +282,7 @@ class AttendeResource extends Resource
                             ->preload()
                         // ->default(2) // default to approved disetujui
                     ])
+                    ->visible(fn(Attende $record): bool => $record->approval_status_id == 1 || $record->approval_status_id == null)
                     ->fillForm(fn(Attende $record): array => [
                         'approval_status_id' => $record->approval_status_id,
                     ])
@@ -316,7 +357,8 @@ class AttendeResource extends Resource
         return static::getModel()::count() > 10 ? 'warning' : 'primary';
     }
 
-    public static function getEloquentQuery(): Builder {
+    public static function getEloquentQuery(): Builder
+    {
         return parent::getEloquentQuery()
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,

@@ -3,12 +3,14 @@
 namespace App\Filament\Resources\AttendeCodeResource\Pages;
 
 use App\Filament\Resources\AttendeCodeResource;
+use App\Models\Attende;
+use App\Models\User;
 use DateInterval;
 use DatePeriod;
 use DateTime;
-use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class CreateAttendeCode extends CreateRecord
 {
@@ -57,13 +59,85 @@ class CreateAttendeCode extends CreateRecord
 
     protected function handleRecordCreation(array $data): Model
     {
-        if ($this->isCreateBulk) {
-            $this->isCreateBulk = false;
-            static::getModel()::insert($data);
+        DB::beginTransaction();
 
-            return static::getModel()::first();
+        try {
+            if ($this->isCreateBulk) {
+                $this->isCreateBulk = false;
+                static::getModel()::insert($data);
+
+                foreach ($data as $item) {
+                    if ($item['user_id'] == 0) {
+                        $users = User::where('id', '!=', 0)->get();
+                        foreach ($users as $user) {
+                            Attende::create([
+                                'user_id' => $user->id,
+                                'attende_code_id' => $item['id'],
+                                'approval_status_id' => null,
+                                'attende_status_id' => null,
+                                'attende_time' => null,
+                                'address' => null,
+                                'photo' => null,
+                                'latitude' => null,
+                                'longitude' => null,
+                            ]);
+                        }
+                    } else {
+                        Attende::create([
+                            'user_id' => $item['user_id'],
+                            'attende_code_id' => $item['id'],
+                            'approval_status_id' => null,
+                            'attende_status_id' => null,
+                            'attende_time' => null,
+                            'address' => null,
+                            'photo' => null,
+                            'latitude' => null,
+                            'longitude' => null,
+                        ]);
+                    }
+                }
+
+                DB::commit();
+                return static::getModel()::first();
+            }
+
+            $insertedData = static::getModel()::create($data);
+
+            if ($insertedData['user_id'] == 0) {
+                $users = User::where('id', '!=', 0)->get();
+                foreach ($users as $user) {
+                    Attende::create([
+                        'user_id' => $user->id,
+                        'attende_code_id' => $insertedData['id'],
+                        'approval_status_id' => null,
+                        'attende_status_id' => null,
+                        'attende_time' => null,
+                        'address' => null,
+                        'photo' => null,
+                        'latitude' => null,
+                        'longitude' => null,
+                    ]);
+                }
+            } else {
+                Attende::create([
+                    'user_id' => $insertedData['user_id'],
+                    'attende_code_id' => $insertedData['id'],
+                    'approval_status_id' => null,
+                    'attende_status_id' => null,
+                    'attende_time' => null,
+                    'address' => null,
+                    'photo' => null,
+                    'latitude' => null,
+                    'longitude' => null,
+                ]);
+            }
+
+            DB::commit();
+            return $insertedData;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
         }
-        return static::getModel()::create($data);
     }
 
     protected function getRedirectUrl(): string
