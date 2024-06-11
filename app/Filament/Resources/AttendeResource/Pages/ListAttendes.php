@@ -37,6 +37,17 @@ class ListAttendes extends ListRecords {
                 ->modifyQueryUsing(function ($query) {
                     return $query->whereMonth('created_at', now()->month);
                 }),
+            'Menunggu Persetujuan' => \Filament\Resources\Components\Tab::make('Menunggu Persetujuan')
+                ->modifyQueryUsing(function ($query) {
+                    return $query->where('approval_status_id', '1');
+                }),
+            'Disetujui' => \Filament\Resources\Components\Tab::make('Disetujui')
+                ->modifyQueryUsing(function ($query) {
+                    return $query->where('approval_status_id', '2');
+                }),
+            'Ditolak' => \Filament\Resources\Components\Tab::make('Ditolak')
+                ->modifyQueryUsing(function ($query) {
+                    return $query->where('approval_status_id', '3');
         ];
     }
 }
