@@ -20,8 +20,8 @@ class AbsenController extends Controller
             $absensi = AttendeCode::with(['attendeType', 'user', 'defaultApprovalStatus'])
                 ->selectRaw(
                     '*,
-                    (start_date < ? AND end_date > ?) as is_open,
-                    (SELECT COUNT(*) >= 1 FROM attendes WHERE attendes.attende_code_id = attende_codes.id AND attendes.user_id = ?) as is_attended',
+                    (? >= start_date AND ? < end_date) as is_open,
+                    (SELECT COUNT(*) >= 1 FROM attendes WHERE attendes.attende_code_id = attende_codes.id AND attendes.user_id = ? AND attende_time IS NOT NULL AND approval_status_id IS NOT NULL AND attende_status_id IS NOT NULL) as is_attended',
                     [now()->addHours($addHour), now()->addHours($addHour), auth()->user()->id]
                 )
                 ->when($request->over === 'yes', function ($query) use ($addHour) {
