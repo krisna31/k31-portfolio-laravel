@@ -36,15 +36,15 @@ class ListAttendes extends ListRecords
                 ->badge(function () {
                     return \App\Models\Attende::whereHas('attendeCode', function ($q) {
                         $q->where('start_date', '<=', now())
-                            ->orWhere('end_date', '>=', now());
+                            ->where('end_date', '>=', now());
                     })
                         ->count();
                 })
                 ->modifyQueryUsing(function ($query) {
                     return $query->whereHas('attendeCode', function ($q) {
                         $q->where('start_date', '<=', now())
-                            ->orWhere('end_date', '>=', now())
-                            ->orWhere('attende_time', '>=', now());
+                            ->where('end_date', '>=', now())
+                            ->where('attende_time', '>=', now());
                     });
                 }),
             'Minggu Ini' => \Filament\Resources\Components\Tab::make('Minggu Ini')
