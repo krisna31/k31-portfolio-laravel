@@ -14,8 +14,8 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignUuid('attende_code_id')->references('id')->on('attende_codes');
-            $table->foreignId('approval_status_id')->references('id')->on('approval_statuses');
-            $table->foreignId('attende_status_id')->references('id')->on('attende_statuses');
+            $table->foreignId('approval_status_id')->references('id')->on('approval_statuses')->nullable();
+            $table->foreignId('attende_status_id')->references('id')->on('attende_statuses')->nullable();
             $table->datetime('attende_time')->nullable();
             $table->text('address')->nullable();
             $table->text('photo');
