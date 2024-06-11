@@ -23,7 +23,19 @@ class ListAttendes extends ListRecords {
         return [
             'Semua' => \Filament\Resources\Components\Tab::make('Semua')
                 ->modifyQueryUsing(function ($query) {
-                    return $query->whereDate('created_at', '=', now()->toDateString());
+                    return $query;
+                }),
+            'Hari Ini' => \Filament\Resources\Components\Tab::make('Hari Ini')
+                ->modifyQueryUsing(function ($query) {
+                    return $query->whereDate('created_at', now());
+                }),
+            'Minggu Ini' => \Filament\Resources\Components\Tab::make('Minggu Ini')
+                ->modifyQueryUsing(function ($query) {
+                    return $query->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()]);
+                }),
+            'Bulan Ini' => \Filament\Resources\Components\Tab::make('Bulan Ini')
+                ->modifyQueryUsing(function ($query) {
+                    return $query->whereMonth('created_at', now()->month);
                 }),
         ];
     }
