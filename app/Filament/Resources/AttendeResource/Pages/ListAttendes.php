@@ -21,7 +21,7 @@ class ListAttendes extends ListRecords {
 
     public function getTabs(): array {
         return [
-            'Semua' => \Filament\Forms\Components\Tabs\Tab::make('Semua')
+            'Semua' => \Filament\Resources\Components\Tab::make('Semua')
                 ->modifyQueryUsing(function ($query) {
                     return $query->whereDate('created_at', '=', now()->toDateString());
                 }),
