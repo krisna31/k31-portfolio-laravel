@@ -109,7 +109,7 @@ class AbsenController extends Controller
                 'attende_code_id' => $request->code,
                 'approval_status_id' => $absensi->default_approval_status_id,
                 'attende_status_id' => $request->attende_status,
-                'attende_time' => now()->addHours($addHour),
+                'attende_time' => now(),
                 'address' => $request->address,
                 'latitude' => $request->latitude,
                 'longitude' => $request->longitude,
