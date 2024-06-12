@@ -15,7 +15,7 @@ class AbsenController extends Controller
     public function index(Request $request)
     {
         try {
-            $addHour = env('APP_ENV') === 'local' ? 0 : 7;
+            $addHour = env('APP_ENV') === 'local' ? 0 : 0;
             // add one more column check that if absensi is open or not based on start_date and end_date
             $absensi = AttendeCode::with(['attendeType', 'user', 'defaultApprovalStatus'])
                 ->selectRaw(
@@ -34,6 +34,7 @@ class AbsenController extends Controller
                     $query->where('user_id', auth()->user()->id)
                         ->orWhere('user_id', 0);
                 })
+                ->orderBy('start_date', 'desc')
                 ->orderBy('is_open', 'desc')
                 ->get();
             // ->paginate(10);
