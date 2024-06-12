@@ -150,7 +150,7 @@ class AttendeCodeResource extends Resource
                 Forms\Components\Select::make('location')
                     ->label('Location')
                     ->options([
-                        '-2.944841#104.756658' => 'Tempat Kerja',
+                        '-2.944841#104.756658' => 'Kantor PT Anugerah Alam Konstruksi',
                     ])
                     ->requiredWith('radius')
                     ->native(false)
