@@ -2,29 +2,26 @@
 
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Form;
-use Filament\Pages\Dashboard as BaseDashboard;
 use Filament\Pages\Dashboard\Actions\FilterAction;
 use Filament\Pages\Dashboard\Concerns\HasFiltersAction;
 
-class Dashboard extends BaseDashboard
+class Dashboard extends \Filament\Pages\Dashboard
 {
     use HasFiltersAction;
 
-    protected function getHeading(): string
+    public function getHeading(): string
     {
-        $company = auth()->user()->company->name;
-        return "{$company}'s Dashboard";
+        return "Testing's Dashboard";
     }
 
-    // protected function getHeaderActions(): array
-    // {
-    //     return [
-    //         FilterAction::make()
-    //             ->form([
-    //                 DatePicker::make('startDate'),
-    //                 DatePicker::make('endDate'),
-    //                 // ...
-    //             ]),
-    //     ];
-    // }
+    public function getHeaderActions(): array
+    {
+        return [
+            FilterAction::make()
+                ->form([
+                    DatePicker::make('startDate'),
+                    DatePicker::make('endDate'),
+                ]),
+        ];
+    }
 }
