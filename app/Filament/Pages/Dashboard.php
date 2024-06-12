@@ -10,7 +10,7 @@ class Dashboard extends \Filament\Pages\Dashboard {
 
     public function getHeaderActions(): array {
         return [
-            \Filament\Tables\Actions\Action::make('Backup Database')
+            \Filament\Actions\Action::make('Backup Database')
                 ->button()
                 ->icon('heroicon-o-information-circle')
                 ->color('info')
