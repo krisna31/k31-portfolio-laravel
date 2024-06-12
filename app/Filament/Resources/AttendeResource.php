@@ -267,7 +267,7 @@ class AttendeResource extends Resource
                             ['record' => $record],
                         )
                     )
-                    ->hidden(fn(Attende $record): bool => $record->approval_status_id == 1 || $record->approval_status_id == null)
+                    ->hidden(fn(Attende $record): bool => $record->attende_time != null && $record->attende_status_id != null && $record->approval_status_id != null && $record->approval_status_id == 1)
                     ->icon('heroicon-o-information-circle')
                     ->color('info')
                     ->label('Info'),
@@ -282,7 +282,7 @@ class AttendeResource extends Resource
                             ->preload()
                         // ->default(2) // default to approved disetujui
                     ])
-                    ->visible(fn(Attende $record): bool => $record->approval_status_id == 1 || $record->approval_status_id == null)
+                    ->visible(fn(Attende $record): bool => $record->attende_time != null && $record->attende_status_id != null && $record->approval_status_id != null && $record->approval_status_id == 1)
                     ->fillForm(fn(Attende $record): array => [
                         'approval_status_id' => $record->approval_status_id,
                     ])
