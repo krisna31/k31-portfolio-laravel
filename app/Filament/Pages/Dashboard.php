@@ -38,11 +38,11 @@ class Dashboard extends \Filament\Pages\Dashboard {
                             // Get the latest file
                             $latestBackupFile = $backupFiles[0];
 
-                            Notification::make()
-                                ->title('Backup successful')
-                                ->body('Backup file created successfully')
-                                ->success()
-                                ->send();
+                            // Notification::make()
+                            //     ->title('Backup successful')
+                            //     ->body('Backup file created successfully')
+                            //     ->success()
+                            //     ->send();
 
                             // Return the download response
                             return response()->download($latestBackupFile)->deleteFileAfterSend(true);
