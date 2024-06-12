@@ -270,6 +270,7 @@ class AttendeResource extends Resource
                     ->hidden(fn(Attende $record): bool => $record->attende_time != null && $record->attende_status_id != null && $record->approval_status_id != null && $record->approval_status_id == 1)
                     ->icon('heroicon-o-information-circle')
                     ->color('info')
+                    ->modalSubmitAction(false)
                     ->label('Info'),
                 Tables\Actions\Action::make('Verifikasi')
                     ->form([
