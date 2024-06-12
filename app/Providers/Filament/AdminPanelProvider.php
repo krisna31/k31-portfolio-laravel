@@ -102,7 +102,7 @@ class AdminPanelProvider extends PanelProvider
                     ...UserResource::getNavigationItems(),
                     \Filament\Navigation\MenuItem::make()
                         ->label('Lock session')
-                        ->postAction(fn (): string => route('lock-session'))
+                        ->postAction(fn (): string => dd('test')),
                 ]);
             })
             ->authMiddleware([
