@@ -2,11 +2,9 @@
 
 namespace App\Filament\Pages;
 
-use Alert;
+use Filament\Notifications\Notification;
 use Artisan;
 use Log;
-use Spatie\Backup\Helpers\Format;
-use Storage;
 
 class Dashboard extends \Filament\Pages\Dashboard {
     public function getHeading(): string {
@@ -25,11 +23,18 @@ class Dashboard extends \Filament\Pages\Dashboard {
                         $output = Artisan::output();
                         // log the results
                         Log::info("Backpack\BackupManager -- new backup started from admin interface \r\n" . $output);
-                        return Alert::success('Backup Database Successful', 'The database has been successfully backed up.');
+                        return Notification::make()
+                            ->title('Backup successfully')
+                            ->success()
+                            ->send();
                     } catch (Exception $e) {
                         // log the error
                         Log::error("Backpack\BackupManager -- new backup failed from admin interface \r\n" . $e->getMessage());
-                        return Alert::error('Backup Database Failed', 'An error occurred while trying to backup the database. Please check the logs for more information.');
+                        return Notification::make()
+                            ->title('Backup failed')
+                            ->body($e->getMessage())
+                            ->error()
+                            ->send();
                     }
                 })
                 ->icon('heroicon-o-circle-stack')
