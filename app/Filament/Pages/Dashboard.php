@@ -3,6 +3,7 @@
 namespace App\Filament\Pages;
 
 use Filament\Notifications\Notification;
+use Illuminate\Support\Facades\File;
 use Artisan;
 use Log;
 
@@ -16,17 +17,36 @@ class Dashboard extends \Filament\Pages\Dashboard {
             \Filament\Actions\Action::make('Backup Database')
                 ->button()
                 ->requiresConfirmation()
-                ->action(function() {
+                ->action(function () {
                     try {
                         // start the backup process
                         Artisan::call('backup:run', ['--only-db' => 'true']);
                         $output = Artisan::output();
                         // log the results
                         Log::info("Backpack\BackupManager -- new backup started from admin interface \r\n" . $output);
-                        return Notification::make()
-                            ->title('Backup successfully')
-                            ->success()
-                            ->send();
+
+                        // Get all files in the directory
+                        $backupFiles = File::files(storage_path('app/yoklah-absen'));
+
+                        // Sort files by modified time, descending
+                        usort($backupFiles, function ($a, $b) {
+                            return -1 * strcmp($a->getMTime(), $b->getMTime());
+                        });
+
+                        // Check if there are any files
+                        if (count($backupFiles) > 0) {
+                            // Get the latest file
+                            $latestBackupFile = $backupFiles[0];
+
+                            // Return the download response
+                            return response()->download($latestBackupFile)->deleteFileAfterSend(true);
+                        } else {
+                            // If no files exist, return a notification
+                            return Notification::make()
+                                ->title('Backup failed')
+                                ->error()
+                                ->send();
+                        }
                     } catch (Exception $e) {
                         // log the error
                         Log::error("Backpack\BackupManager -- new backup failed from admin interface \r\n" . $e->getMessage());
