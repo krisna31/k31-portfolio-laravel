@@ -2,6 +2,11 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\Settings;
+use App\Filament\Resources\UserResource;
+use Filament\Navigation\NavigationBuilder;
+use Filament\Navigation\NavigationItem;
+use Filament\Pages\Dashboard;
 use App\Http\Middleware\OnlySuperAdmin;
 use Filament\Forms\Components\FileUpload;
 use Filament\Http\Middleware\Authenticate;
@@ -89,6 +94,16 @@ class AdminPanelProvider extends PanelProvider
                 DispatchServingFilamentEvent::class,
                 \Hasnayeen\Themes\Http\Middleware\SetTheme::class
             ])
+            ->navigation(function (NavigationBuilder $builder): NavigationBuilder {
+                return $builder->items([
+                    NavigationItem::make('Dashboard')
+                        ->icon('heroicon-o-home')
+                        ->isActiveWhen(fn (): bool => request()->routeIs('filament.admin.pages.dashboard'))
+                        ->url(fn (): string => Dashboard::getUrl()),
+                    ...UserResource::getNavigationItems(),
+                    ...Settings::getNavigationItems(),
+                ]);
+            })
             ->authMiddleware([
                 Authenticate::class,
                 OnlySuperAdmin::class,
