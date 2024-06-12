@@ -92,9 +92,9 @@ class AdminPanelProvider extends PanelProvider {
                 DispatchServingFilamentEvent::class,
                 \Hasnayeen\Themes\Http\Middleware\SetTheme::class
             ])
-            ->userMenuItems([
-                'logout' => MenuItem::make()->label('Log out'),
-            ])
+            // ->userMenuItems([
+            //     'logout' => MenuItem::make()->label('Log out'),
+            // ])
             ->authMiddleware([
                 Authenticate::class,
                 OnlySuperAdmin::class,
