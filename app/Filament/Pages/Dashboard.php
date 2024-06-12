@@ -2,27 +2,19 @@
 
 namespace App\Filament\Pages;
 
-use Filament\Forms\Components\DatePicker;
-use Filament\Pages\Dashboard\Actions\FilterAction;
-use Filament\Pages\Dashboard\Concerns\HasFiltersAction;
 
-class Dashboard extends \Filament\Pages\Dashboard
-{
-    use HasFiltersAction;
-
-    public function getHeading(): string
-    {
-        return "Testing's Dashboard";
+class Dashboard extends \Filament\Pages\Dashboard {
+    public function getHeading(): string {
+        return "PT Anugerah Alam Konstruksi - Dashboard";
     }
 
-    public function getHeaderActions(): array
-    {
+    public function getHeaderActions(): array {
         return [
-            FilterAction::make()
-                ->form([
-                    DatePicker::make('startDate'),
-                    DatePicker::make('endDate'),
-                ]),
+            Tables\Actions\Action::make('Backup Database')
+                ->button()
+                ->icon('heroicon-o-information-circle')
+                ->color('info')
+                ->label('Backup Database'),
         ];
     }
 }
