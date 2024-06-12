@@ -93,9 +93,7 @@ class AdminPanelProvider extends PanelProvider {
                 \Hasnayeen\Themes\Http\Middleware\SetTheme::class
             ])
             ->userMenuItems([
-                MenuItem::make()
-                    ->label('Lock session')
-                    ->postAction(fn (): string => dd('test'))
+                'logout' => MenuItem::make()->label('Log out'),
             ])
             ->authMiddleware([
                 Authenticate::class,
