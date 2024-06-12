@@ -2,7 +2,6 @@
 
 namespace App\Providers\Filament;
 
-use App\Filament\Pages\Settings;
 use App\Filament\Resources\UserResource;
 use Filament\Navigation\NavigationBuilder;
 use Filament\Navigation\NavigationItem;
@@ -101,7 +100,6 @@ class AdminPanelProvider extends PanelProvider
                         ->isActiveWhen(fn (): bool => request()->routeIs('filament.admin.pages.dashboard'))
                         ->url(fn (): string => Dashboard::getUrl()),
                     ...UserResource::getNavigationItems(),
-                    ...Settings::getNavigationItems(),
                 ]);
             })
             ->authMiddleware([
