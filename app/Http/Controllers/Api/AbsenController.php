@@ -10,10 +10,8 @@ use App\Models\AttendeCode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class AbsenController extends Controller
-{
-    public function index(Request $request)
-    {
+class AbsenController extends Controller {
+    public function index(Request $request) {
         try {
             $addHour = env('APP_ENV') === 'local' ? 0 : 0;
             // add one more column check that if absensi is open or not based on start_date and end_date
@@ -52,8 +50,7 @@ class AbsenController extends Controller
         }
     }
 
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $request->validate([
             'code' => 'required|exists:attende_codes,id',
             'address' => 'required|string',
@@ -65,29 +62,23 @@ class AbsenController extends Controller
 
         $addHour = env('APP_ENV') === 'local' ? 0 : 0;
 
-        $existAbsensi = Attende::query()
-            ->where('attende_code_id', $request->code)
-            ->where('user_id', auth()->user()->id)
-            ->whereNotNull(['attende_time', 'approval_status_id', 'attende_status_id'])
-            ->first();
+        $absensi = AttendeCode::query()
+            ->selectRaw(
+                '*,
+                    (? >= start_date AND ? < end_date) as is_open,
+                    (SELECT COUNT(*) >= 1 FROM attendes WHERE attendes.attende_code_id = attende_codes.id AND attendes.user_id = ? AND attende_time IS NOT NULL AND approval_status_id IS NOT NULL AND attende_status_id IS NOT NULL) as is_attended',
+                [now()->addHours($addHour), now()->addHours($addHour), auth()->user()->id]
+            )
+            ->firstWhere('id', $request->code);
 
-        if ($existAbsensi) {
+        if ($absensi->is_attended === 1) {
             return response()->json([
                 'error' => true,
                 'message' => 'Anda sudah melakukan absensi',
             ], 403);
         }
 
-        $absensi = AttendeCode::query()
-                ->selectRaw(
-                    '*,
-                    (? >= start_date AND ? < end_date) as is_open,
-                    (SELECT COUNT(*) >= 1 FROM attendes WHERE attendes.attende_code_id = attende_codes.id AND attendes.user_id = ? AND attende_time IS NOT NULL AND approval_status_id IS NOT NULL AND attende_status_id IS NOT NULL) as is_attended',
-                    [now()->addHours($addHour), now()->addHours($addHour), auth()->user()->id]
-                )
-                ->firstWhere('id', $request->code);
-
-        // return response()->json(['start_date' => $absensi->start_date, 'end_date' => $absensi->end_date, 'now' => now()->addHours($addHour), 'now()->addHours($addHour) >= $absensi->start_date' => now()->addHours($addHour) >= $absensi->start_date, 'now()->addHours($addHour) <= $absensi->end_date' => now()->addHours($addHour) <= $absensi->end_date]);
+        // return response()->json([ 'data' => $absensi, ]);
 
         if ($absensi->is_open === 0) {
             return response()->json([
@@ -130,8 +121,7 @@ class AbsenController extends Controller
         ], 201);
     }
 
-    public function getAbsenHistory()
-    {
+    public function getAbsenHistory() {
         try {
             $absensi = Attende::with(['user', 'attendeCode', 'approvalStatus', 'attendeStatus'])
                 ->where('user_id', auth()->user()->id)
