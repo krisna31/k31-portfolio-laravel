@@ -1,4 +1,4 @@
-@if ($record->attende_time != null && $record->attende_status_id != null && $record->approval_status_id != null)
+@if ($record->attende_time == null && $record->attende_status_id == null && $record->approval_status_id == null)
     <div>
         <h1>Pegawai ini <b>{{ str()->upper("belum melakukan presensi") }}</b>
         </h1>
