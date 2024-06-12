@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use Filament\Navigation\MenuItem;
 use App\Filament\Resources\UserResource;
 use Filament\Navigation\NavigationBuilder;
 use Filament\Navigation\NavigationItem;
@@ -27,10 +28,8 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Jeffgreco13\FilamentBreezy\BreezyCore;
 use ShuvroRoy\FilamentSpatieLaravelBackup\FilamentSpatieLaravelBackupPlugin;
 
-class AdminPanelProvider extends PanelProvider
-{
-    public function panel(Panel $panel): Panel
-    {
+class AdminPanelProvider extends PanelProvider {
+    public function panel(Panel $panel): Panel {
         return $panel
             ->default()
             ->id('admin')
@@ -93,12 +92,11 @@ class AdminPanelProvider extends PanelProvider
                 DispatchServingFilamentEvent::class,
                 \Hasnayeen\Themes\Http\Middleware\SetTheme::class
             ])
-            // ->userMenuItems([
-            //     MenuItem::make()
-            //         ->label('Settings')
-            //         ->url(fn (): string => Settings::getUrl())
-            //         ->icon('heroicon-o-cog-6-tooth'),
-            // ])
+            ->userMenuItems([
+                MenuItem::make()
+                    ->label('Lock session')
+                    ->postAction(fn (): string => dd('test'))
+            ])
             ->authMiddleware([
                 Authenticate::class,
                 OnlySuperAdmin::class,
