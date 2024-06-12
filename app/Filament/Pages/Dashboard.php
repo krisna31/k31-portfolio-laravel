@@ -12,7 +12,12 @@ class Dashboard extends \Filament\Pages\Dashboard {
         return [
             \Filament\Actions\Action::make('Backup Database')
                 ->button()
-                ->icon('heroicon-o-information-circle')
+                ->requiresConfirmation()
+                ->action(function() {
+                    dd('Backup Database');
+                    \Artisan::call('backup:run');
+                })
+                ->icon('heroicon-o-circle-stack')
                 ->color('info')
                 ->label('Backup Database'),
         ];
