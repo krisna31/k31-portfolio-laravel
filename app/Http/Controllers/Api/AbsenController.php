@@ -63,7 +63,7 @@ class AbsenController extends Controller
             'attende_status' => 'required|exists:attende_statuses,id',
         ]);
 
-        $addHour = env('APP_ENV') === 'local' ? 0 : 7;
+        $addHour = env('APP_ENV') === 'local' ? 0 : 0;
 
         $existAbsensi = Attende::query()
             ->where('attende_code_id', $request->code)
@@ -79,12 +79,17 @@ class AbsenController extends Controller
         }
 
         $absensi = AttendeCode::query()
-            ->where('id', $request->code)
-            ->first();
+                ->selectRaw(
+                    '*,
+                    (? >= start_date AND ? < end_date) as is_open,
+                    (SELECT COUNT(*) >= 1 FROM attendes WHERE attendes.attende_code_id = attende_codes.id AND attendes.user_id = ? AND attende_time IS NOT NULL AND approval_status_id IS NOT NULL AND attende_status_id IS NOT NULL) as is_attended',
+                    [now()->addHours($addHour), now()->addHours($addHour), auth()->user()->id]
+                )
+                ->firstWhere('id', $request->code);
 
         // return response()->json(['start_date' => $absensi->start_date, 'end_date' => $absensi->end_date, 'now' => now()->addHours($addHour), 'now()->addHours($addHour) >= $absensi->start_date' => now()->addHours($addHour) >= $absensi->start_date, 'now()->addHours($addHour) <= $absensi->end_date' => now()->addHours($addHour) <= $absensi->end_date]);
 
-        if (now()->addHours($addHour) >= $absensi->start_date && now()->addHours($addHour) <= $absensi->end_date) {
+        if ($absensi->is_open === 0) {
             return response()->json([
                 'error' => true,
                 'message' => 'Absensi belum dimulai atau sudah berakhir silahkan kontak admin jika anda merasa ini adalah kesalahan',
