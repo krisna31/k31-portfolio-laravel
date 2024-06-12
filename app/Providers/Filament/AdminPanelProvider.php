@@ -93,18 +93,12 @@ class AdminPanelProvider extends PanelProvider
                 DispatchServingFilamentEvent::class,
                 \Hasnayeen\Themes\Http\Middleware\SetTheme::class
             ])
-            ->navigation(function (NavigationBuilder $builder): NavigationBuilder {
-                return $builder->items([
-                    NavigationItem::make('Dashboard')
-                        ->icon('heroicon-o-home')
-                        ->isActiveWhen(fn (): bool => request()->routeIs('filament.admin.pages.dashboard'))
-                        ->url(fn (): string => Dashboard::getUrl()),
-                    ...UserResource::getNavigationItems(),
-                    \Filament\Navigation\MenuItem::make()
-                        ->label('Lock session')
-                        ->postAction(fn (): string => dd('test')),
-                ]);
-            })
+            // ->userMenuItems([
+            //     MenuItem::make()
+            //         ->label('Settings')
+            //         ->url(fn (): string => Settings::getUrl())
+            //         ->icon('heroicon-o-cog-6-tooth'),
+            // ])
             ->authMiddleware([
                 Authenticate::class,
                 OnlySuperAdmin::class,
