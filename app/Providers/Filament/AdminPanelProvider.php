@@ -100,6 +100,9 @@ class AdminPanelProvider extends PanelProvider
                         ->isActiveWhen(fn (): bool => request()->routeIs('filament.admin.pages.dashboard'))
                         ->url(fn (): string => Dashboard::getUrl()),
                     ...UserResource::getNavigationItems(),
+                    \Filament\Navigation\MenuItem::make()
+                        ->label('Lock session')
+                        ->postAction(fn (): string => route('lock-session'))
                 ]);
             })
             ->authMiddleware([
