@@ -34,7 +34,7 @@ class AbsenController extends Controller
                     $query->where('user_id', auth()->user()->id)
                         ->orWhere('user_id', 0);
                 })
-                ->orderBy('start_date', 'desc')
+                ->orderBy('start_date', 'asc')
                 ->orderBy('is_open', 'desc')
                 ->get();
             // ->paginate(10);
