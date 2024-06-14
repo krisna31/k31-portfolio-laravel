@@ -348,6 +348,7 @@ class AttendeResource extends Resource {
                     // ->withHiddenColumns()
                     ->formatStates([
                         'photo' => function (?\Illuminate\Database\Eloquent\Model $record) {
+                            dd($record);
                             return count($record->photo) . ' Foto';
                         },
                     ])
