@@ -69,7 +69,7 @@ class AttendeResource extends Resource {
                     ->preload()
                     ->default(1)
                     ->columnSpanFull()
-                    ->disabled(fn (string $operation): bool => $operation === 'edit')
+                    // ->disabled(fn (string $operation): bool => $operation === 'edit')
                     ->createOptionForm(
                         fn (Form $form)
                         => ApprovalStatusResource::form($form),
