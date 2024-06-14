@@ -300,8 +300,10 @@ class AttendeResource extends Resource {
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\Action::make('Reset')
                         ->visible(fn (Attende $record): bool => $record->attende_time != null && $record->attende_status_id != null && $record->approval_status_id != null && $record->approval_status_id == 1)
-                        ->slideOver()
                         ->requiresConfirmation()
+                        ->modalHeading('Reset Presensi Ini?')
+                        ->modalDescription('Presensi ini akan direset dan statusnya akan menjadi belum presensi. Apakah anda yakin?')
+                        ->modalSubmitActionLabel('Iya, Reset')
                         ->modalWidth(\Filament\Support\Enums\MaxWidth::Medium)
                         ->action(function (Attende $record): void {
                             $record->update([
