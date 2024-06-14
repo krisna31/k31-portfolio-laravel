@@ -309,7 +309,11 @@ class AttendeResource extends Resource {
                             $record->update([
                                 'attende_time' => null,
                                 'attende_status_id' => null,
-                                'approval_status_id' => 1,
+                                'approval_status_id' => null,
+                                'latitude' => null,
+                                'longitude' => null,
+                                'address' => null,
+                                'photo' => null,
                             ]);
                         })
                         ->modalSubmitActionLabel('Ya, Reset')
