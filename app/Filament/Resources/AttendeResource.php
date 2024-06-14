@@ -69,6 +69,7 @@ class AttendeResource extends Resource {
                     ->preload()
                     ->default(1)
                     ->columnSpanFull()
+                    ->disabled(fn (string $operation): bool => $operation === 'edit')
                     ->createOptionForm(
                         fn (Form $form)
                         => ApprovalStatusResource::form($form),
@@ -151,7 +152,6 @@ class AttendeResource extends Resource {
                         default => '',
                     })
                     ->sortable()
-                    ->disabled(fn (string $operation): bool => $operation === 'edit')
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('attendeStatus.name')
                     ->label('Attendance Status')
