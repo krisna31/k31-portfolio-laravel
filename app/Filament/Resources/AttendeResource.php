@@ -312,7 +312,7 @@ class AttendeResource extends Resource {
                         })
                         ->modalSubmitActionLabel('Ya, Reset')
                         ->color('warning')
-                        ->icon('heroicon-o-refresh'),
+                        ->icon('heroicon-o-arrow-path'),
                     // Tables\Actions\DeleteAction::make(),
                 ])
                     ->link()
