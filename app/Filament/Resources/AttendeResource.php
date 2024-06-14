@@ -299,7 +299,7 @@ class AttendeResource extends Resource {
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\Action::make('Reset')
-                        ->visible(fn (Attende $record): bool => $record->attende_time != null && $record->attende_status_id != null && $record->approval_status_id != null && $record->approval_status_id == 2)
+                        ->visible(fn (Attende $record): bool => $record->attende_time != null && $record->attende_status_id != null && $record->approval_status_id != null && $record->approval_status_id == 1)
                         ->slideOver()
                         ->requiresConfirmation()
                         ->modalWidth(\Filament\Support\Enums\MaxWidth::Medium)
