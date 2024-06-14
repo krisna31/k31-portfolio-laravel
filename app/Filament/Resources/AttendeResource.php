@@ -151,6 +151,7 @@ class AttendeResource extends Resource {
                         default => '',
                     })
                     ->sortable()
+                    ->disabled(fn (string $operation): bool => $operation === 'edit')
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('attendeStatus.name')
                     ->label('Attendance Status')
