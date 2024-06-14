@@ -50,7 +50,7 @@ class Dashboard extends \Filament\Pages\Dashboard {
                             // If no files exist, return a notification
                             return Notification::make()
                                 ->title('Backup failed')
-                                ->error()
+                                ->danger()
                                 ->send();
                         }
                     } catch (Exception $e) {
@@ -59,7 +59,7 @@ class Dashboard extends \Filament\Pages\Dashboard {
                         return Notification::make()
                             ->title('Backup failed')
                             ->body($e->getMessage())
-                            ->error()
+                            ->danger()
                             ->send();
                     }
                 })

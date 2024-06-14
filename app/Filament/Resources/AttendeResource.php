@@ -318,7 +318,7 @@ class AttendeResource extends Resource {
 
                             \Filament\Notifications\Notification::make()
                                 ->title('Presensi Berhasil Direset, Silahkan Presensi Ulang')
-                                ->error()
+                                ->success()
                                 ->send();
                         })
                         ->modalSubmitActionLabel('Ya, Reset')
