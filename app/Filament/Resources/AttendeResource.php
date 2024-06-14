@@ -14,8 +14,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class AttendeResource extends Resource
-{
+class AttendeResource extends Resource {
     protected static ?string $model = Attende::class;
     protected static ?string $navigationIcon = 'heroicon-o-chart-bar-square';
     protected static ?string $navigationGroup = 'Employee Management';
@@ -24,8 +23,7 @@ class AttendeResource extends Resource
     protected static ?int $navigationSort = 3;
     protected static ?string $navigationLabel = 'Presensi';
 
-    public static function form(Form $form): Form
-    {
+    public static function form(Form $form): Form {
         return $form
             ->schema([
                 Forms\Components\Select::make('user_id')
@@ -38,11 +36,11 @@ class AttendeResource extends Resource
                     ->searchDebounce(500)
                     ->required()
                     ->createOptionForm(
-                        fn(Form $form)
+                        fn (Form $form)
                         => UserResource::form($form),
                     )
                     ->editOptionForm(
-                        fn(Form $form)
+                        fn (Form $form)
                         => UserResource::form($form),
                     ),
                 Forms\Components\Select::make('attende_code_id')
@@ -72,11 +70,11 @@ class AttendeResource extends Resource
                     ->default(1)
                     ->columnSpanFull()
                     ->createOptionForm(
-                        fn(Form $form)
+                        fn (Form $form)
                         => ApprovalStatusResource::form($form),
                     )
                     ->editOptionForm(
-                        fn(Form $form)
+                        fn (Form $form)
                         => ApprovalStatusResource::form($form),
                     ),
                 Forms\Components\Select::make('attende_status_id')
@@ -89,11 +87,11 @@ class AttendeResource extends Resource
                     ->default(1)
                     ->columnSpanFull()
                     ->createOptionForm(
-                        fn(Form $form)
+                        fn (Form $form)
                         => AttendeStatusResource::form($form),
                     )
                     ->editOptionForm(
-                        fn(Form $form)
+                        fn (Form $form)
                         => AttendeStatusResource::form($form),
                     ),
                 Forms\Components\DateTimePicker::make('attende_time')
@@ -121,8 +119,7 @@ class AttendeResource extends Resource
             ]);
     }
 
-    public static function table(Table $table): Table
-    {
+    public static function table(Table $table): Table {
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('user.name')
@@ -134,8 +131,8 @@ class AttendeResource extends Resource
                     // ->dateTime()
                     ->sortable()
                     ->default('empty')
-                    ->formatStateUsing(fn(string $state): string => $state != 'empty' ? Carbon::parse($state)->format('d-m-Y H:i:s') . " (" . Carbon::parse($state)->diffForHumans() . ")" : 'Belum Presensi')
-                    ->color(fn(string $state): string => match ($state) {
+                    ->formatStateUsing(fn (string $state): string => $state != 'empty' ? Carbon::parse($state)->format('d-m-Y H:i:s') . " (" . Carbon::parse($state)->diffForHumans() . ")" : 'Belum Presensi')
+                    ->color(fn (string $state): string => match ($state) {
                         'empty' => 'danger',
                         default => '',
                     })
@@ -149,7 +146,7 @@ class AttendeResource extends Resource
                     ->label('Approval Status')
                     ->searchable()
                     ->default('Belum Presensi')
-                    ->color(fn(string $state): string => match ($state) {
+                    ->color(fn (string $state): string => match ($state) {
                         'Belum Presensi' => 'danger',
                         default => '',
                     })
@@ -159,7 +156,7 @@ class AttendeResource extends Resource
                     ->label('Attendance Status')
                     ->searchable()
                     ->default('Belum Presensi')
-                    ->color(fn(string $state): string => match ($state) {
+                    ->color(fn (string $state): string => match ($state) {
                         'Belum Presensi' => 'danger',
                         default => '',
                     })
@@ -175,7 +172,7 @@ class AttendeResource extends Resource
                     ->limit(5)
                     ->limitedRemainingText()
                     ->square()
-                    ->extraImgAttributes(fn(Attende $record): array => [
+                    ->extraImgAttributes(fn (Attende $record): array => [
                         'alt' => "{$record->name} image",
                     ])
                     ->toggleable(isToggledHiddenByDefault: false),
@@ -205,9 +202,9 @@ class AttendeResource extends Resource
                     ->trueLabel('Sudah Melakukan Presensi')
                     ->falseLabel('Belum Melakukan Presensi')
                     ->queries(
-                        true: fn(Builder $query) => $query->whereNotNull(['attende_time', 'approval_status_id', 'attende_status_id']),
-                        false: fn(Builder $query) => $query->whereNull(['attende_time', 'approval_status_id', 'attende_status_id']),
-                        blank: fn(Builder $query) => $query,
+                        true: fn (Builder $query) => $query->whereNotNull(['attende_time', 'approval_status_id', 'attende_status_id']),
+                        false: fn (Builder $query) => $query->whereNull(['attende_time', 'approval_status_id', 'attende_status_id']),
+                        blank: fn (Builder $query) => $query,
                     )
                     ->columnSpanFull(),
                 Tables\Filters\TrashedFilter::make()
@@ -217,7 +214,7 @@ class AttendeResource extends Resource
                     ->label('User')
                     ->relationship('user', 'name')
                     ->options(
-                        fn(): array => \App\Models\User::pluck('name', 'id')->toArray(),
+                        fn (): array => \App\Models\User::pluck('name', 'id')->toArray(),
                     )
                     ->preload()
                     ->searchable()
@@ -235,11 +232,11 @@ class AttendeResource extends Resource
                         return $query
                             ->when(
                                 $data['created_from'],
-                                fn(Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
+                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
                             )
                             ->when(
                                 $data['created_until'],
-                                fn(Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
+                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
                             );
                     })
                     ->indicateUsing(function (array $data): array {
@@ -262,12 +259,12 @@ class AttendeResource extends Resource
             ->actions([
                 Tables\Actions\Action::make('Informasi')
                     ->modalContent(
-                        fn(Attende $record): \Illuminate\Contracts\View\View => view(
+                        fn (Attende $record): \Illuminate\Contracts\View\View => view(
                             'filament.admin.attende.info',
                             ['record' => $record],
                         )
                     )
-                    ->hidden(fn(Attende $record): bool => $record->attende_time != null && $record->attende_status_id != null && $record->approval_status_id != null && $record->approval_status_id == 1)
+                    ->hidden(fn (Attende $record): bool => $record->attende_time != null && $record->attende_status_id != null && $record->approval_status_id != null && $record->approval_status_id == 1)
                     ->icon('heroicon-o-information-circle')
                     ->color('info')
                     ->modalSubmitAction(false)
@@ -283,8 +280,8 @@ class AttendeResource extends Resource
                             ->preload()
                         // ->default(2) // default to approved disetujui
                     ])
-                    ->visible(fn(Attende $record): bool => $record->attende_time != null && $record->attende_status_id != null && $record->approval_status_id != null && $record->approval_status_id == 1)
-                    ->fillForm(fn(Attende $record): array => [
+                    ->visible(fn (Attende $record): bool => $record->attende_time != null && $record->attende_status_id != null && $record->approval_status_id != null && $record->approval_status_id == 1)
+                    ->fillForm(fn (Attende $record): array => [
                         'approval_status_id' => $record->approval_status_id,
                     ])
                     ->slideOver()
@@ -300,6 +297,21 @@ class AttendeResource extends Resource
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),
+                    Tables\Actions\Action::make('Reset')
+                        ->visible(fn (Attende $record): bool => $record->attende_time != null && $record->attende_status_id != null && $record->approval_status_id != null && $record->approval_status_id == 2)
+                        ->slideOver()
+                        ->requiresConfirmation()
+                        ->modalWidth(\Filament\Support\Enums\MaxWidth::Medium)
+                        ->action(function (Attende $record): void {
+                            $record->update([
+                                'attende_time' => null,
+                                'attende_status_id' => null,
+                                'approval_status_id' => 1,
+                            ]);
+                        })
+                        ->modalSubmitActionLabel('Ya, Reset')
+                        ->color('warning')
+                        ->icon('heroicon-o-refresh'),
                     // Tables\Actions\DeleteAction::make(),
                 ])
                     ->link()
@@ -331,15 +343,13 @@ class AttendeResource extends Resource
             ]);
     }
 
-    public static function getRelations(): array
-    {
+    public static function getRelations(): array {
         return [
             //
         ];
     }
 
-    public static function getPages(): array
-    {
+    public static function getPages(): array {
         return [
             'index' => Pages\ListAttendes::route('/'),
             'create' => Pages\CreateAttende::route('/create'),
@@ -348,18 +358,15 @@ class AttendeResource extends Resource
         ];
     }
 
-    public static function getNavigationBadge(): ?string
-    {
+    public static function getNavigationBadge(): ?string {
         return static::getModel()::count();
     }
 
-    public static function getNavigationBadgeColor(): ?string
-    {
+    public static function getNavigationBadgeColor(): ?string {
         return static::getModel()::count() > 10 ? 'warning' : 'primary';
     }
 
-    public static function getEloquentQuery(): Builder
-    {
+    public static function getEloquentQuery(): Builder {
         return parent::getEloquentQuery()
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
