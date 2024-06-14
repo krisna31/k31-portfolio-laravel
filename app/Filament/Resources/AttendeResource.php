@@ -316,7 +316,7 @@ class AttendeResource extends Resource {
                                 'photo' => '',
                             ]);
 
-                            return \Filament\Notifications\Notification::make()
+                            \Filament\Notifications\Notification::make()
                                 ->title('Presensi Berhasil Direset, Silahkan Presensi Ulang')
                                 ->error()
                                 ->send();
