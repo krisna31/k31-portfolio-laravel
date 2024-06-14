@@ -27,8 +27,8 @@ class AttendeCodeOverview extends BaseWidget
             ->get()
             ->count();
         return [
-            Stat::make('Total Absen', $attendecode->count())
-                ->description("$codeLastWeek absen dibuat semimggu terakhir")
+            Stat::make('Total Kode Presensi', $attendecode->count())
+                ->description("$codeLastWeek kode presensi dibuat semimggu terakhir")
                 ->descriptionIcon('heroicon-m-chart-bar-square')
                 ->chart([7, 2, 10, 3, 15, 4, 17])
                 ->color('success'),
@@ -37,8 +37,8 @@ class AttendeCodeOverview extends BaseWidget
                 ->descriptionIcon('heroicon-m-user-circle')
                 ->chart([3, 12, 5, 8, 2, 10, 3])
                 ->color('secondary'),
-            Stat::make('Total Absensi Karyawan', $attendes)
-                ->description($attendesLastWeek . " absensi karyawan")
+            Stat::make('Total Presensi Karyawan', $attendes)
+                ->description($attendesLastWeek . " presensi karyawan")
                 ->descriptionIcon('heroicon-m-clock')
                 ->chart([10, 3, 15, 4, 17, 2, 10])
                 ->color('warning'),

@@ -40,7 +40,7 @@ class AbsenController extends Controller {
             return AttendeCodeResource::collection($absensi)
                 ->additional([
                     'error' => false,
-                    'message' => 'data absensi berhasil ditemukan',
+                    'message' => 'data presensi berhasil ditemukan',
                 ]);
         } catch (\Throwable $th) {
             return response()->json([
@@ -74,7 +74,7 @@ class AbsenController extends Controller {
         if ($absensi->is_attended === 1) {
             return response()->json([
                 'error' => true,
-                'message' => 'Anda sudah melakukan absensi',
+                'message' => 'Anda sudah melakukan presensi',
             ], 403);
         }
 
@@ -131,7 +131,7 @@ class AbsenController extends Controller {
             return AttendeResource::collection($absensi)
                 ->additional([
                     'error' => false,
-                    'message' => 'data riwayat absensi berhasil ditemukan',
+                    'message' => 'data riwayat presensi berhasil ditemukan',
                 ]);
         } catch (\Throwable $th) {
             return response()->json([
