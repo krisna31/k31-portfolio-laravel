@@ -337,6 +337,10 @@ class AttendeResource extends Resource {
                     // ->withHiddenColumns()
                     ->formatStates([
                         'photo' => function (?\Illuminate\Database\Eloquent\Model $record) {
+                            if ($record == null) {
+                                return '0 Foto';
+                            }
+
                             return count($record->photo) . ' Foto';
                         },
                     ]),
@@ -348,7 +352,10 @@ class AttendeResource extends Resource {
                     // ->withHiddenColumns()
                     ->formatStates([
                         'photo' => function (?\Illuminate\Database\Eloquent\Model $record) {
-                            dd($record);
+                            if ($record == null) {
+                                return '0 Foto';
+                            }
+
                             return count($record->photo) . ' Foto';
                         },
                     ])
