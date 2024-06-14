@@ -13,7 +13,7 @@ class EditAttende extends EditRecord {
         return [
             // Actions\DeleteAction::make(),
             Actions\RestoreAction::make(),
-            \Tables\Actions\Action::make('Reset')
+            \Filament\Actions\Action::make('Reset')
                 ->visible(fn (Attende $record): bool => $record->attende_time != null && $record->attende_status_id != null && $record->approval_status_id != null && $record->approval_status_id == 2)
                 ->slideOver()
                 ->requiresConfirmation()
