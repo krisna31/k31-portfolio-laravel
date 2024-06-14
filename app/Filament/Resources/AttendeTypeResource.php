@@ -140,8 +140,8 @@ class AttendeTypeResource extends Resource
     {
         return [
             'index' => Pages\ListAttendeTypes::route('/'),
-            'create' => Pages\CreateAttendeType::route('/create'),
-            'edit' => Pages\EditAttendeType::route('/{record}/edit'),
+            // 'create' => Pages\CreateAttendeType::route('/create'),
+            // 'edit' => Pages\EditAttendeType::route('/{record}/edit'),
         ];
     }
 

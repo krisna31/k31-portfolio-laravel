@@ -135,8 +135,8 @@ class GenderResource extends Resource
     {
         return [
             'index' => Pages\ListGenders::route('/'),
-            'create' => Pages\CreateGender::route('/create'),
-            'edit' => Pages\EditGender::route('/{record}/edit'),
+            // 'create' => Pages\CreateGender::route('/create'),
+            // 'edit' => Pages\EditGender::route('/{record}/edit'),
         ];
     }
 
