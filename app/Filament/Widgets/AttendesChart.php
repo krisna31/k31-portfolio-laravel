@@ -9,7 +9,7 @@ use Flowframe\Trend\TrendValue;
 
 class AttendesChart extends ChartWidget
 {
-    protected static ?string $heading = 'Total Absensi Karyawan';
+    protected static ?string $heading = 'Total Presensi Karyawan';
 
     public ?string $filter = 'month';
 
@@ -40,7 +40,7 @@ class AttendesChart extends ChartWidget
             'labels' => $data->map(fn(TrendValue $value) => $value->date),
             'datasets' => [
                 [
-                    'label' => 'Total Absensi Karyawan',
+                    'label' => 'Total Presensi Karyawan',
                     'backgroundColor' => '#f87979',
                     'data' => $data->map(fn(TrendValue $value) => $value->aggregate),
                 ],
