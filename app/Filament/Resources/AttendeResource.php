@@ -313,8 +313,13 @@ class AttendeResource extends Resource {
                                 'latitude' => null,
                                 'longitude' => null,
                                 'address' => null,
-                                'photo' => null,
+                                'photo' => '',
                             ]);
+
+                            return \Filament\Notifications\Notification::make()
+                                ->title('Presensi Berhasil Direset, Silahkan Presensi Ulang')
+                                ->error()
+                                ->send();
                         })
                         ->modalSubmitActionLabel('Ya, Reset')
                         ->color('warning')
