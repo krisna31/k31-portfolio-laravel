@@ -45,4 +45,9 @@ class AttendeCodeOverview extends BaseWidget
             //     ->color('warning'),
         ];
     }
+
+    protected function getColumns(): int
+    {
+        return 6;
+    }
 }
