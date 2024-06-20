@@ -15,7 +15,7 @@ class LatestAttende extends BaseWidget
         return $table
             ->query(
                 \App\Models\Attende::query()
-                    ->latest()
+                    ->latest('updated_at')
                     ->limit(10)
             )
             ->columns(\App\Filament\Resources\AttendeResource::table($table)->getColumns());
