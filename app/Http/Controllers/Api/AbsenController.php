@@ -34,7 +34,12 @@ class AbsenController extends Controller {
                 })
                 ->orderBy('start_date', 'asc')
                 ->orderBy('is_open', 'desc')
-                ->get();
+                ->get()
+                ->map(function ($item) {
+                    // change format to day, date month year hour:minute:second
+                    $item->start_date = $item->start_date->format('l, d F Y H:i:s');
+                    $item->end_date = $item->end_date->format('l, d F Y H:i:s');
+                });
             // ->paginate(10);
 
             return AttendeCodeResource::collection($absensi)

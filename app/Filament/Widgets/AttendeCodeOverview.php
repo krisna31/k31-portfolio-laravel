@@ -21,27 +21,27 @@ class AttendeCodeOverview extends BaseWidget
             ->get()
             ->count();
 
-        $attendes = \App\Models\Attende::count();
-        $attendesLastWeek = \App\Models\Attende::query()
-            ->whereBetween('created_at', [now()->subWeek(), now()])
-            ->get()
-            ->count();
+        // $attendes = \App\Models\Attende::count();
+        // $attendesLastWeek = \App\Models\Attende::query()
+        //     ->whereBetween('created_at', [now()->subWeek(), now()])
+        //     ->get()
+        //     ->count();
         return [
             Stat::make('Total Kode Presensi', $attendecode->count())
                 ->description("$codeLastWeek kode presensi dibuat semimggu terakhir")
                 ->descriptionIcon('heroicon-m-chart-bar-square')
                 ->chart([7, 2, 10, 3, 15, 4, 17])
                 ->color('success'),
-            Stat::make('Total Karyawan', $user)
-                ->description($userLastWeek . " karyawan terdaftar")
+            Stat::make('Total Pegawai', $user)
+                ->description($userLastWeek . " Pegawai terdaftar seminggu terakhir")
                 ->descriptionIcon('heroicon-m-user-circle')
                 ->chart([3, 12, 5, 8, 2, 10, 3])
                 ->color('secondary'),
-            Stat::make('Total Presensi Karyawan', $attendes)
-                ->description($attendesLastWeek . " presensi karyawan")
-                ->descriptionIcon('heroicon-m-clock')
-                ->chart([10, 3, 15, 4, 17, 2, 10])
-                ->color('warning'),
+            // Stat::make('Total Presensi Pegawai', $attendes)
+            //     ->description($attendesLastWeek . " presensi Pegawai")
+            //     ->descriptionIcon('heroicon-m-clock')
+            //     ->chart([10, 3, 15, 4, 17, 2, 10])
+            //     ->color('warning'),
         ];
     }
 }
