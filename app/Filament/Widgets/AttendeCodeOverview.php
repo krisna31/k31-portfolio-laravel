@@ -32,13 +32,13 @@ class AttendeCodeOverview extends BaseWidget
                 ->description("$codeLastWeek kode presensi dibuat semimggu terakhir")
                 ->descriptionIcon('heroicon-m-chart-bar-square')
                 ->chart([7, 2, 10, 3, 15, 4, 17])
-                ->extraAttributes(['class' => 'col-span-2'])
+                ->extraAttributes(['class' => 'w-full'])
                 ->color('success'),
             Stat::make('Total Pegawai', $user)
                 ->description($userLastWeek . " Pegawai terdaftar seminggu terakhir")
                 ->descriptionIcon('heroicon-m-user-circle')
                 ->chart([3, 12, 5, 8, 2, 10, 3])
-                ->extraAttributes(['class' => 'col-span-2'])
+                ->extraAttributes(['class' => 'w-full'])
                 ->color('secondary'),
             // Stat::make('Total Presensi Pegawai', $attendes)
             //     ->description($attendesLastWeek . " presensi Pegawai")
