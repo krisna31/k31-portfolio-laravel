@@ -48,6 +48,6 @@ class AttendeCodeOverview extends BaseWidget
 
     protected function getColumns(): int
     {
-        return 4;
+        return 5;
     }
 }
