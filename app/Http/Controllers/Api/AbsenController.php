@@ -37,7 +37,8 @@ class AbsenController extends Controller {
                 ->orderBy('is_open', 'desc')
                 ->get()
                 ->map(function ($item) {
-                    // parse to carbon date then change format to day, date month year hour:minute:second
+                    // parse to carbon date then change format to day, date month year hour:minute:second use indonesian languange
+                    Carbon::setLocale('id');
                     $item->start_date = Carbon::parse($item->start_date)->format('l, d F Y H:i:s');
                     $item->end_date = Carbon::parse($item->end_date)->format('l, d F Y H:i:s');
                     return $item;
