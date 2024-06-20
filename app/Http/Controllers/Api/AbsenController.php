@@ -7,6 +7,7 @@ use App\Http\Resources\AttendeCodeResource;
 use App\Http\Resources\AttendeResource;
 use App\Models\Attende;
 use App\Models\AttendeCode;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -36,9 +37,10 @@ class AbsenController extends Controller {
                 ->orderBy('is_open', 'desc')
                 ->get()
                 ->map(function ($item) {
-                    // change format to day, date month year hour:minute:second
-                    $item->start_date = $item->start_date->format('l, d F Y H:i:s');
-                    $item->end_date = $item->end_date->format('l, d F Y H:i:s');
+                    // parse to carbon date then change format to day, date month year hour:minute:second
+                    $item->start_date = Carbon::parse($item->start_date)->format('l, d F Y H:i:s');
+                    $item->end_date = Carbon::parse($item->end_date)->format('l, d F Y H:i:s');
+                    return $item;
                 });
             // ->paginate(10);
 
