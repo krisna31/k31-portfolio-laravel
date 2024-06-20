@@ -7,7 +7,7 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 
 class AttendeCodeOverview extends BaseWidget
 {
-    protected int|string|array $columnSpan = 'full';
+    protected int|string|array $columnSpan = 12;
     protected function getStats(): array
     {
         $attendecode = \App\Models\AttendeCode::all();
@@ -44,10 +44,5 @@ class AttendeCodeOverview extends BaseWidget
             //     ->chart([10, 3, 15, 4, 17, 2, 10])
             //     ->color('warning'),
         ];
-    }
-
-    protected function getColumns(): int
-    {
-        return 5;
     }
 }
