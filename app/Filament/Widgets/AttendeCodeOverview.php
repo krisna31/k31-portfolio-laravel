@@ -7,6 +7,7 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 
 class AttendeCodeOverview extends BaseWidget
 {
+    protected int|string|array $columnSpan = 'full';
     protected function getStats(): array
     {
         $attendecode = \App\Models\AttendeCode::all();
