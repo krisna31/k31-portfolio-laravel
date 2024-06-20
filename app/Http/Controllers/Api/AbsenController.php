@@ -39,9 +39,11 @@ class AbsenController extends Controller {
                 ->map(function ($item) {
                     // parse to carbon date then change format to day, date month year hour:minute:second use indonesian languange
                     setlocale(LC_TIME, 'id_ID');
-                    Carbon::setLocale('id');
-                    $item->start_date = Carbon::parse($item->start_date)->format('l, d F Y H:i:s');
-                    $item->end_date = Carbon::parse($item->end_date)->format('l, d F Y H:i:s');
+                    $item->start_date = Carbon::parse($item->start_date)->formatLocalized('%A, %d %B %Y %H:%M:%S');
+                    $item->end_date = Carbon::parse($item->end_date)->formatLocalized('%A, %d %B %Y %H:%M:%S');
+                    // Carbon::setLocale('id');
+                    // $item->start_date = Carbon::parse($item->start_date)->format('l, d F Y H:i:s');
+                    // $item->end_date = Carbon::parse($item->end_date)->format('l, d F Y H:i:s');
                     return $item;
                 });
             // ->paginate(10);
