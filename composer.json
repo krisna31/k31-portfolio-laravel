@@ -27,6 +27,7 @@
         "laravel/sanctum": "^3.2",
         "laravel/socialite": "^5.11",
         "laravel/tinker": "^2.8",
+        "nesbot/carbon": "2.*",
         "owenvoke/blade-fontawesome": "^2.5",
         "rickdbcn/filament-email": "^1.0",
         "shuvroroy/filament-spatie-laravel-backup": "^2.1",
