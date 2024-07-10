@@ -19,7 +19,7 @@ class AbsenController extends Controller {
             $absensi = AttendeCode::with(['attendeType', 'user', 'defaultApprovalStatus'])
                 ->selectRaw(
                     '*,
-                    (? >= start_date AND ? < end_date) as is_open,
+                    (? >= start_date AND ? < end_date + INTERVAL \'1 hour\') as is_open,
                     (SELECT COUNT(*) >= 1 FROM attendes WHERE attendes.attende_code_id = attende_codes.id AND attendes.user_id = ? AND attende_time IS NOT NULL AND approval_status_id IS NOT NULL AND attende_status_id IS NOT NULL) as is_attended',
                     [now()->addHours($addHour), now()->addHours($addHour), auth()->user()->id]
                 )
@@ -73,9 +73,10 @@ class AbsenController extends Controller {
         $absensi = AttendeCode::query()
             ->selectRaw(
                 '*,
-                    (? >= start_date AND ? < end_date) as is_open,
+                    (? >= start_date AND ? < end_date + INTERVAL \'1 hour\') as is_open,
+                    (? > end_date) as is_late,
                     (SELECT COUNT(*) >= 1 FROM attendes WHERE attendes.attende_code_id = attende_codes.id AND attendes.user_id = ? AND attende_time IS NOT NULL AND approval_status_id IS NOT NULL AND attende_status_id IS NOT NULL) as is_attended',
-                [now()->addHours($addHour), now()->addHours($addHour), auth()->user()->id]
+                [now()->addHours($addHour), now()->addHours($addHour), now()->addHours($addHour), auth()->user()->id]
             )
             ->firstWhere('id', $request->code);
 
@@ -113,7 +114,7 @@ class AbsenController extends Controller {
                 'user_id' => auth()->user()->id,
                 'attende_code_id' => $request->code,
                 'approval_status_id' => $absensi->default_approval_status_id,
-                'attende_status_id' => $request->attende_status,
+                'attende_status_id' => $absensi->is_late ? 2 : $request->attende_status, // 2 is for Terlambat
                 'attende_time' => now(),
                 'address' => $request->address,
                 'latitude' => $request->latitude,
