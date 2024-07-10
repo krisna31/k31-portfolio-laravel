@@ -356,6 +356,9 @@ class AttendeResource extends Resource {
 
                             return count($record->photo) . ' Foto';
                         },
+                        'total_attende' => function (?\Illuminate\Database\Eloquent\Model $record) {
+                            return Attende::where('user_id', $record->user_id)->count();
+                        },
                     ]),
                 Tables\Actions\RestoreBulkAction::make(),
                 // ]),

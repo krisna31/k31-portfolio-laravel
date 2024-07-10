@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ App::getLocale() }}">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -44,11 +45,98 @@
             page-break-inside: avoid;
             page-break-after: auto
         }
+
+        body {
+            font-family: 'Helvetica', sans-serif;
+            color: #333;
+            margin: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .user-summary {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-name {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .status-count {
+            font-size: 16px;
+            margin: 5px 0;
+        }
+
+        .status-count span {
+            font-weight: bold;
+        }
     </style>
 </head>
+
 <body>
-    <img src="{{ asset('assets/pictures/logo-panjang.png') }}"
-    alt="Logo PT Anugerah Alam Konstruksi" width="100%" />
+    @php
+        $dataGroup = $rows->groupBy(function ($item) {
+            return $item['user.name'];
+        });
+    @endphp
+    <img src="{{ public_path('assets/pictures/logo-panjang.png') }}" alt="Logo PT Anugerah Alam Konstruksi"
+        width="100%" />
+    @if ($dataGroup->count() > 1)
+        <div class="header">
+            <h2>Total Kehadiran: {{ count($rows) }} Presensi</h2>
+        </div>
+    @endif
+    @foreach ($dataGroup as $userName => $userRows)
+        <div class="user-summary">
+            <div class="user-name">{{ $userName }}</div>
+            @php
+                // $disetujuiCount = $userRows
+                //     ->filter(function ($row) {
+                //         return $row['approvalStatus.name'] === 'Disetujui';
+                //     })
+                //     ->count();
+                // $ditolakCount = $userRows
+                //     ->filter(function ($row) {
+                //         return $row['approvalStatus.name'] === 'Ditolak';
+                //     })
+                //     ->count();
+                // $menungguPersetujuanCount = $userRows
+                //     ->filter(function ($row) {
+                //         return $row['approvalStatus.name'] === 'Menunggu Persetujuan';
+                //     })
+                //     ->count();
+                $total = count($userRows);
+                $hadir = $userRows
+                    ->filter(function ($row) {
+                        return $row['attendeStatus.name'] === 'Hadir';
+                    })
+                    ->count();
+                $tidakHadir = $userRows
+                    ->filter(function ($row) {
+                        return $row['attende_time'] === null;
+                    })
+                    ->count();
+                $late = $userRows
+                    ->filter(function ($row) {
+                        return $row['attendeStatus.name'] === 'Terlambat';
+                    })
+                    ->count();
+            @endphp
+            <p class="status-count">Total Presensi: <span>{{ $total }}</span></p>
+            <p class="status-count">Hadir: <span>{{ $hadir }}</span></p>
+            <p class="status-count">Tidak Hadir: <span>{{ $tidakHadir }}</span></p>
+            <p class="status-count">Terlambat: <span>{{ $late }}</span></p>
+        </div>
+    @endforeach
     <table>
         <tr>
             @foreach ($columns as $column)
@@ -68,4 +156,5 @@
         @endforeach
     </table>
 </body>
+
 </html>

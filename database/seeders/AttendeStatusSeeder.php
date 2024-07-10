@@ -17,6 +17,7 @@ class AttendeStatusSeeder extends Seeder
         // * https://peraturan.bpk.go.id/Details/43013
         $data = [
             'Hadir',
+            'Terlambat',
             'Cuti Sakit',
             'Cuti Tahunan',
             'Cuti Besar',

@@ -11,7 +11,7 @@ class AttendeStatusController extends Controller
 {
     public function index()
     {
-        return AttendeStatusResource::collection(AttendeStatus::all())
+        return AttendeStatusResource::collection(AttendeStatus::whereNot('id', 2)->get())
             ->additional([
                 'status' => 'success',
                 'message' => 'Attende Status List'
