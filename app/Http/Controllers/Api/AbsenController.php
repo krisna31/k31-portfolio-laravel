@@ -24,10 +24,10 @@ class AbsenController extends Controller {
                     [now()->addHours($addHour), now()->addHours($addHour), auth()->user()->id]
                 )
                 ->when($request->over === 'yes', function ($query) use ($addHour) {
-                    $query->where('end_date', '<', now()->addHours($addHour));
+                    $query->where('end_date + INTERVAL \'1 hour\'', '<', now()->addHours($addHour));
                 })
                 ->when($request->over === 'no', function ($query) use ($addHour) {
-                    $query->where('end_date', '>', now()->addHours($addHour));
+                    $query->where('end_date + INTERVAL \'1 hour\'', '>', now()->addHours($addHour));
                 })
                 ->where(function ($query) {
                     $query->where('user_id', auth()->user()->id)
