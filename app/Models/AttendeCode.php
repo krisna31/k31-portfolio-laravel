@@ -25,7 +25,11 @@ class AttendeCode extends Model
         'longitude',
         'radius',
         'created_at',
-        'updated_at'
+        'updated_at',
+        'deleted_at',
+        'created_by',
+        'updated_by',
+        'deleted_by',
     ];
 
     public function attendes()
@@ -53,12 +57,23 @@ class AttendeCode extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            $model->id = str()->uuid();
             $model->created_at = now();
+            $model->created_by = auth()->user()->name;
         });
 
         static::updating(function ($model) {
             $model->updated_at = now();
+            $model->updated_by = auth()->user()->name;
+        });
+
+        static::deleting(function ($model) {
+            $model->deleted_at = now();
+            $model->deleted_by = auth()->user()->name;
+            $model->save();
+            return \Filament\Notifications\Notification::make()
+                ->success()
+                ->title('Attende Code Deleted')
+                ->body('The attende code was deleted successfully.');
         });
     }
 }

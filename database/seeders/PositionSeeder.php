@@ -94,6 +94,7 @@ class PositionSeeder extends Seeder {
                 'department_id' => $position['department_id'],
                 'salary' => $position['salary'],
                 'position_type_id' => $position['position_type_id'],
+                'created_by' => 'Salyma Dewi',
             ]);
         }
     }

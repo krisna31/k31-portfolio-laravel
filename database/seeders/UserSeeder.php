@@ -21,6 +21,7 @@ class UserSeeder extends Seeder
             'gender_id' => 1,
             'position_id' => Position::all()->random()->id,
             'password' => bcrypt(str()->uuid()),
+            'created_by' => 'Superadministrator',
         ]);
 
         User::factory()->create([
@@ -29,6 +30,7 @@ class UserSeeder extends Seeder
             'gender_id' => 1,
             'position_id' => Position::all()->random()->id,
             'password' => bcrypt('demo@k31.com'),
+            'created_by' => 'Superadministrator',
         ]);
     }
 }

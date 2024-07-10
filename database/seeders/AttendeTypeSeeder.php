@@ -24,7 +24,8 @@ class AttendeTypeSeeder extends Seeder
             AttendeType::factory()->create(
                 [
                     'name' => $type,
-                    'slug' => str()->slug($type)
+                    'slug' => str()->slug($type),
+                    'created_by' => 'Salyma Dewi',
                 ]
             );
         }

@@ -32,7 +32,8 @@ class AttendeStatusSeeder extends Seeder
             AttendeStatus::factory()->create(
                 [
                     'name' => $status,
-                    'description' => str()->slug($status)
+                    'description' => str()->slug($status),
+                    'created_by' => 'Salyma Dewi',
                 ]
             );
         }

@@ -20,6 +20,7 @@ class CreateAttendeCode extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
+        $data['id'] = str()->uuid();
         if ($data['location'] != null) {
             $loc = explode('#', $data['location']);
             $data['latitude'] = $loc[0];

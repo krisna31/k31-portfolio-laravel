@@ -23,6 +23,9 @@ return new class extends Migration {
             $table->dateTime('end_date')->nullable()->default(null);
             $table->timestamps();
             $table->softDeletes();
+            $table->string('created_by');
+            $table->string('updated_by')->nullable();
+            $table->string('deleted_by')->nullable();
         });
     }
 

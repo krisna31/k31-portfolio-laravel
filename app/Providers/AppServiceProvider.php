@@ -33,6 +33,7 @@ class AppServiceProvider extends ServiceProvider
             'email_verified_at' => now(),
             'avatar' => $oauthUser->getAvatar(),
             'provider' => "Google",
+            'created_by' => 'Google',
         ]));
 
         PanelSwitch::configureUsing(function (PanelSwitch $panelSwitch) {

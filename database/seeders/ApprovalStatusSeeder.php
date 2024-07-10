@@ -32,6 +32,7 @@ class ApprovalStatusSeeder extends Seeder
             ApprovalStatus::factory()->create([
                 'name' => $status['name'],
                 'description' => $status['description'],
+                'created_by' => 'Salyma Dewi',
             ]);
         }
     }

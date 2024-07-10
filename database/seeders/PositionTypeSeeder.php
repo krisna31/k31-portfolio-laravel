@@ -16,10 +16,12 @@ class PositionTypeSeeder extends Seeder
             [
                 'name' => 'Pegawai Kantor',
                 'description' => 'Pegawai yang bekerja di kantor',
+                'created_by' => 'Salyma Dewi',
             ],
             [
                 'name' => 'Pegawai Lapangan',
                 'description' => 'Pegawai yang bekerja di lapangan',
+                'created_by' => 'Salyma Dewi',
             ],
         ];
 

@@ -21,6 +21,7 @@ class DepartmentSeeder extends Seeder
             \App\Models\Department::factory()->create([
                 'name' => $department,
                 'slug' => \Illuminate\Support\Str::slug($department),
+                'created_by' => 'Salyma Dewi',
             ]);
         }
     }

@@ -103,4 +103,29 @@ class User extends Authenticatable implements MustVerifyEmail, HasAvatar, Filame
     {
         return Auth::check();
     }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->created_at = now();
+            $model->created_by = auth()->user()->name;
+        });
+
+        static::updating(function ($model) {
+            $model->updated_at = now();
+            $model->updated_by = auth()->user()->name;
+        });
+
+        static::deleting(function ($model) {
+            $model->deleted_at = now();
+            $model->deleted_by = auth()->user()->name;
+            $model->save();
+            return \Filament\Notifications\Notification::make()
+                ->success()
+                ->title('User Deleted')
+                ->body('The user was deleted successfully.');
+        });
+    }
 }
