@@ -25,63 +25,63 @@ class PositionSeeder extends Seeder {
             [
                 'name' => 'Direktur',
                 'slug' => 'direktur',
-                'salary' => 6_000_000,
+                'salary' => 300_000,
                 'position_type_id' => 1,
                 'department_id' => 1
             ],
             [
                 'name' => 'Komisaris',
                 'slug' => 'komisaris',
-                'salary' => 4_000_000,
+                'salary' => 250_000,
                 'position_type_id' => 1,
                 'department_id' => 1
             ],
             [
                 'name' => 'Ahli K3 Konstruksi',
                 'slug' => 'ahli-k3-konstruksi',
-                'salary' => 3_500_000,
+                'salary' => 250_000,
                 'position_type_id' => 1,
                 'department_id' => 1
             ],
             [
                 'name' => 'Tenaga Ahli Jalan',
                 'slug' => 'tenaga-ahli-jalan',
-                'salary' => 3_500_000,
+                'salary' => 250_000,
                 'position_type_id' => 1,
                 'department_id' => 1
             ],
             [
                 'name' => 'Tenaga Ahli Irigasi',
                 'slug' => 'tenaga-ahli-irigasi',
-                'salary' => 3_500_000,
+                'salary' => 250_000,
                 'position_type_id' => 1,
                 'department_id' => 1
             ],
             [
                 'name' => 'Pelaksana Lapangan',
                 'slug' => 'pelaksana-lapangan',
-                'salary' => 3_000_000,
+                'salary' => 200_000,
                 'position_type_id' => 2,
                 'department_id' => 1
             ],
             [
                 'name' => 'General Superintedent',
                 'slug' => 'general-superintedent',
-                'salary' => 3_000_000,
+                'salary' => 200_000,
                 'position_type_id' => 2,
                 'department_id' => 1
             ],
             [
                 'name' => 'Quality dan Quantity',
                 'slug' => 'quality-dan-quantity',
-                'salary' => 3_000_000,
+                'salary' => 200_000,
                 'position_type_id' => 2,
                 'department_id' => 1
             ],
             [
                 'name' => 'Administrasi',
                 'slug' => 'administrasi',
-                'salary' => 3_000_000,
+                'salary' => 150_000,
                 'position_type_id' => 2,
                 'department_id' => 1
             ]

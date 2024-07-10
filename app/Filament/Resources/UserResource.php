@@ -292,6 +292,7 @@ class UserResource extends Resource
                                 ->options(
                                     \App\Models\ApprovalStatus::pluck('name', 'id')
                                 )
+                                ->disabled()
                                 ->afterStateUpdated(fn(Forms\Set $set, Forms\Get $get, User $user) => calculateTotalGaji($set, $get, $user))
                                 ->live(debounce: 500)
                                 ->native(false)
@@ -330,7 +331,7 @@ class UserResource extends Resource
                         ->action(function (array $data, User $record): void {
                             $month = $data['bulan'];
                             $year = $data['tahun'];
-                            $approvalId = $data['approval_status_id'];
+                            $approvalId = 2;
 
                             $email = $record->email;
 
