@@ -135,7 +135,7 @@ class AttendeResource extends Resource {
                     ->formatStateUsing(fn (string $state, Attende $record): string =>
                         $state != 'empty' ?
                             Carbon::parse($state)->format('d-m-Y H:i:s') . " (" . Carbon::parse($state)->diffForHumans() . ")"
-                            : $record->attendeCode()->end_date >= now() ? 'Belum Presensi' : 'Tidak Hadir'
+                            : ($record->attendeCode()->end_date >= now() ? 'Belum Presensi' : 'Tidak Hadir')
                         )
                     ->color(fn (string $state): string => match ($state) {
                         'empty' => 'danger',
@@ -154,7 +154,7 @@ class AttendeResource extends Resource {
                     ->formatStateUsing(fn (string $state, Attende $record): string =>
                         $state != 'empty' ?
                             Carbon::parse($state)->format('d-m-Y H:i:s') . " (" . Carbon::parse($state)->diffForHumans() . ")"
-                            : $record->attendeCode()->end_date >= now() ? 'Belum Presensi' : 'Tidak Hadir'
+                            : ($record->attendeCode()->end_date >= now() ? 'Belum Presensi' : 'Tidak Hadir')
                         )
                     ->color(fn (string $state): string => match ($state) {
                         'Belum Presensi' => 'danger',
@@ -169,7 +169,7 @@ class AttendeResource extends Resource {
                     ->formatStateUsing(fn (string $state, Attende $record): string =>
                         $state != 'empty' ?
                             Carbon::parse($state)->format('d-m-Y H:i:s') . " (" . Carbon::parse($state)->diffForHumans() . ")"
-                            : $record->attendeCode()->end_date >= now() ? 'Belum Presensi' : 'Tidak Hadir'
+                            : ($record->attendeCode()->end_date >= now() ? 'Belum Presensi' : 'Tidak Hadir')
                         )
                     ->color(fn (string $state): string => match ($state) {
                         'Belum Presensi' => 'danger',
