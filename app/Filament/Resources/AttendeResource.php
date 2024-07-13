@@ -379,10 +379,6 @@ class AttendeResource extends Resource {
                         'total_attende' => function (?\Illuminate\Database\Eloquent\Model $record) {
                             return Attende::where('user_id', $record->user_id)->count();
                         },
-                    ])
-                    ->extraViewData(fn (Attende $record) => [
-                        // where attende_time null but the end date already passed
-                        'is_expired' => $record->attende_time == null && $record->attendeCode?->end_date < now(),
                     ]),
                 Tables\Actions\RestoreBulkAction::make(),
                 // ]),

@@ -88,7 +88,6 @@
         </div>
     @endif
     @foreach ($dataGroup as $userName => $userRows)
-    @dd($userRows, $userName, $userRows->count())
         <div class="user-summary">
             <div class="user-name">{{ $userName }}</div>
             @php
@@ -115,7 +114,7 @@
                     ->count();
                 $tidakHadir = $userRows
                     ->filter(function ($row) {
-                        return $row['not_hadir'] == true;
+                        return $row['attendeStatus.name'] == 'Tidak Hadir';
                     })
                     ->count();
                 $late = $userRows
