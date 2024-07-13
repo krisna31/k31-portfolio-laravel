@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use Illuminate\Support\Facades\Log;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
@@ -371,6 +372,7 @@ class UserResource extends Resource
                                     ->icon('heroicon-o-envelope-open')
                                     ->send();
                             } catch (\Exception $e) {
+                                Log::critical($e);
                                 // If the mail could not be sent, send a failure notification
                                 \Filament\Notifications\Notification::make()
                                     ->title('Pengiriman Slip Gaji Gagal')
