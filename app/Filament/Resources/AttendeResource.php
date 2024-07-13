@@ -139,6 +139,8 @@ class AttendeResource extends Resource {
                         )
                     ->color(fn (string $state): string => match ($state) {
                         'empty' => 'danger',
+                        'Belum Presensi' => 'warning',
+                        'Tidak Hadir' => 'danger',
                         default => '',
                     })
                     ->toggleable(isToggledHiddenByDefault: false),
@@ -157,7 +159,9 @@ class AttendeResource extends Resource {
                             : ($record->attendeCode?->end_date >= now() ? 'Belum Presensi' : 'Tidak Hadir')
                         )
                     ->color(fn (string $state): string => match ($state) {
-                        'Belum Presensi' => 'danger',
+                        'Belum Presensi' => 'warning',
+                        'Tidak Hadir' => 'danger',
+                        'empty' => 'danger',
                         default => '',
                     })
                     ->sortable()
@@ -172,7 +176,9 @@ class AttendeResource extends Resource {
                             : ($record->attendeCode?->end_date >= now() ? 'Belum Presensi' : 'Tidak Hadir')
                         )
                     ->color(fn (string $state): string => match ($state) {
-                        'Belum Presensi' => 'danger',
+                        'Belum Presensi' => 'warning',
+                        'Tidak Hadir' => 'danger',
+                        'empty' => 'danger',
                         default => '',
                     })
                     ->sortable()
