@@ -114,7 +114,7 @@
                     ->count();
                 $tidakHadir = $userRows
                     ->filter(function ($row) {
-                        return $row['attende_time'] === null;
+                        return $row['not_hadir'] == true;
                     })
                     ->count();
                 $late = $userRows

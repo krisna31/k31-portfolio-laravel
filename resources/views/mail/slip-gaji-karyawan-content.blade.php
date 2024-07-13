@@ -28,6 +28,21 @@
             <td>{{ $user->position->department->name }}</td>
         </tr>
         <tr>
+            <td>Gaji Pokok</td>
+            <td>:</td>
+            <td>{{ $user->position->salary }} * {{ $jumlahKehadiran }} = {{ $user->position->salary * $jumlahKehadiran }}</td>
+        </tr>
+        <tr>
+            <td>Uang Makan</td>
+            <td>:</td>
+            <td>{{ $user->position->eat_allowance }} * {{ $jumlahKehadiran }} = {{ $user->position->eat_allowance * $jumlahKehadiran }}</td>
+        </tr>
+        <tr>
+            <td>Uang Transport</td>
+            <td>:</td>
+            <td>{{ $user->position->transport_allowance }} * {{ $jumlahKehadiran }} = {{ $user->position->transport_allowance * $jumlahKehadiran }}</td>
+        </tr>
+        <tr>
             <td>Total Gaji</td>
             <td>:</td>
             <td>{{ $totalGaji }}</td>

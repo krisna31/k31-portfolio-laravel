@@ -137,12 +137,17 @@ class UserResource extends Resource
                 ->count(); // Count the number of records
 
             // Get the salary of the user's position
-            $gajiKaraywan = $user->position->salary;
+            $gajiPokok = $user->position->salary * $jumlahKehadiran;
+            $uangMakan = $user->position->eat_allowance * $jumlahKehadiran;
+            $uangTransport = $user->position->transport_allowance * $jumlahKehadiran;
 
             // Calculate the total salary by multiplying the number of attendances by the salary
-            $totalGaji = $jumlahKehadiran * $gajiKaraywan;
+            $totalGaji = $gajiPokok + $uangMakan + $uangTransport;
 
-            return 'Rp. ' . number_format($totalGaji, 0, ',', '.');
+            return [
+                'jumlah_kehadiran' => $jumlahKehadiran,
+                'gaji_pokok' => 'Rp. ' . number_format($totalGaji, 0, ',', '.'),
+            ];
         }
 
         return $table
@@ -264,6 +269,9 @@ class UserResource extends Resource
                             'nama' => $user->name,
                             'position' => $user->position->name,
                             'email' => $user->email,
+                            'gaji_pokok' => 'Rp. ' . number_format($user->position->salary, 0, ',', '.'),
+                            'uang_makan' => 'Rp. ' . number_format($user->position->eat_allowance, 0, ',', '.'),
+                            'uang_transport' => 'Rp. ' . number_format($user->position->transport_allowance, 0, ',', '.'),
                             'approval_status_id' => 2,
                             'bulan' => now()->subMonth()->month + 1,
                             'tahun' => date('Y'),
@@ -272,7 +280,7 @@ class UserResource extends Resource
                                 now()->subMonth()->month + 1,
                                 date('Y'),
                                 2
-                            ),
+                            )['gaji_pokok'],
                         ])
                         ->form([
                             Forms\Components\TextInput::make('nama')
@@ -285,6 +293,18 @@ class UserResource extends Resource
                                 ->required(),
                             Forms\Components\TextInput::make('email')
                                 ->label('Email Karyawan')
+                                ->disabled()
+                                ->required(),
+                            Forms\Components\TextInput::make('gaji_pokok')
+                                ->label('Gaji Pokok')
+                                ->disabled()
+                                ->required(),
+                            Forms\Components\TextInput::make('uang_makan')
+                                ->label('Uang Makan')
+                                ->disabled()
+                                ->required(),
+                            Forms\Components\TextInput::make('uang_transport')
+                                ->label('Uang Transport')
                                 ->disabled()
                                 ->required(),
                             Forms\Components\Select::make('approval_status_id')
@@ -335,12 +355,14 @@ class UserResource extends Resource
 
                             $email = $record->email;
 
-                            $totalGaji = hitungGaji($record, $month, $year, $approvalId);
+                            $returnData = hitungGaji($record, $month, $year, $approvalId);
 
+                            $totalGaji = $returnData['gaji_pokok'];
+                            $jumlahKehadiran = $returnData['jumlah_kehadiran'];
 
                             try {
                                 // send email to user email
-                                Mail::to($email)->send(new \App\Mail\SlipGajiKaryawan($record, $data, $totalGaji));
+                                Mail::to($email)->send(new \App\Mail\SlipGajiKaryawan($record, $data, $totalGaji, $jumlahKehadiran));
 
                                 // If the mail was sent successfully, send a success notification
                                 \Filament\Notifications\Notification::make()

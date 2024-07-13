@@ -15,16 +15,17 @@ class SlipGajiKaryawan extends Mailable
 {
     use Queueable, SerializesModels;
 
-    protected $user, $data, $totalGaji;
+    protected $user, $data, $totalGaji, $jumlahKehadiran;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($user, $data, $totalGaji)
+    public function __construct($user, $data, $totalGaji, $jumlahKehadiran)
     {
         $this->user = $user;
         $this->data = $data;
         $this->totalGaji = $totalGaji;
+        $this->jumlahKehadiran = $jumlahKehadiran;
     }
 
     /**
@@ -49,6 +50,7 @@ class SlipGajiKaryawan extends Mailable
                 'data' => $this->data,
                 'bulan' => date('F', mktime(0, 0, 0, $this->data['bulan'], 10)),
                 'totalGaji' => $this->totalGaji,
+                'jumlahKehadiran' => $this->jumlahKehadiran,
             ],
         );
     }

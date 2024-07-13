@@ -132,7 +132,11 @@ class AttendeResource extends Resource {
                     // ->dateTime()
                     ->sortable()
                     ->default('empty')
-                    ->formatStateUsing(fn (string $state): string => $state != 'empty' ? Carbon::parse($state)->format('d-m-Y H:i:s') . " (" . Carbon::parse($state)->diffForHumans() . ")" : 'Belum Presensi')
+                    ->formatStateUsing(fn (string $state, Attende $record): string =>
+                        $state != 'empty' ?
+                            Carbon::parse($state)->format('d-m-Y H:i:s') . " (" . Carbon::parse($state)->diffForHumans() . ")"
+                            : $record->attendeCode()->end_date >= now() ? 'Belum Presensi' : 'Tidak Hadir'
+                        )
                     ->color(fn (string $state): string => match ($state) {
                         'empty' => 'danger',
                         default => '',
@@ -146,7 +150,12 @@ class AttendeResource extends Resource {
                 Tables\Columns\TextColumn::make('approvalStatus.name')
                     ->label('Approval Status')
                     ->searchable()
-                    ->default('Belum Presensi')
+                    ->default('empty')
+                    ->formatStateUsing(fn (string $state, Attende $record): string =>
+                        $state != 'empty' ?
+                            Carbon::parse($state)->format('d-m-Y H:i:s') . " (" . Carbon::parse($state)->diffForHumans() . ")"
+                            : $record->attendeCode()->end_date >= now() ? 'Belum Presensi' : 'Tidak Hadir'
+                        )
                     ->color(fn (string $state): string => match ($state) {
                         'Belum Presensi' => 'danger',
                         default => '',
@@ -156,7 +165,12 @@ class AttendeResource extends Resource {
                 Tables\Columns\TextColumn::make('attendeStatus.name')
                     ->label('Attendance Status')
                     ->searchable()
-                    ->default('Belum Presensi')
+                    ->default('empty')
+                    ->formatStateUsing(fn (string $state, Attende $record): string =>
+                        $state != 'empty' ?
+                            Carbon::parse($state)->format('d-m-Y H:i:s') . " (" . Carbon::parse($state)->diffForHumans() . ")"
+                            : $record->attendeCode()->end_date >= now() ? 'Belum Presensi' : 'Tidak Hadir'
+                        )
                     ->color(fn (string $state): string => match ($state) {
                         'Belum Presensi' => 'danger',
                         default => '',
@@ -359,6 +373,9 @@ class AttendeResource extends Resource {
                         'total_attende' => function (?\Illuminate\Database\Eloquent\Model $record) {
                             return Attende::where('user_id', $record->user_id)->count();
                         },
+                    ])
+                    ->extraViewData(fn (Attende $record) => [
+                        'not_hadir' => $record->attendeCode()->end_date >= now() ? true : false,
                     ]),
                 Tables\Actions\RestoreBulkAction::make(),
                 // ]),
