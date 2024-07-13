@@ -153,7 +153,7 @@ class AttendeResource extends Resource {
                     ->default('empty')
                     ->formatStateUsing(fn (string $state, Attende $record): string =>
                         $state != 'empty' ?
-                            Carbon::parse($state)->format('d-m-Y H:i:s') . " (" . Carbon::parse($state)->diffForHumans() . ")"
+                            $state
                             : ($record->attendeCode->end_date >= now() ? 'Belum Presensi' : 'Tidak Hadir')
                         )
                     ->color(fn (string $state): string => match ($state) {
@@ -168,7 +168,7 @@ class AttendeResource extends Resource {
                     ->default('empty')
                     ->formatStateUsing(fn (string $state, Attende $record): string =>
                         $state != 'empty' ?
-                            Carbon::parse($state)->format('d-m-Y H:i:s') . " (" . Carbon::parse($state)->diffForHumans() . ")"
+                            $state
                             : ($record->attendeCode->end_date >= now() ? 'Belum Presensi' : 'Tidak Hadir')
                         )
                     ->color(fn (string $state): string => match ($state) {
