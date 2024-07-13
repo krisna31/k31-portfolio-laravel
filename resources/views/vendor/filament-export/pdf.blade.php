@@ -88,6 +88,7 @@
         </div>
     @endif
     @foreach ($dataGroup as $userName => $userRows)
+    @dd($userRows, $userName, $userRows->count()
         <div class="user-summary">
             <div class="user-name">{{ $userName }}</div>
             @php
