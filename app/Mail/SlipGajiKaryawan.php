@@ -67,6 +67,7 @@ class SlipGajiKaryawan extends Mailable
             'data' => $this->data,
             'bulan' => date('F', mktime(0, 0, 0, $this->data['bulan'], 10)),
             'totalGaji' => $this->totalGaji,
+            'jumlahKehadiran' => $this->jumlahKehadiran,
         ]);
         return [
             Attachment::fromData(fn() => $pdf->output(), "Slip Gaji Karyawan {$this->user->name}.pdf"),
