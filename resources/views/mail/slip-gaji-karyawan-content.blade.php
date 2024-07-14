@@ -30,17 +30,17 @@
         <tr>
             <td>Gaji Pokok</td>
             <td>:</td>
-            <td>{{ $user->position->salary }} * {{ $jumlahKehadiran }} = {{ $user->position->salary * $jumlahKehadiran }}</td>
+            <td>{{ 'Rp ' . number_format($user->position->salary, 0, ',', '.') }} * {{ $jumlahKehadiran }} = {{ 'Rp ' . number_format($user->position->salary * $jumlahKehadiran, 0, ',', '.') }}</td>
         </tr>
         <tr>
             <td>Uang Makan</td>
             <td>:</td>
-            <td>{{ $user->position->eat_allowance }} * {{ $jumlahKehadiran }} = {{ $user->position->eat_allowance * $jumlahKehadiran }}</td>
+            <td>{{ 'Rp ' . number_format($user->position->eat_allowance, 0, ',', '.') }} * {{ $jumlahKehadiran }} = {{ 'Rp ' . number_format($user->position->eat_allowance * $jumlahKehadiran, 0, ',', '.') }}</td>
         </tr>
         <tr>
             <td>Uang Transport</td>
             <td>:</td>
-            <td>{{ $user->position->transport_allowance }} * {{ $jumlahKehadiran }} = {{ $user->position->transport_allowance * $jumlahKehadiran }}</td>
+            <td>{{ 'Rp ' . number_format($user->position->transport_allowance, 0, ',', '.') }} * {{ $jumlahKehadiran }} = {{ 'Rp ' . number_format($user->position->transport_allowance * $jumlahKehadiran, 0, ',', '.') }}</td>
         </tr>
         <tr>
             <td>Total Gaji</td>

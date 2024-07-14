@@ -147,7 +147,7 @@ class UserResource extends Resource
 
             return [
                 'jumlah_kehadiran' => $jumlahKehadiran,
-                'gaji_pokok' => 'Rp. ' . number_format($totalGaji, 0, ',', '.'),
+                'gaji_pokok' => 'Rp ' . number_format($totalGaji, 0, ',', '.'),
             ];
         }
 
@@ -270,9 +270,9 @@ class UserResource extends Resource
                             'nama' => $user->name,
                             'position' => $user->position->name,
                             'email' => $user->email,
-                            'gaji_pokok' => 'Rp. ' . number_format($user->position->salary, 0, ',', '.'),
-                            'uang_makan' => 'Rp. ' . number_format($user->position->eat_allowance, 0, ',', '.'),
-                            'uang_transport' => 'Rp. ' . number_format($user->position->transport_allowance, 0, ',', '.'),
+                            'gaji_pokok' => 'Rp ' . number_format($user->position->salary, 0, ',', '.'),
+                            'uang_makan' => 'Rp ' . number_format($user->position->eat_allowance, 0, ',', '.'),
+                            'uang_transport' => 'Rp ' . number_format($user->position->transport_allowance, 0, ',', '.'),
                             'approval_status_id' => 2,
                             'bulan' => now()->subMonth()->month + 1,
                             'tahun' => date('Y'),

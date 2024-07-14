@@ -78,7 +78,15 @@ class PositionResource extends Resource
                 Forms\Components\TextInput::make('salary')
                     ->required()
                     ->numeric()
-                    ->default(3_000_000),
+                    ->default(0),
+                Forms\Components\TextInput::make('eat_allowance')
+                    ->required()
+                    ->numeric()
+                    ->default(0),
+                Forms\Components\TextInput::make('transport_allowance')
+                    ->required()
+                    ->numeric()
+                    ->default(0),
             ]);
     }
 
@@ -98,6 +106,14 @@ class PositionResource extends Resource
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('salary')
+                    ->money('IDR')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
+                Tables\Columns\TextColumn::make('eat_allowance')
+                    ->money('IDR')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
+                Tables\Columns\TextColumn::make('transport_allowance')
                     ->money('IDR')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
