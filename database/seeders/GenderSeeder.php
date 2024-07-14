@@ -28,7 +28,7 @@ class GenderSeeder extends Seeder
             Gender::factory()->create([
                 'name' => $gender['name'],
                 'slug' => $gender['slug'],
-                'created_by' => 'Salyma Dewi',
+                'created_by' => 'Seeder',
             ]);
         }
     }

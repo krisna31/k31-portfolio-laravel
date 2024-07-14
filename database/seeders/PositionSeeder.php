@@ -114,7 +114,7 @@ class PositionSeeder extends Seeder {
                 'eat_allowance' => $position['eat_allowance'],
                 'transport_allowance' => $position['transport_allowance'],
                 'position_type_id' => $position['position_type_id'],
-                'created_by' => 'Salyma Dewi',
+                'created_by' => 'Seeder',
             ]);
         }
     }

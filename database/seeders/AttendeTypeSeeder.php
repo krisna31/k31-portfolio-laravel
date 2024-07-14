@@ -25,7 +25,7 @@ class AttendeTypeSeeder extends Seeder
                 [
                     'name' => $type,
                     'slug' => str()->slug($type),
-                    'created_by' => 'Salyma Dewi',
+                    'created_by' => 'Seeder',
                 ]
             );
         }

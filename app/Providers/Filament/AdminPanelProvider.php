@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use DutchCodingCompany\FilamentSocialite\FilamentSocialitePlugin;
 use Filament\Navigation\MenuItem;
 use App\Filament\Resources\UserResource;
 use Filament\Navigation\NavigationBuilder;
@@ -27,12 +28,14 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Jeffgreco13\FilamentBreezy\BreezyCore;
 use ShuvroRoy\FilamentSpatieLaravelBackup\FilamentSpatieLaravelBackupPlugin;
+use Swis\Filament\Backgrounds\FilamentBackgroundsPlugin;
 
 class AdminPanelProvider extends PanelProvider {
     public function panel(Panel $panel): Panel {
         return $panel
             ->default()
             ->id('admin')
+            ->login()
             ->path('manage')
             ->favicon(asset('assets/pictures/logo.png'))
             ->brandName('K31 Project')
@@ -46,6 +49,22 @@ class AdminPanelProvider extends PanelProvider {
                 'warning' => Color::Amber,
             ])
             ->plugins([
+                FilamentSocialitePlugin::make()
+                    // (required) Add providers corresponding with providers in `config/services.php`.
+                    ->setProviders([
+                        'google' => [
+                            'label' => 'Google',
+                            // Custom icon requires an additional package, see below.
+                            'icon' => 'fab-google',
+                        ],
+                    ])
+                    // (optional) Enable or disable registration from OAuth.
+                    ->setRegistrationEnabled(true)
+                    // (optional) Change the associated model class.
+                    ->setUserModelClass(\App\Models\User::class)
+                    ->setDashboardRouteName('filament.app.pages.home-page'),
+                FilamentBackgroundsPlugin::make()
+                    ->remember(900),
                 \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
                 // \Hasnayeen\Themes\ThemesPlugin::make(),
                 BreezyCore::make()

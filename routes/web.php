@@ -19,33 +19,11 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Portfolio');
-});
-
-Route::get('/3d', function () {
-    return Inertia::render('PortfolioThree', [
-        'portfolio' => Portfolio::with('skillSets', 'contactMeLinks')->where('is_use', 1)->first(),
-    ]);
-});
+Route::redirect('/', '/login');
 
 Route::get('/login', function () {
-    return redirect(route('filament.app.auth.login'));
+    return redirect(route('filament.admin.auth.login'));
 })->name('login');
-
-Route::middleware(['auth', 'verified'])->group(function () {
-
-    Route::group(['prefix' => 'breeze'], function () {
-        Route::get('/', function () {
-            return Inertia::render('Welcome');
-        })->name('welcome');
-
-        Route::resources([
-            'notes' => NoteController::class,
-        ]);
-    });
-
-});
 
 // Route::middleware('auth')->group(function () {
 //     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
