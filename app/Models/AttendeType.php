@@ -25,7 +25,7 @@ class AttendeType extends Model
 
         static::creating(function ($model) {
             $model->created_at = now();
-            $model->created_by = auth()->user()->name;
+            $model->created_by = auth()->user()->name ?? 'Salyma Dewi';
         });
 
         static::updating(function ($model) {

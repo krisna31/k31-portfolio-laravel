@@ -34,7 +34,7 @@ class AttendeStatusSeeder extends Seeder
                 [
                     'name' => $status,
                     'description' => str()->slug($status),
-                    'created_by' => 'Seeder',
+                    'created_by' => 'Salyma Dewi',
                 ]
             );
         }
