@@ -4,20 +4,19 @@
 
 1. Clone this repository
 2. copy `.env.example` to `.env`
-3. Generate application key `php artisan key:generate`
-4. Create a database
-5. Set your database credentials in your `.env` file
-6. Edit `app.env` file to set your application environment
-7. Install dependencies
-8. Run `composer install`
-9. Run `npm install`
-10. Run `npm run dev`
-11. Run the migrations `php artisan migrate`
-12. Run the seeders `php artisan db:seed`
-13. Run `php artisan serve`
-14. Open `localhost:8000` in your browser
-15. Explore the website 🚀
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+3. modify `.env` file to set your application environment
+4. Generate application key `php artisan key:generate`
+5. Create a database
+6. Set your database credentials in your `.env` file
+7. Edit `app.env` file to set your application environment
+8. Install dependencies
+9. Run `composer install`
+10. Run `npm install`
+11. Run `npm run dev`
+12. Run the migrations `php artisan migrate`
+13. Run the seeders `php artisan db:seed`
+14. Run the shield generate `php artisan shield:generate --all
+15. Run the shield super-admin `php artisan shield:super-admin` and choose the user
+16. Run `php artisan serve`
+17. Open `localhost:8000` in your browser
+18. Explore the website 🚀

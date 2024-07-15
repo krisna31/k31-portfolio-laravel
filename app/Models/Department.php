@@ -40,7 +40,7 @@ class Department extends Model
 
         static::creating(function ($model) {
             $model->created_at = now();
-            $model->created_by = auth()->user()->name ?? 'Salyma Dewi';
+            $model->created_by = auth()->user()->name;
         });
 
         static::updating(function ($model) {
