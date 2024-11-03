@@ -12,8 +12,10 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class AbsenController extends Controller {
-    public function index(Request $request) {
+class AbsenController extends Controller
+{
+    public function index(Request $request)
+    {
         try {
             $addHour = env('APP_ENV') === 'local' ? 0 : 0;
             // add one more column check that if absensi is open or not based on start_date and end_date
@@ -59,7 +61,8 @@ class AbsenController extends Controller {
         }
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $request->validate([
             'code' => 'required|exists:attende_codes,id',
             'address' => 'required|string',
@@ -105,30 +108,57 @@ class AbsenController extends Controller {
         }
 
         $photo = $request->file('photo');
+        $photo->storeAs('public/attendes-histories-photos', $photo->hashName());
         $photo->storeAs('public/attende-photos', $photo->hashName());
 
-        Attende::query()
-            ->updateOrCreate([
-                'attende_code_id' => $request->code,
-                'user_id' => auth()->user()->id,
-            ], [
-                'user_id' => auth()->user()->id,
-                'attende_code_id' => $request->code,
-                'approval_status_id' => $absensi->default_approval_status_id,
-                'attende_status_id' => $absensi->is_late ? 2 : $request->attende_status, // 2 is for Terlambat
-                'attende_time' => now(),
-                'address' => $request->address,
-                'latitude' => $request->latitude,
-                'longitude' => $request->longitude,
-                'photo' => [
-                    'attende-photos/' . $photo->hashName(),
-                ],
-            ]);
+        try {
+            DB::beginTransaction();
+            AttendesHistory::query()
+                ->create([
+                    'user_id' => auth()->user()->id,
+                    'attende_code_id' => $request->code,
+                    'approval_status_id' => $absensi->default_approval_status_id,
+                    'attende_status_id' => $absensi->is_late ? 2 : $request->attende_status, // 2 is for Terlambat
+                    'attende_time' => now(),
+                    'address' => $request->address,
+                    'latitude' => $request->latitude,
+                    'longitude' => $request->longitude,
+                    'photo' => [
+                        'attendes-histories-photos/' . $photo->hashName(),
+                    ],
+                    'is_spoofing' => $request->is_spoofing ?? true,
+                ]);
 
-        return response()->json([
-            'error' => false,
-            'message' => 'Absensi berhasil',
-        ], 201);
+            Attende::query()
+                ->updateOrCreate([
+                    'attende_code_id' => $request->code,
+                    'user_id' => auth()->user()->id,
+                ], [
+                    'user_id' => auth()->user()->id,
+                    'attende_code_id' => $request->code,
+                    'approval_status_id' => $absensi->default_approval_status_id,
+                    'attende_status_id' => $absensi->is_late ? 2 : $request->attende_status, // 2 is for Terlambat
+                    'attende_time' => now(),
+                    'address' => $request->address,
+                    'latitude' => $request->latitude,
+                    'longitude' => $request->longitude,
+                    'photo' => [
+                        'attende-photos/' . $photo->hashName(),
+                    ],
+                ]);
+
+            DB::commit();
+            return response()->json([
+                'error' => false,
+                'message' => 'Presensi berhasil',
+            ], 201);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return response()->json([
+                'error' => true,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
     }
 
     public function storeRiwayatPresensi(Request $request)
@@ -201,7 +231,8 @@ class AbsenController extends Controller {
         ], 201);
     }
 
-    public function getAbsenHistory() {
+    public function getAbsenHistory()
+    {
         try {
             $absensi = Attende::with(['user', 'attendeCode', 'approvalStatus', 'attendeStatus'])
                 ->where('user_id', auth()->user()->id)
