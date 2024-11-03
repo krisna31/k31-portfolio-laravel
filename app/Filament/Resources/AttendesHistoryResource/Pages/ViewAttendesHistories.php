@@ -29,8 +29,8 @@ class ViewAttendesHistories extends ViewRecord
                 Infolists\Components\IconEntry::make(name: 'is_spoofing')
                     ->label('Wajah Palsu?')
                     ->icon(fn(string $state): string => match ($state) {
-                        '1' => 'heroicon-o-x-circle',
-                        default => 'heroicon-o-check-circle',
+                        '1' => 'heroicon-o-circle',
+                        default => 'heroicon-o-x-check-circle',
                     })
                     ->color(fn(string $state): string => match ($state) {
                         '1' => 'danger',
