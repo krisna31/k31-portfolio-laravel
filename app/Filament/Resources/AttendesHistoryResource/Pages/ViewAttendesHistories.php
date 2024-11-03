@@ -29,12 +29,12 @@ class ViewAttendesHistories extends ViewRecord
                 Infolists\Components\IconEntry::make(name: 'is_spoofing')
                     ->label('Wajah Palsu?')
                     ->icon(fn(string $state): string => match ($state) {
-                        '1' => 'heroicon-o-x-circle',
-                        '0' => 'heroicon-o-check-circle',
+                        1 => 'heroicon-o-x-circle',
+                        default => 'heroicon-o-check-circle',
                     })
                     ->color(fn(string $state): string => match ($state) {
-                        '1' => 'red',
-                        '0' => 'green',
+                        1 => 'red',
+                        default => 'green',
                     }),
                 Infolists\Components\TextEntry::make('created_at'),
                 Infolists\Components\TextEntry::make('updated_at'),
