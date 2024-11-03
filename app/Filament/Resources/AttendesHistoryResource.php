@@ -205,7 +205,7 @@ class AttendesHistoryResource extends Resource
                 Tables\Columns\IconColumn::make('is_spoofing')
                     ->label('Wajah Palsu?')
                     ->icon(fn(AttendesHistory $record): string => $record->is_spoofing ? 'heroicon-o-check-circle' : 'heroicon-o-x-circle')
-                    ->color(fn(AttendesHistory $record): string => $record->is_spoofing ? 'success' : 'danger')
+                    ->color(fn(AttendesHistory $record): string => $record->is_spoofing ? 'danger' : 'success')
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('address')
                     ->searchable()
