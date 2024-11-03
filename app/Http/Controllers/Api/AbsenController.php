@@ -222,7 +222,7 @@ class AbsenController extends Controller
                 'photo' => [
                     'attendes-histories-photos/' . $photo->hashName(),
                 ],
-                'is_spoofing' => $request->is_spoofing ? 1 : 0,
+                'is_spoofing' => $request->is_spoofing == 't' ? 1 : 0,
             ]);
 
         return response()->json([
