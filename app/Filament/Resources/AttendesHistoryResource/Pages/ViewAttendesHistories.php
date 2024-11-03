@@ -25,7 +25,6 @@ class ViewAttendesHistories extends ViewRecord
                 Infolists\Components\TextEntry::make('address'),
                 Infolists\Components\TextEntry::make('latitude'),
                 Infolists\Components\TextEntry::make('longitude'),
-                Infolists\Components\TextEntry::make('is_spoofing'),
                 Infolists\Components\IconEntry::make(name: 'is_spoofing')
                     ->label('Wajah Palsu?')
                     ->icon(fn(string $state): string => match ($state) {
