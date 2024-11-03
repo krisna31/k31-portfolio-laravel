@@ -30,7 +30,7 @@ class ViewAttendesHistories extends ViewRecord
                     ->label('Wajah Palsu?')
                     ->icon(fn(string $state): string => match ($state) {
                         '1' => 'heroicon-o-circle',
-                        default => 'heroicon-o-x-check-circle',
+                        default => 'heroicon-o-x-circle',
                     })
                     ->color(fn(string $state): string => match ($state) {
                         '1' => 'danger',
