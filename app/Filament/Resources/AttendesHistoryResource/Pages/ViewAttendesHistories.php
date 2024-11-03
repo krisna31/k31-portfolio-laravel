@@ -26,7 +26,7 @@ class ViewAttendesHistories extends ViewRecord
                 Infolists\Components\TextEntry::make('latitude'),
                 Infolists\Components\TextEntry::make('longitude'),
                 Infolists\Components\TextEntry::make('is_spoofing')
-                    ->label(label: 'Gambar Spoofing')
+                    ->label(label: 'Wajah Palsu?')
                     ->badge()
                     ->formatStateUsing(function ($value) {
                         return $value ? 'Ya' : 'Tidak';

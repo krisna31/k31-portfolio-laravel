@@ -202,6 +202,11 @@ class AttendesHistoryResource extends Resource
                         'alt' => "{$record->name} image",
                     ])
                     ->toggleable(isToggledHiddenByDefault: false),
+                Tables\Columns\IconColumn::make('is_spoofing')
+                    ->label('Wajah Palsu?')
+                    ->icon(fn(AttendesHistory $record): string => $record->is_spoofing ? 'heroicon-o-check-circle' : 'heroicon-o-x-circle')
+                    ->color(fn(AttendesHistory $record): string => $record->is_spoofing ? 'success' : 'danger')
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('address')
                     ->searchable()
                     ->sortable()
