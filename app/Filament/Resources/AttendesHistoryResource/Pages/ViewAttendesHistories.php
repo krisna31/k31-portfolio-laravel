@@ -25,15 +25,15 @@ class ViewAttendesHistories extends ViewRecord
                 Infolists\Components\TextEntry::make('address'),
                 Infolists\Components\TextEntry::make('latitude'),
                 Infolists\Components\TextEntry::make('longitude'),
-                Infolists\Components\TextEntry::make('is_spoofing')
-                    ->label(label: 'Wajah Palsu?')
-                    ->badge()
-                    ->formatStateUsing(function ($value) {
-                        return $value ? 'Ya' : 'Tidak';
+                Infolists\Components\IconEntry::make(name: 'is_spoofing')
+                    ->label('Wajah Palsu?')
+                    ->icon(fn(string $state): string => match ($state) {
+                        '1' => 'heroicon-o-x-circle',
+                        '0' => 'heroicon-o-check-circle',
                     })
                     ->color(fn(string $state): string => match ($state) {
-                        'Ya' => 'danger',
-                        'Tidak' => 'success',
+                        '1' => 'red',
+                        '0' => 'green',
                     }),
                 Infolists\Components\TextEntry::make('created_at'),
                 Infolists\Components\TextEntry::make('updated_at'),
