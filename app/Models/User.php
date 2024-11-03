@@ -111,7 +111,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasAvatar, Filame
         static::creating(function ($model) {
             $model->created_at = now();
             if (auth()->user()) {
-                $model->created_by = auth()->user()->name;
+                $model->created_by = auth()->user() ? auth()->user()->name : 'System';
             }
         });
 

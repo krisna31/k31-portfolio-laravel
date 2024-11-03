@@ -5,18 +5,45 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class AttendeStatus extends Model
+class AttendesHistory extends Model
 {
     use HasFactory, \Illuminate\Database\Eloquent\SoftDeletes;
 
     protected $fillable = [
-        'name',
-        'description',
+        'user_id',
+        'attende_code_id',
+        'approval_status_id',
+        'attende_status_id',
+        'attende_time',
+        'address',
+        'photo',
+        'latitude',
+        'longitude',
+        'is_spoofing',
     ];
 
-    public function attendes()
+    protected $casts = [
+        'photo' => 'array',
+    ];
+
+    public function user()
     {
-        return $this->hasMany(Attende::class);
+        return $this->belongsTo(User::class);
+    }
+
+    public function attendeCode()
+    {
+        return $this->belongsTo(AttendeCode::class);
+    }
+
+    public function approvalStatus()
+    {
+        return $this->belongsTo(ApprovalStatus::class);
+    }
+
+    public function attendeStatus()
+    {
+        return $this->belongsTo(AttendeStatus::class);
     }
 
     public static function boot()
@@ -39,8 +66,8 @@ class AttendeStatus extends Model
             $model->save();
             return \Filament\Notifications\Notification::make()
                 ->success()
-                ->title('Attende Status Deleted')
-                ->body('The attende status was deleted successfully.');
+                ->title('Attende History Deleted')
+                ->body('The attende history was deleted successfully.');
         });
     }
 }
