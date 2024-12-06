@@ -13,6 +13,6 @@ export const options = {
 };
 
 export default () => {
-  const urlRes = http.get('https://test-api.k6.io');
+  const urlRes = http.get('https://k31.my.id');
   sleep(1);
 };
