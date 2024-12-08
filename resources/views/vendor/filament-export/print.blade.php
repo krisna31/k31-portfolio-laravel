@@ -88,7 +88,7 @@
             return $item['user.name'];
         });
     @endphp
-    <img src="{{ public_path('assets/pictures/logo-panjang.png') }}" alt="Logo PT Anugerah Alam Konstruksi"
+    <img src="{{ public_path('assets/pictures/logo-panjang.png') }}" alt="Logo Perusahaan"
         width="100%" />
     @if ($dataGroup->count() > 1)
         <div class="header">

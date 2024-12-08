@@ -9,7 +9,7 @@ use Log;
 
 class Dashboard extends \Filament\Pages\Dashboard {
     public function getHeading(): string {
-        return "PT Anugerah Alam Konstruksi - Dashboard";
+        return "Dashboard";
     }
 
     public function getHeaderActions(): array {

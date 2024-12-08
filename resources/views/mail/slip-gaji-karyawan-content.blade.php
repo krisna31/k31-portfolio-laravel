@@ -7,7 +7,7 @@
     <title>Slip Gaji</title>
 </head>
 <body>
-    {{-- <img src="{{ $message->embed(asset('assets/pictures/logo-panjang.jpg')) }}" alt="Logo PT Anugerah Alam Konstruksi" width="100%" /> --}}
+    {{-- <img src="{{ $message->embed(asset('assets/pictures/logo-panjang.jpg')) }}" alt="Logo Perusahaan" width="100%" /> --}}
     <h2>Slip Gaji <b>{{ $user->nomor_induk_pegawai }}/{{ $user->name }}</b></h2>
     <h3 style="text-align: right">{{ $bulan }} {{ $data['tahun'] }}</h3>
     <hr />
@@ -61,7 +61,7 @@
             <td></td>
         </tr>
         <tr>
-            <td><b>HRD PT Anugerah Alam Konstruksi</b></td>
+            <td><b>HRD Perusahaan</b></td>
         </tr>
     </table>
 </body>

@@ -8,7 +8,7 @@
 </head>
 <body>
     <img src="{{ public_path('assets/pictures/logo-panjang.jpg') }}"
-    alt="Logo PT Anugerah Alam Konstruksi" width="100%" />
+    alt="Logo Perusahaan" width="100%" />
     <hr>
     <p style="text-align: right">{{ $bulan }} {{ $data['tahun'] }}</p>
     <br />
