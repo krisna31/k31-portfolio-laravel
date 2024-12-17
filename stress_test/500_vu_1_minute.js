@@ -3,7 +3,7 @@ import { sleep } from "k6";
 import { htmlReport } from "./html_report_bundle.js";
 
 export const options = {
-    vus: 20,
+    vus: 500,
     duration: "1m",
 };
 
@@ -14,7 +14,6 @@ export default function () {
 
 export function handleSummary(data) {
     return {
-        "summary_20_vu_1_minute.html": htmlReport(data),
+        "summary_500_vu_1_minute.html": htmlReport(data),
     };
 }
-
