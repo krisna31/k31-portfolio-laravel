@@ -27,10 +27,8 @@ class DatabaseSeeder extends Seeder
             AttendeTypeSeeder::class,
             AttendeStatusSeeder::class,
             ApprovalStatusSeeder::class,
-            PortfolioSeeder::class,
             ShieldSeeder::class,
             UserSeeder::class,
-            NoteSeeder::class,
         ]);
     }
 }

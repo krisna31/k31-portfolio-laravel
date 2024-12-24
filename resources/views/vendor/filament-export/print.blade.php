@@ -88,8 +88,6 @@
             return $item['user.name'];
         });
     @endphp
-    <img src="{{ public_path('assets/pictures/logo-panjang.png') }}" alt="Logo Perusahaan"
-        width="100%" />
     @if ($dataGroup->count() > 1)
         <div class="header">
             <h2>Total Kehadiran: {{ count($rows) }} Presensi</h2>

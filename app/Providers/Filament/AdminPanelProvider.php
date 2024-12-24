@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use Swis\Filament\Backgrounds\FilamentBackgroundsPlugin;
 use Filament\Navigation\MenuItem;
 use App\Filament\Resources\UserResource;
 use Filament\Navigation\NavigationBuilder;
@@ -12,6 +13,7 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use DutchCodingCompany\FilamentSocialite\FilamentSocialitePlugin;
 use Filament\Navigation\NavigationGroup;
 use Filament\Pages;
 use Filament\Panel;
@@ -32,6 +34,8 @@ class AdminPanelProvider extends PanelProvider {
     public function panel(Panel $panel): Panel {
         return $panel
             ->default()
+            ->login()
+            ->passwordReset()
             ->id('admin')
             ->path('manage')
             ->favicon(asset('assets/pictures/logo.png'))
@@ -62,6 +66,23 @@ class AdminPanelProvider extends PanelProvider {
                     ->enableTwoFactorAuthentication(),
                 \BezhanSalleh\FilamentExceptions\FilamentExceptionsPlugin::make(),
                 new \RickDBCN\FilamentEmail\FilamentEmail(),
+                FilamentSocialitePlugin::make()
+                    // (required) Add providers corresponding with providers in `config/services.php`.
+                    ->setProviders([
+                        'google' => [
+                            'label' => 'Google',
+                            // Custom icon requires an additional package, see below.
+                            'icon' => 'fab-google',
+                        ],
+                    ])
+                    // (optional) Enable or disable registration from OAuth.
+                    ->setRegistrationEnabled(true)
+                    // (optional) Change the associated model class.
+                    ->setUserModelClass(\App\Models\User::class)
+                    ->setDashboardRouteName('filament.app.pages.home-page'),
+                    FilamentBackgroundsPlugin::make()
+                        ->remember(900),
+                \Hasnayeen\Themes\ThemesPlugin::make()
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
