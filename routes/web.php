@@ -1,9 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\Web\NoteController;
 use App\Http\Controllers\Web\ProfileController;
-use App\Models\Portfolio;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;

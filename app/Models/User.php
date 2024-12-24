@@ -59,11 +59,6 @@ class User extends Authenticatable implements MustVerifyEmail, HasAvatar, Filame
         'password' => 'hashed',
     ];
 
-    public function notes()
-    {
-        return $this->hasMany(Note::class);
-    }
-
     public function gender()
     {
         return $this->belongsTo(Gender::class);

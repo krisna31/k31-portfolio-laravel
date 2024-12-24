@@ -96,8 +96,6 @@ class AdminPanelProvider extends PanelProvider {
             ])
             ->navigationGroups([
                 'Employee Management',
-                'Notes',
-                'Portfolio',
                 'Access Control',
                 'Settings',
             ])
